@@ -1,0 +1,221 @@
+package controllers
+
+import (
+	"log"
+	"net/http"
+	"strconv"
+	"taxi/models"
+	"taxi/shared/database"
+
+	"github.com/gin-gonic/gin"
+)
+
+type LocationController struct {
+}
+type polyPoint struct {
+	Lat float64
+	Lng float64
+}
+
+type addLocationRequest struct {
+	Name     string
+	Currency string
+	Polygon  []polyPoint
+}
+
+type addZoneRequest struct {
+	Name       string
+	LocationID uint
+	Polygon    []polyPoint
+}
+
+func FloatToString(input_num float64) string {
+	// to convert a float number to a string
+	return strconv.FormatFloat(input_num, 'f', 6, 64)
+}
+
+func (a *LocationController) GetLocations(c *gin.Context) {
+	type locationWithFareCount struct {
+		ID             uint
+		Name           string
+		Currency       string
+		IsActive       bool
+		TotalFareCount int64
+	}
+	var list []locationWithFareCount
+	database.Db.Raw("SELECT (SELECT COUNT(*) as total_fare_count FROM fares  WHERE fares.location_id = locations.id AND fares.is_active = true),* FROM locations").Scan(&list)
+	c.JSON(http.StatusOK, list)
+}
+
+func (a *LocationController) GetZones(c *gin.Context) {
+	var list []models.Zone
+	database.Db.Where("location_id = ?", c.Param("locationId")).Find(&list)
+	c.JSON(http.StatusOK, list)
+}
+
+func (a *LocationController) GetCoordinates(c *gin.Context) {
+	type locationWithCoordinate struct {
+		Coordinates string
+	}
+	var location locationWithCoordinate
+	database.Db.Raw("select btrim(st_astext(polygon), 'POLYGON()') as coordinates from locations Where locations.id = " + c.Param("locationId")).Scan(&location)
+	c.JSON(http.StatusOK, location)
+
+}
+
+func (a *LocationController) GetActiveLocations(c *gin.Context) {
+	var list []models.Location
+	database.Db.Where("is_active = ?", true).Find(&list)
+	c.JSON(http.StatusOK, list)
+}
+
+func (a *LocationController) GetActiveLocationsForCompany(c *gin.Context) {
+	type result struct {
+		Name       string
+		ID         uint
+		LocationID uint
+	}
+	var list []result
+	database.Db.Raw("SELECT locations.id as location_id,locations.name,company_location_assignments.id FROM company_location_assignments INNER JOIN locations ON company_location_assignments.location_id = locations.id AND locations.is_active = true WHERE company_location_assignments.company_id = " + c.Param("companyId")).Scan(&list)
+	c.JSON(http.StatusOK, list)
+}
+
+func (a *LocationController) GetLocationById(c *gin.Context) {
+	var locationId = c.Param("locationId")
+	var data models.Location
+	database.Db.Where("id = ?", locationId).First(&data)
+	c.JSON(http.StatusOK, data)
+}
+func (a *LocationController) EnableLocation(c *gin.Context) {
+	var response struct {
+		Status bool
+	}
+	var locationId = c.Param("locationId")
+	res := database.Db.Model(&models.Location{}).Where("id = ?", locationId).UpdateColumn("is_active", true)
+	if res.Error == nil {
+		response.Status = true
+	} else {
+		response.Status = false
+	}
+	c.JSON(http.StatusOK, response)
+}
+func (a *LocationController) DisableLocation(c *gin.Context) {
+	var response struct {
+		Status bool
+	}
+	var locationId = c.Param("locationId")
+	res := database.Db.Model(&models.Location{}).Where("id = ?", locationId).UpdateColumn("is_active", false)
+	if res.Error == nil {
+		response.Status = true
+	} else {
+		response.Status = false
+	}
+	c.JSON(http.StatusOK, response)
+}
+
+func (a *LocationController) EnableZone(c *gin.Context) {
+	var response struct {
+		Status bool
+	}
+	var locationId = c.Param("locationId")
+	res := database.Db.Model(&models.Zone{}).Where("id = ?", locationId).UpdateColumn("is_active", true)
+	if res.Error == nil {
+		response.Status = true
+	} else {
+		response.Status = false
+	}
+	c.JSON(http.StatusOK, response)
+}
+func (a *LocationController) DisableZone(c *gin.Context) {
+	var response struct {
+		Status bool
+	}
+	var locationId = c.Param("locationId")
+	res := database.Db.Model(&models.Zone{}).Where("id = ?", locationId).UpdateColumn("is_active", false)
+	if res.Error == nil {
+		response.Status = true
+	} else {
+		response.Status = false
+	}
+	c.JSON(http.StatusOK, response)
+}
+
+func (a *LocationController) AddNewLocation(c *gin.Context) {
+	var data addLocationRequest
+	var response = sendOtpResponse{Status: false}
+	c.BindJSON(&data)
+	if len(data.Name) < 3 {
+		response.Message = "Name is required"
+		c.JSON(http.StatusOK, response)
+	} else {
+		var polyString = ""
+		for i := 0; i < len(data.Polygon); i++ {
+			if i != 0 {
+				polyString += ","
+			}
+			polyString += FloatToString(data.Polygon[i].Lat) + " " + FloatToString(data.Polygon[i].Lng)
+		}
+		var intersectLocation models.Location
+		var res = database.Db.Where("ST_Intersects(polygon,ST_GeometryFromText('POLYGON((" + polyString + "))'))").First(&intersectLocation)
+		log.Println("count = ", res.RowsAffected)
+		if intersectLocation.ID == 0 {
+			var newLocationAddResponse = database.Db.Exec("INSERT INTO locations (name,currency, polygon,is_active) VALUES ('" + data.Name + "','" + data.Currency + "',ST_GeometryFromText('POLYGON((" + polyString + "))'),true);")
+			if newLocationAddResponse.Error != nil {
+				response.Message = newLocationAddResponse.Error.Error()
+			} else {
+				response.Message = "Location added successfully"
+				response.Status = true
+			}
+
+		} else {
+			response.Message = "Location intersects the previously created location named " + intersectLocation.Name
+
+		}
+		c.JSON(http.StatusOK, response)
+	}
+}
+
+func (a *LocationController) AddNewZone(c *gin.Context) {
+	var data addZoneRequest
+	var response = sendOtpResponse{Status: false}
+	c.BindJSON(&data)
+	if len(data.Name) < 3 {
+		response.Message = "Name is required"
+		c.JSON(http.StatusOK, response)
+	} else {
+		var polyString = ""
+		for i := 0; i < len(data.Polygon); i++ {
+			if i != 0 {
+				polyString += ","
+			}
+			polyString += FloatToString(data.Polygon[i].Lat) + " " + FloatToString(data.Polygon[i].Lng)
+		}
+		var count = 0
+		//check if zone is within the city
+		database.Db.Model(&models.Location{}).Where("id = ? AND ST_Contains(polygon,ST_GeometryFromText('POLYGON(("+polyString+"))'))", data.LocationID).Count(&count)
+		if count == 0 {
+			response.Message = "Some part of the zone is outside the city."
+
+		} else {
+			//check if zone is intersecting other zone in the city
+			var intersectLocation models.Zone
+			var res = database.Db.Where("ST_Intersects(polygon,ST_GeometryFromText('POLYGON((" + polyString + "))'))").First(&intersectLocation)
+			log.Println("count = ", res.RowsAffected)
+			if intersectLocation.ID == 0 {
+				var newLocationAddResponse = database.Db.Exec("INSERT INTO zones (name,location_id, polygon,is_active) VALUES ('" + data.Name + "','" + strconv.Itoa(int(data.LocationID)) + "',ST_GeometryFromText('POLYGON((" + polyString + "))'),true);")
+				if newLocationAddResponse.Error != nil {
+					response.Message = newLocationAddResponse.Error.Error()
+				} else {
+					response.Message = "Zone added successfully"
+					response.Status = true
+				}
+
+			} else {
+				response.Message = "Zone intersects the previously created zone named " + intersectLocation.Name
+
+			}
+		}
+
+		c.JSON(http.StatusOK, response)
+	}
+}
