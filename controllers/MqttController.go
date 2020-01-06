@@ -22,7 +22,7 @@ var client MQTT.Client
 
 func (m *MqttController) Connect() {
 	opts := MQTT.NewClientOptions()
-	opts.AddBroker("tcp://10.136.100.69:1883")
+	opts.AddBroker("tcp://localhost:1883")
 	opts.SetClientID(config.MqttKey)
 	opts.SetUsername(config.MqttKey)
 	opts.SetPassword(config.MqttKey)
@@ -94,8 +94,8 @@ func (a *MqttController) WebHook(c *gin.Context) {
 					var locationUpdateRequest LocationUpdateRequest
 					err := json.Unmarshal(payloadString, &locationUpdateRequest)
 					if err == nil {
-						var newLocationUpdateResponse = database.Db.Exec("UPDATE vehicles SET latlng = ST_GeometryFromText('POINT(" + fmt.Sprintf("%f", locationUpdateRequest.Latitude) + " " + fmt.Sprintf("%f", locationUpdateRequest.Longitude) + ")') where id = "+fmt.Sprintf("%d", locationUpdateRequest.VehicleID))
-						database.Db.Model(&models.DriverVehicleAssignment{}).Where("driver_id = ? AND vehicle_id = ?",claims.UserID,locationUpdateRequest.VehicleID).UpdateColumn("is_online",true)
+						var newLocationUpdateResponse = database.Db.Exec("UPDATE vehicles SET latlng = ST_GeometryFromText('POINT(" + fmt.Sprintf("%f", locationUpdateRequest.Latitude) + " " + fmt.Sprintf("%f", locationUpdateRequest.Longitude) + ")') where id = " + fmt.Sprintf("%d", locationUpdateRequest.VehicleID))
+						database.Db.Model(&models.DriverVehicleAssignment{}).Where("driver_id = ? AND vehicle_id = ?", claims.UserID, locationUpdateRequest.VehicleID).UpdateColumn("is_online", true)
 						if newLocationUpdateResponse.Error != nil {
 							fmt.Println("latlng update error!")
 						} else {
