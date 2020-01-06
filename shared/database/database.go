@@ -14,7 +14,7 @@ var (
 
 func SetupDb() {
 	var err error
-	Db, err = gorm.Open("postgres", "host=tutaxi-db-postgresql-do-user-4937141-0.db.ondigitalocean.com port=25060 user=doadmin dbname=defaultdb password=msm470hpqqokbzbm ")
+	Db, err = gorm.Open("postgres", "host=35.193.214.177 port=25060 user=test dbname=taasai password=test#123 ")
 	if err != nil {
 		panic(err.Error())
 		os.Exit(1)
