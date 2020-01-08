@@ -15,8 +15,8 @@ import (
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"golang.org/x/sync/errgroup"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
+	"golang.org/x/sync/errgroup"
 )
 
 var g errgroup.Group
@@ -107,7 +107,7 @@ func setupRouter() http.Handler {
 	}))
 	router.Static("/public", "./public")
 	router.GET("/test", func(context *gin.Context) {
-		context.JSON(http.StatusOK,"Server running")
+		context.JSON(http.StatusOK, "Server running")
 	})
 
 	adminRoutePrivatePublic := router.Group("/admin")
@@ -206,7 +206,7 @@ func setupMobileAppRouter() http.Handler {
 	}))
 	router.Static("/public", "./public")
 	router.GET("/test", func(context *gin.Context) {
-		context.JSON(http.StatusOK,"Server running")
+		context.JSON(http.StatusOK, "Server running")
 	})
 	router.POST("/razorPay/webhook", razorPayController.Webhook)
 	customerRoutePublic := router.Group("/customer")
@@ -254,9 +254,7 @@ func setupMobileAppRouter() http.Handler {
 		driverRoutePrivate.POST("/addNewDriverContact", emergencyController.AddNewDriverContact)
 		driverRoutePrivate.POST("/getDriverEmergencyContacts", emergencyController.GetDriverContacts)
 
-
 	}
-
 
 	return router
 
@@ -303,7 +301,7 @@ func main() {
 	}
 
 	g.Go(func() error {
-		return publicServer.ListenAndServeTLS("server.pem","private.key")
+		return publicServer.ListenAndServe()
 	})
 	g.Go(func() error {
 		return mobileAppServer.ListenAndServe()
