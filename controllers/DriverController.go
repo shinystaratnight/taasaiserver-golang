@@ -390,10 +390,8 @@ func (d *DriverController) GoOnline(c *gin.Context) {
 
 func (d *DriverController) GoOffline(c *gin.Context) {
 	var userData = c.MustGet("jwt_data").(*config.JwtClaims)
-	var data DriverStatusChangeRequest
 	var response = DriverStatusResponse{Status: false}
-	c.BindJSON(&data)
-	database.Db.Model(&models.DriverVehicleAssignment{}).Where("driver_id = ? AND vehicle_id = ? AND is_online = true", userData.UserID, data.VehicleId).UpdateColumn("is_online", false)
+	database.Db.Model(&models.DriverVehicleAssignment{}).Where("driver_id = ? AND is_online = true", userData.UserID).UpdateColumn("is_online", false)
 	response.Status = true
 	response.Message = "Success! Now you are Offline"
 	c.JSON(http.StatusOK, response)
