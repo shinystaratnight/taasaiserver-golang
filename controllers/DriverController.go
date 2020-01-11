@@ -371,7 +371,7 @@ func (d *DriverController) GoOnline(c *gin.Context) {
 				return
 			} else {
 				var count = 0
-				database.Db.Model(&models.DriverVehicleAssignment{}).Where("vehicle_id = ? AND driver_id != AND is_active = true AND is_online = true", data.VehicleId, userData.UserID).Count(&count)
+				database.Db.Model(&models.DriverVehicleAssignment{}).Where("vehicle_id = ? AND driver_id != ? AND is_active = true AND is_online = true", data.VehicleId, userData.UserID).Count(&count)
 				if count == 0 {
 					database.Db.Model(&vehicleAssignment).UpdateColumn("is_online", true)
 					response.Status = true
