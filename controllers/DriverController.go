@@ -357,7 +357,7 @@ func (d *DriverController) GoOnline(c *gin.Context) {
 		return
 	} else {
 		var isAlreadyOnline = 0
-		database.Db.Model(&models.DriverVehicleAssignment{}).Where("driver_id = ? AND is_online = true AND is_active = true", userData.UserID).Count(&isAlreadyOnline)
+		database.Db.Model(&models.DriverVehicleAssignment{}).Where("driver_id = ? AND vehicle_id != ? AND is_online = true AND is_active = true", userData.UserID, data.VehicleId).Count(&isAlreadyOnline)
 		if isAlreadyOnline == 1 {
 			response.Message = "Sorry ! You cannot go online for more than 1 vehicle in same time."
 			c.JSON(http.StatusOK, response)
@@ -372,11 +372,11 @@ func (d *DriverController) GoOnline(c *gin.Context) {
 			} else {
 				var count = 0
 				database.Db.Model(&models.DriverVehicleAssignment{}).Where("vehicle_id = ? AND is_active = true AND is_online = true", data.VehicleId).Count(&count)
-				if(count == 0){
+				if count == 0 {
 					database.Db.Model(&vehicleAssignment).UpdateColumn("is_online", true)
 					response.Status = true
 					response.Message = "Success! Now you are Online"
-				}else{
+				} else {
 					response.Message = "The vehicle is already in use.Please select another vehicle."
 				}
 				c.JSON(http.StatusOK, response)
