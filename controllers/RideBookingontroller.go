@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/kelvins/geocoder"
 	"math"
 	"net/http"
 	"taxi/models"
@@ -129,7 +130,6 @@ func (r *RideBookingController) GetEstimatedFare(c *gin.Context) {
 				}
 			}
 
-
 		}
 	} else {
 		response.Message = "Sorry! Service not available at the pickup location specified."
@@ -215,6 +215,35 @@ func (a *RideBookingController) BookRide(c *gin.Context) {
 			if fare.ID != 0 {
 				data.FareID = fare.ID
 				data.RideDateTime = time.Now()
+				geocoder.ApiKey = "AIzaSyCmua_JtLFnNux2uKsi1sACWNm_qrSxlBo"
+				pickupLocation := geocoder.Location{
+					Latitude:  data.PickupLatitude,
+					Longitude: data.PickupLongitude,
+				}
+
+				// Convert location (latitude, longitude) to a slice of addresses
+				addresses, err := geocoder.GeocodingReverse(pickupLocation)
+
+				if err == nil {
+					// Usually, the first address returned from the API
+					// is more detailed, so let's work with it
+					address := addresses[0]
+					data.PickupLocation = address.FormatAddress()
+				}
+				dropLocation := geocoder.Location{
+					Latitude:  data.DropLatitude,
+					Longitude: data.DropLongitude,
+				}
+
+				// Convert location (latitude, longitude) to a slice of addresses
+				addresses, err = geocoder.GeocodingReverse(dropLocation)
+
+				if err == nil {
+					// Usually, the first address returned from the API
+					// is more detailed, so let's work with it
+					address := addresses[0]
+					data.DropLocation = address.FormatAddress()
+				}
 				result := database.Db.Create(&data)
 				if result.Error == nil {
 					response.Message = "Ride booking success"
@@ -292,4 +321,3 @@ func (r *RideBookingController) CancelRide(c *gin.Context) {
 		}
 	}
 }
-
