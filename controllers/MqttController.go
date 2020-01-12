@@ -75,10 +75,6 @@ type LocationUpdateRequest struct {
 	VehicleID     uint    `json:"vehicle_id"`
 	VehicleTypeID uint    `json:"vehicle_type_id"`
 }
-type RideAcceptRequest struct {
-	RideID    uint `json:"ride_id"`
-	VehicleID uint `json:"vehicle_id"`
-}
 
 func (a *MqttController) WebHook(c *gin.Context) {
 	var requestData mqttWebHookRequest
@@ -101,14 +97,6 @@ func (a *MqttController) WebHook(c *gin.Context) {
 						} else {
 							fmt.Println("latlng update success!")
 						}
-					}
-				} else if requestData.Topic == "accept_ride" {
-					var driverId = claims.UserID
-					var reqData RideAcceptRequest
-					err := json.Unmarshal(payloadString, &reqData)
-					if err == nil {
-						var rideController = RideController{}
-						rideController.RideAccept(reqData.VehicleID, driverId, reqData.RideID)
 					}
 				} else if requestData.Topic == "check_ride" {
 					var passengerID = claims.UserID

@@ -24,6 +24,8 @@ type RideAcceptCustomerResponse struct {
 }
 
 type RideAcceptDriverResponse struct {
+	Status        bool
+	Message       string
 	PassengerName string
 	RideDetails   models.Ride
 }
@@ -82,9 +84,9 @@ type RideDetail struct {
 	BaseDistanceFare   float64
 	BaseDurationFare   float64
 
-	PassengerRating     float64
-	DriverRating     float64
-	DriverReview string
+	PassengerRating float64
+	DriverRating    float64
+	DriverReview    string
 	PassengerReview string
 
 	DistanceFare  float64
@@ -103,14 +105,14 @@ func (r *RideController) GetRides(c *gin.Context) {
 	if data.RideStatus == -1 {
 		database.Db.Raw("SELECT rides.*,locations.name as service_area,passengers.name as passenger_name FROM rides INNER JOIN locations ON rides.location_id = locations.id INNER JOIN passengers ON passengers.id = rides.passenger_id ORDER BY rides.created_at DESC").Scan(&list)
 	} else {
-		database.Db.Raw("SELECT rides.*,locations.name as service_area,passengers.name as passenger_name FROM rides INNER JOIN locations ON rides.location_id = locations.id INNER JOIN passengers ON passengers.id = rides.passenger_id WHERE rides.ride_status = " + strconv.Itoa(int(data.RideStatus))+" ORDER BY rides.created_at DESC").Scan(&list)
+		database.Db.Raw("SELECT rides.*,locations.name as service_area,passengers.name as passenger_name FROM rides INNER JOIN locations ON rides.location_id = locations.id INNER JOIN passengers ON passengers.id = rides.passenger_id WHERE rides.ride_status = " + strconv.Itoa(int(data.RideStatus)) + " ORDER BY rides.created_at DESC").Scan(&list)
 	}
 	c.JSON(http.StatusOK, list)
 }
 
 func (r *RideController) GetRidesForPassenger(c *gin.Context) {
 	var list []RideListItem
-	database.Db.Raw("SELECT rides.*,locations.name as service_area,passengers.name as passenger_name FROM rides INNER JOIN locations ON rides.location_id = locations.id INNER JOIN passengers ON passengers.id = "+c.Param("passengerId")+" WHERE rides.passenger_id = "+c.Param("passengerId")+"  ORDER BY rides.created_at DESC").Scan(&list)
+	database.Db.Raw("SELECT rides.*,locations.name as service_area,passengers.name as passenger_name FROM rides INNER JOIN locations ON rides.location_id = locations.id INNER JOIN passengers ON passengers.id = " + c.Param("passengerId") + " WHERE rides.passenger_id = " + c.Param("passengerId") + "  ORDER BY rides.created_at DESC").Scan(&list)
 	c.JSON(http.StatusOK, list)
 }
 
@@ -135,40 +137,53 @@ func (r *RideController) GetRideDetail(c *gin.Context) {
 	c.JSON(http.StatusOK, detail)
 }
 
-func (r *RideController) RideAccept(vehicleId uint, driverId uint, rideId uint) {
-	if rideId != 0 && driverId != 0 {
-		var ride models.Ride
-		database.Db.Where("id=?", rideId).First(&ride)
-		if ride.RideStatus == 0 {
-			database.Db.Model(&ride).UpdateColumns(&models.Ride{VehicleID: vehicleId, DriverID: driverId, RideStatus: 1})
-			database.Db.Model(&models.DriverVehicleAssignment{}).Where("driver_id = ? AND vehicle_id = ?", driverId, vehicleId).UpdateColumn("is_ride", true)
-			var driverDetails models.Driver
-			var vehicleDetails models.Vehicle
-			var passengerDetails models.Passenger
-			database.Db.Where("id=?", driverId).First(&driverDetails)
-			database.Db.Where("id=?", ride.PassengerID).First(&passengerDetails)
-			database.Db.Where("id=?", vehicleId).First(&vehicleDetails)
-			var passengerResponse = RideAcceptCustomerResponse{
-				DriverDetails:  driverDetails,
-				VehicleDetails: vehicleDetails,
-				RideDetails:    ride,
-			}
+type RideAcceptRequest struct {
+	RideID    uint `json:"ride_id"`
+	VehicleID uint `json:"vehicle_id"`
+}
 
-			passengerData, err := json.Marshal(&passengerResponse)
-			if err == nil {
-				mqttController.Publish(fmt.Sprintf("passenger/%d/ride_accepted", ride.PassengerID), 2, string(passengerData))
-			}
-			var driverResponse = RideAcceptDriverResponse{
-				RideDetails:   ride,
-				PassengerName: passengerDetails.Name,
-			}
-			driverData, driverErr := json.Marshal(&driverResponse)
-			if driverErr == nil {
-				mqttController.Publish(fmt.Sprintf("driver/%d/ride_accepted", driverId), 2, string(driverData))
-			}
-
-		}
+func (r *RideController) RideAccept(c *gin.Context) {
+	var data RideAcceptRequest
+	c.BindJSON(&data)
+	var rideId = data.RideID
+	var vehicleId = data.VehicleID
+	var userData = c.MustGet("jwt_data").(*config.JwtClaims)
+	var driverId = userData.UserID
+	var driverResponse = RideAcceptDriverResponse{
+		Status: false,
 	}
+
+	var ride models.Ride
+	database.Db.Where("id=?", rideId).First(&ride)
+
+	if ride.RideStatus == 0 {
+		database.Db.Model(&ride).UpdateColumns(&models.Ride{VehicleID: vehicleId, DriverID: driverId, RideStatus: 1})
+		database.Db.Model(&models.DriverVehicleAssignment{}).Where("driver_id = ? AND vehicle_id = ?", driverId, vehicleId).UpdateColumn("is_ride", true)
+		var driverDetails models.Driver
+		var vehicleDetails models.Vehicle
+		var passengerDetails models.Passenger
+		database.Db.Where("id=?", driverId).First(&driverDetails)
+		database.Db.Where("id=?", ride.PassengerID).First(&passengerDetails)
+		database.Db.Where("id=?", vehicleId).First(&vehicleDetails)
+		var passengerResponse = RideAcceptCustomerResponse{
+			DriverDetails:  driverDetails,
+			VehicleDetails: vehicleDetails,
+			RideDetails:    ride,
+		}
+
+		passengerData, err := json.Marshal(&passengerResponse)
+		if err == nil {
+			mqttController.Publish(fmt.Sprintf("passenger/%d/ride_accepted", ride.PassengerID), 2, string(passengerData))
+		}
+		driverResponse.Status = true
+		driverResponse.RideDetails = ride
+		driverResponse.PassengerName = passengerDetails.Name
+
+	} else {
+		driverResponse.Message = "Sorry ! This ride can't be accepted now it is either cancelled or taken by another driver."
+	}
+
+	c.JSON(http.StatusOK, driverResponse)
 }
 
 func (r *RideController) CheckOnRide(passengerId uint) {
@@ -242,6 +257,7 @@ func (r *RideController) StartTrip(c *gin.Context) {
 	}
 
 }
+
 type responseFormat struct {
 	Status          bool
 	Message         string
@@ -266,17 +282,16 @@ func (r *RideController) GetRideDetailsForMobile(c *gin.Context) {
 
 			response.BaseFareDetails = fare
 			response.Status = true
-		}else{
+		} else {
 			var fare models.ZoneFare
 			database.Db.Where("id = ?", ride.ZoneFareID).First(&fare)
 			response.BaseFareDetails = models.Fare{BaseFare: fare.BaseFare, BaseFareDistance: fare.BaseFareDistance, BaseFareDuration: fare.BaseFareDuration}
 			response.Status = true
 		}
 	}
-	c.JSON(http.StatusOK,response)
+	c.JSON(http.StatusOK, response)
 }
 func (r *RideController) StopTrip(c *gin.Context) {
-
 
 	var response = responseFormat{Status: false}
 	var userData = c.MustGet("jwt_data").(*config.JwtClaims)
@@ -332,7 +347,7 @@ func (r *RideController) StopTrip(c *gin.Context) {
 				response.BaseFareDetails = fare
 				response.Status = true
 
-				database.Db.Model(&models.DriverVehicleAssignment{}).Where("driver_id = ? AND vehicle_id = ?",ride.DriverID,ride.VehicleID).UpdateColumn("is_online",true)
+				database.Db.Model(&models.DriverVehicleAssignment{}).Where("driver_id = ? AND vehicle_id = ?", ride.DriverID, ride.VehicleID).UpdateColumn("is_online", true)
 
 				//paytmpg ends here
 				data, err := json.Marshal(&response)
@@ -378,7 +393,7 @@ func (r *RideController) StopTrip(c *gin.Context) {
 				response.Currency = location.Currency
 				response.BaseFareDetails = models.Fare{BaseFare: fare.BaseFare, BaseFareDistance: fare.BaseFareDistance, BaseFareDuration: fare.BaseFareDuration}
 				response.Status = true
-				database.Db.Model(&models.DriverVehicleAssignment{}).Where("driver_id = ? AND vehicle_id = ?",ride.DriverID,ride.VehicleID).UpdateColumn("is_online",true)
+				database.Db.Model(&models.DriverVehicleAssignment{}).Where("driver_id = ? AND vehicle_id = ?", ride.DriverID, ride.VehicleID).UpdateColumn("is_online", true)
 
 				data, err := json.Marshal(&response)
 				if err == nil {
@@ -448,40 +463,40 @@ func (r *RideController) UpdateRideLocations(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
-type rateRequest struct{
+type rateRequest struct {
 	RideID int64
 	Review string
 	Rating float64
 }
 
 func (r *RideController) RateDriver(c *gin.Context) {
-	var response = rideLocationResponse{Status:false}
+	var response = rideLocationResponse{Status: false}
 	var ride models.Ride
 	var userData = c.MustGet("jwt_data").(*config.JwtClaims)
 	var data rateRequest
 	c.BindJSON(&data)
-	database.Db.Where("id = ? AND passenger_id = ?",data.RideID,userData.UserID).First(&ride)
-	if ride.ID!=0{
-		result:=database.Db.Model(&ride).UpdateColumns(&models.Ride{DriverRating:data.Rating,PassengerReview:data.Review})
-		if result.Error == nil{
+	database.Db.Where("id = ? AND passenger_id = ?", data.RideID, userData.UserID).First(&ride)
+	if ride.ID != 0 {
+		result := database.Db.Model(&ride).UpdateColumns(&models.Ride{DriverRating: data.Rating, PassengerReview: data.Review})
+		if result.Error == nil {
 			response.Status = true
 		}
 	}
-	c.JSON(http.StatusOK,response)
+	c.JSON(http.StatusOK, response)
 }
 
 func (r *RideController) RatePassenger(c *gin.Context) {
-	var response = rideLocationResponse{Status:false}
+	var response = rideLocationResponse{Status: false}
 	var ride models.Ride
 	var userData = c.MustGet("jwt_data").(*config.JwtClaims)
 	var data rateRequest
 	c.BindJSON(&data)
-	database.Db.Where("id = ? AND driver_id = ?",data.RideID,userData.UserID).First(&ride)
-	if ride.ID!=0{
-		result:=database.Db.Model(&ride).UpdateColumns(&models.Ride{PassengerRating:data.Rating,DriverReview:data.Review})
-		if result.Error == nil{
+	database.Db.Where("id = ? AND driver_id = ?", data.RideID, userData.UserID).First(&ride)
+	if ride.ID != 0 {
+		result := database.Db.Model(&ride).UpdateColumns(&models.Ride{PassengerRating: data.Rating, DriverReview: data.Review})
+		if result.Error == nil {
 			response.Status = true
 		}
 	}
-	c.JSON(http.StatusOK,response)
+	c.JSON(http.StatusOK, response)
 }
