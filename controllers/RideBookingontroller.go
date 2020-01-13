@@ -321,3 +321,4 @@ func (r *RideBookingController) CancelRide(c *gin.Context) {
 		}
 	}
 }
+
