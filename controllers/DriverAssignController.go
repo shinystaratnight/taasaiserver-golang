@@ -43,7 +43,7 @@ func AssignDriverForRide(ride models.Ride) {
 }
 
 func scheduleNextAssignment(rideID uint) {
-	timer := time.NewTimer(time.Second * 22)
+	timer := time.NewTimer(time.Second * 24)
 	<-timer.C
 	CheckDriverAssignmentForRide(rideID)
 }
@@ -92,10 +92,6 @@ func CheckDriverAssignmentForRide(rideId uint) {
 					scheduleNextAssignment(rideId)
 				} else {
 					checkDriversGoingToComplete(ride)
-					database.Db.Model(&ride).UpdateColumn("ride_status", 5)
-					data, _ := json.Marshal(&ride)
-					mqttController.Publish(fmt.Sprintf("passenger/%d/driver_unavailable", ride.PassengerID), 2, string(data))
-
 				}
 
 			} else {
@@ -111,7 +107,28 @@ func CheckDriverAssignmentForRide(rideId uint) {
 }
 
 func checkDriversGoingToComplete(ride models.Ride) {
-
+	var nearestDriver rideDriverDetail
+	database.Db.Raw("SELECT driver_vehicle_assignments.driver_id as driver_id,ST_Distance(vehicles.latlng, ref_geom) AS distance from vehicles INNER JOIN driver_vehicle_assignments ON driver_vehicle_assignments.vehicle_id = vehicles.id AND driver_vehicle_assignments.is_ride = true INNER JOIN rides ON rides.driver_id = driver_vehicle_assignments.driver_id AND rides.ride_status = 4 CROSS JOIN (SELECT ST_MakePoint(,)::geography AS ref_drop) CROSS JOIN (SELECT ST_MakePoint(" + fmt.Sprintf("%f", ride.PickupLatitude) + "," + fmt.Sprintf("%f", ride.PickupLongitude) + ")::geography AS ref_geom) AS r  WHERE ST_DWithin(ref_drop, ref_geom, 5000) AND vehicles.vehicle_type_id =" + strconv.Itoa(int(ride.VehicleTypeID)) + "  ORDER BY ST_Distance(ref_drop, ref_geom) LIMIT 1").Scan(&nearestDriver)
+	if nearestDriver.DriverID != 0 {
+		data, err := json.Marshal(&ride)
+		if err == nil {
+			mqttController.Publish(fmt.Sprintf("driver/%d/new_ride_request", nearestDriver.DriverID), 0, string(data))
+		} else {
+			mqttController.Publish(fmt.Sprintf("driver/%d/new_ride_request", nearestDriver.DriverID), 0, string(data))
+		}
+		var request = models.SentRideRequest{
+			DriverID: nearestDriver.DriverID,
+			RideID:   ride.ID,
+		}
+		database.Db.Create(&request)
+		timer := time.NewTimer(time.Second * 24)
+		<-timer.C
+		checkDriversGoingToComplete(ride)
+	} else {
+		database.Db.Model(&ride).UpdateColumn("ride_status", 5)
+		data, _ := json.Marshal(&ride)
+		mqttController.Publish(fmt.Sprintf("passenger/%d/driver_unavailable", ride.PassengerID), 2, string(data))
+	}
 }
 
 type acceptRideRequest struct {
