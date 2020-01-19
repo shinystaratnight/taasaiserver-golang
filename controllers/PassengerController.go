@@ -202,24 +202,39 @@ func (a *PassengerController) AddCustomerBasicDetails(c *gin.Context) {
 	}
 }
 
-
 func (a *PassengerController) CheckIsOnRide(c *gin.Context) {
 	var ride models.Ride
-	var response = rideBookingResponse{Status:false}
+	var response = rideBookingResponse{Status: false}
 	var userData = c.MustGet("jwt_data").(*config.JwtClaims)
-	database.Db.Where("ride_status IN (0,1,2,3) AND passenger_id = ?",userData.UserID).First(&ride)
-	if(ride.ID!=0){
+	database.Db.Where("ride_status IN (0,1,2,3) AND passenger_id = ?", userData.UserID).First(&ride)
+	if ride.ID != 0 {
 		response.Status = true
 		response.RideDetails = ride
 	}
-	c.JSON(http.StatusOK,response)
+	c.JSON(http.StatusOK, response)
 }
 
+type GetNearByDriversRequest struct {
+	Latitude  float64 `json:"latitude"`
+	Longitude float64 `json:"longitude"`
+}
+
+type NearByDriver struct {
+	ID        int     `json:"id"`
+	Latitude  float64 `json:"latitude"`
+	Longitude float64 `json:"longitude"`
+}
+
+func (a *PassengerController) GetNearByDrivers(c *gin.Context) {
+	var data GetNearByDriversRequest
+	var response []NearByDriver
+	c.BindJSON(&data)
+	database.Db.Raw("SELECT driver_vehicle_assignments.driver_id as id,ST_X(ST_TRANSFORM(vehicles.latlng,4674)) AS longitude,ST_Y(ST_TRANSFORM(vehicles.latlng,4674)) AS latitude,ST_Distance(vehicles.latlng, ref_geom) AS distance from vehicles INNER JOIN driver_vehicle_assignments ON driver_vehicle_assignments.vehicle_id = vehicles.id AND driver_vehicle_assignments.is_online = true AND driver_vehicle_assignments.is_ride = false CROSS JOIN (SELECT ST_MakePoint(" + fmt.Sprintf("%f", data.Latitude) + "," + fmt.Sprintf("%f", data.Longitude) + ")::geography AS ref_geom) AS r  WHERE ST_DWithin(vehicles.latlng, ref_geom, 5000)  ORDER BY ST_Distance(vehicles.latlng, ref_geom)").Scan(&response)
+	c.JSON(http.StatusOK, response)
+}
 
 func (a *PassengerController) GetAllPassengers(c *gin.Context) {
 	var list []models.Passenger
-	database.Db.Select([]string{"id", "name", "image" , "dial_code" ,"mobile_number" , "is_active"}).Find(&list)
-	c.JSON(http.StatusOK,list)
+	database.Db.Select([]string{"id", "name", "image", "dial_code", "mobile_number", "is_active"}).Find(&list)
+	c.JSON(http.StatusOK, list)
 }
-
-

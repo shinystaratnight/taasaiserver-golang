@@ -42,9 +42,9 @@ func AssignDriverForRide(ride models.Ride) {
 
 }
 
-func scheduleNextAssignment(rideID uint){
+func scheduleNextAssignment(rideID uint) {
 	timer := time.NewTimer(time.Second * 22)
-	<- timer.C
+	<-timer.C
 	CheckDriverAssignmentForRide(rideID)
 }
 
@@ -56,22 +56,24 @@ func CheckDriverAssignmentForRide(rideId uint) {
 		if ride.RideStatus == 0 {
 			var nearestDriver rideDriverDetail
 			var previousRequest []models.SentRideRequest
-			database.Db.Where("ride_id = ?",rideId).Find(&previousRequest)
-			if len(previousRequest)<=5{
-				var previousDriverList string =""
-				for i,req:=range previousRequest{
-					if i!=0 {
+			database.Db.Where("ride_id = ?", rideId).Find(&previousRequest)
+			if len(previousRequest) <= 5 {
+
+				var previousDriverList string = ""
+
+				for i, req := range previousRequest {
+					if i != 0 {
 						previousDriverList += ","
 					}
-					previousDriverList += fmt.Sprintf("%d",req.DriverID)
+					previousDriverList += fmt.Sprintf("%d", req.DriverID)
 				}
-				if len(previousRequest)>0 {
-					database.Db.Raw("SELECT driver_vehicle_assignments.driver_id as driver_id,ST_Distance(vehicles.latlng, ref_geom) AS distance from vehicles INNER JOIN driver_vehicle_assignments ON driver_vehicle_assignments.vehicle_id = vehicles.id AND driver_vehicle_assignments.is_online = true AND driver_vehicle_assignments.is_ride = false  AND driver_vehicle_assignments.driver_id NOT IN ("+previousDriverList+")   CROSS JOIN (SELECT ST_MakePoint(" + fmt.Sprintf("%f", ride.PickupLatitude) + "," + fmt.Sprintf("%f", ride.PickupLongitude) + ")::geography AS ref_geom) AS r  WHERE ST_DWithin(vehicles.latlng, ref_geom, 5000) AND vehicles.vehicle_type_id =" + strconv.Itoa(int(ride.VehicleTypeID)) + "  ORDER BY ST_Distance(vehicles.latlng, ref_geom) LIMIT 1").Scan(&nearestDriver)
 
-				}else{
+				if len(previousRequest) > 0 {
+					database.Db.Raw("SELECT driver_vehicle_assignments.driver_id as driver_id,ST_Distance(vehicles.latlng, ref_geom) AS distance from vehicles INNER JOIN driver_vehicle_assignments ON driver_vehicle_assignments.vehicle_id = vehicles.id AND driver_vehicle_assignments.is_online = true AND driver_vehicle_assignments.is_ride = false  AND driver_vehicle_assignments.driver_id NOT IN (" + previousDriverList + ")   CROSS JOIN (SELECT ST_MakePoint(" + fmt.Sprintf("%f", ride.PickupLatitude) + "," + fmt.Sprintf("%f", ride.PickupLongitude) + ")::geography AS ref_geom) AS r  WHERE ST_DWithin(vehicles.latlng, ref_geom, 5000) AND vehicles.vehicle_type_id =" + strconv.Itoa(int(ride.VehicleTypeID)) + "  ORDER BY ST_Distance(vehicles.latlng, ref_geom) LIMIT 1").Scan(&nearestDriver)
+				} else {
 					database.Db.Raw("SELECT driver_vehicle_assignments.driver_id as driver_id,ST_Distance(vehicles.latlng, ref_geom) AS distance from vehicles INNER JOIN driver_vehicle_assignments ON driver_vehicle_assignments.vehicle_id = vehicles.id AND driver_vehicle_assignments.is_online = true AND driver_vehicle_assignments.is_ride = false  CROSS JOIN (SELECT ST_MakePoint(" + fmt.Sprintf("%f", ride.PickupLatitude) + "," + fmt.Sprintf("%f", ride.PickupLongitude) + ")::geography AS ref_geom) AS r  WHERE ST_DWithin(vehicles.latlng, ref_geom, 5000) AND vehicles.vehicle_type_id =" + strconv.Itoa(int(ride.VehicleTypeID)) + "  ORDER BY ST_Distance(vehicles.latlng, ref_geom) LIMIT 1").Scan(&nearestDriver)
-
 				}
+
 				fmt.Println(nearestDriver.DriverID)
 				fmt.Println(nearestDriver.Distance)
 
@@ -89,21 +91,27 @@ func CheckDriverAssignmentForRide(rideId uint) {
 					database.Db.Create(&request)
 					scheduleNextAssignment(rideId)
 				} else {
+					checkDriversGoingToComplete(ride)
 					database.Db.Model(&ride).UpdateColumn("ride_status", 5)
 					data, _ := json.Marshal(&ride)
 					mqttController.Publish(fmt.Sprintf("passenger/%d/driver_unavailable", ride.PassengerID), 2, string(data))
 
 				}
-			}else {
+
+			} else {
+
 				database.Db.Model(&ride).UpdateColumn("ride_status", 5)
 				data, _ := json.Marshal(&ride)
 				mqttController.Publish(fmt.Sprintf("passenger/%d/driver_unavailable", ride.PassengerID), 2, string(data))
 
 			}
 
-
 		}
 	}
+}
+
+func checkDriversGoingToComplete(ride models.Ride) {
+
 }
 
 type acceptRideRequest struct {
@@ -117,5 +125,6 @@ type acceptRideRequest struct {
 3 - started,
 4 - stopped,
 5 - driver unavailable
-6 - cancelled
+6 - cancelled,
+7 - Queued
 */

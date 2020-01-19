@@ -224,6 +224,7 @@ func setupMobileAppRouter() http.Handler {
 		customerRoutePrivate.POST("/getRides", rideBookingController.GetBookingHistory)
 		customerRoutePrivate.POST("/cancelRide", rideBookingController.CancelRide)
 		customerRoutePrivate.POST("/checkIsOnRide", passengerController.CheckIsOnRide)
+		customerRoutePrivate.POST("/getNearestDrivers", passengerController.GetNearByDrivers)
 		customerRoutePrivate.POST("/getRideDetails/:rideId", rideController.GetRideDetailsForMobile)
 		customerRoutePrivate.POST("/rateDriver", rideController.RateDriver)
 
