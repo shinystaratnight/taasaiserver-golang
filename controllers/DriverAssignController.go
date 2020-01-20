@@ -21,7 +21,7 @@ type rideDriverDetail struct {
 func AssignDriverForRide(ride models.Ride) {
 
 	var nearestDriver rideDriverDetail
-	
+
 	database.Db.Raw("SELECT driver_vehicle_assignments.driver_id as driver_id,ST_Distance(vehicles.latlng, ref_geom) AS distance from vehicles INNER JOIN driver_vehicle_assignments ON driver_vehicle_assignments.vehicle_id = vehicles.id AND driver_vehicle_assignments.is_online = true AND driver_vehicle_assignments.is_ride = false CROSS JOIN (SELECT ST_MakePoint(" + fmt.Sprintf("%f", ride.PickupLatitude) + "," + fmt.Sprintf("%f", ride.PickupLongitude) + ")::geography AS ref_geom) AS r  WHERE ST_DWithin(vehicles.latlng, ref_geom, 10000) AND vehicles.vehicle_type_id =" + strconv.Itoa(int(ride.VehicleTypeID)) + "  ORDER BY ST_Distance(vehicles.latlng, ref_geom) LIMIT 1").Scan(&nearestDriver)
 	fmt.Println(nearestDriver.DriverID)
 	fmt.Println(nearestDriver.Distance)
@@ -121,9 +121,8 @@ func checkDriversGoingToComplete(ride models.Ride) {
 		previousDriverList += fmt.Sprintf("%d", req.DriverID)
 	}
 
-
 	database.Db.Raw("SELECT driver_vehicle_assignments.driver_id as driver_id,ST_Distance(vehicles.latlng, ref_geom) AS distance from vehicles INNER JOIN driver_vehicle_assignments ON driver_vehicle_assignments.vehicle_id = vehicles.id AND driver_vehicle_assignments.is_ride = true AND driver_vehicle_assignments.driver_id NOT IN (" + previousDriverList + ")  INNER JOIN rides ON rides.driver_id = driver_vehicle_assignments.driver_id AND rides.ride_status = 4  CROSS JOIN (SELECT ST_MakePoint(" + fmt.Sprintf("%f", ride.PickupLatitude) + "," + fmt.Sprintf("%f", ride.PickupLongitude) + ")::geography AS ref_geom) AS r  WHERE ST_DWithin((SELECT ST_MakePoint(rides.drop_latitude,rides.drop_longitude)::geography), ref_geom, 5000) AND vehicles.vehicle_type_id =" + strconv.Itoa(int(ride.VehicleTypeID)) + "  ORDER BY ST_Distance((SELECT ST_MakePoint(rides.drop_latitude,rides.drop_longitude)::geography), ref_geom) LIMIT 1").Scan(&nearestDriver)
-	
+
 	if nearestDriver.DriverID != 0 {
 		data, err := json.Marshal(&ride)
 		if err == nil {
@@ -162,7 +161,3 @@ type acceptRideRequest struct {
 7 - Queued
 
 */
-
-
-Hi there,
- 
