@@ -143,7 +143,7 @@ func checkDriversGoingToComplete(ride models.Ride) {
 		checkDriversGoingToComplete(ride)
 	} else {
 		database.Db.Where("id = ?", ride.ID).First(&ride)
-		if ride.RideStatus != 7 {
+		if ride.RideStatus == 0 {
 			database.Db.Model(&ride).UpdateColumn("ride_status", 5)
 			data, _ := json.Marshal(&ride)
 			mqttController.Publish(fmt.Sprintf("passenger/%d/driver_unavailable", ride.PassengerID), 2, string(data))
