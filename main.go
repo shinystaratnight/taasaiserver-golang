@@ -227,6 +227,7 @@ func setupMobileAppRouter() http.Handler {
 		customerRoutePrivate.POST("/getNearestDrivers", passengerController.GetNearByDrivers)
 		customerRoutePrivate.POST("/getRideDetails/:rideId", rideController.GetRideDetailsForMobile)
 		customerRoutePrivate.POST("/rateDriver", rideController.RateDriver)
+		customerRoutePrivate.POST("/getRideTimeline/:id", rideController.GetRideTimeline)
 
 		customerRoutePrivate.POST("/addNewPassengerContact", emergencyController.AddNewPassengerContact)
 		customerRoutePrivate.POST("/getPassengerEmergencyContacts", emergencyController.GetPassengerContacts)
@@ -255,6 +256,7 @@ func setupMobileAppRouter() http.Handler {
 		driverRoutePrivate.POST("/ratePassenger", rideController.RatePassenger)
 		driverRoutePrivate.POST("/addNewDriverContact", emergencyController.AddNewDriverContact)
 		driverRoutePrivate.POST("/getDriverEmergencyContacts", emergencyController.GetDriverContacts)
+		driverRoutePrivate.POST("/getRideTimeline/:id", rideController.GetRideTimeline)
 
 	}
 

@@ -171,6 +171,13 @@ func (r *RideController) RideAccept(c *gin.Context) {
 			RideDetails:    ride,
 		}
 
+		var eventLog = models.RideEventLog{
+			RideID:     ride.ID,
+			RideStatus: ride.RideStatus,
+			Message:    "Driver Assigned For Ride",
+		}
+		database.Db.Create(&eventLog)
+
 		passengerData, err := json.Marshal(&passengerResponse)
 		if err == nil {
 			mqttController.Publish(fmt.Sprintf("passenger/%d/ride_accepted", ride.PassengerID), 2, string(passengerData))
@@ -224,6 +231,12 @@ func (r *RideController) DriverArrived(c *gin.Context) {
 	result := database.Db.Where("id = ? AND driver_id = ? AND ride_status = 1", rideID, userData.UserID).First(&ride)
 	if result.RowsAffected == 1 {
 		database.Db.Model(&ride).UpdateColumn("ride_status", 2)
+		var eventLog = models.RideEventLog{
+			RideID:     ride.ID,
+			RideStatus: ride.RideStatus,
+			Message:    "Driver Arrived At PickUp Location",
+		}
+		database.Db.Create(&eventLog)
 		response.Status = true
 		c.JSON(http.StatusOK, response)
 		return
@@ -247,6 +260,12 @@ func (r *RideController) StartTrip(c *gin.Context) {
 	result := database.Db.Where("id = ? AND driver_id = ? AND ride_status = 2", rideID, userData.UserID).First(&ride)
 	if result.RowsAffected == 1 {
 		database.Db.Model(&ride).UpdateColumns(&models.Ride{RideStatus: 3, RideStartTime: time.Now()})
+		var eventLog = models.RideEventLog{
+			RideID:     ride.ID,
+			RideStatus: ride.RideStatus,
+			Message:    "Ride Started",
+		}
+		database.Db.Create(&eventLog)
 		response.Status = true
 		c.JSON(http.StatusOK, response)
 		return
@@ -291,6 +310,13 @@ func (r *RideController) GetRideDetailsForMobile(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, response)
 }
+
+func (r *RideController) GetRideTimeline(c *gin.Context) {
+	var response []models.RideEventLog
+	database.Db.Where("ride_id = ? ", c.Param("id")).Find(&response)
+	c.JSON(http.StatusOK, response)
+}
+
 func (r *RideController) StopTrip(c *gin.Context) {
 
 	var response = responseFormat{Status: false}
@@ -301,12 +327,20 @@ func (r *RideController) StopTrip(c *gin.Context) {
 
 	if result.RowsAffected == 1 {
 		database.Db.Model(&ride).UpdateColumn("ride_status", 4)
+		var eventLog = models.RideEventLog{
+			RideID:     ride.ID,
+			RideStatus: ride.RideStatus,
+			Message:    "Ride Completed",
+		}
+		database.Db.Create(&eventLog)
+
 		type dist struct {
 			Distance float64
 		}
 		var rideDistance dist
 		database.Db.Raw("UPDATE rides SET distance = RideDistance.distance  FROM (SELECT (round( CAST(float8 (st_Length(ST_MakeLine(RideLocations.latlng)::geography)/1000) as numeric), 2)+0.01)::float as distance FROM (SELECT latlng,ride_id FROM ride_locations Where ride_id =" + rideID + " ORDER BY time ASC) as RideLocations GROUP by RideLocations.ride_id ) as RideDistance").Scan(&rideDistance)
 		database.Db.Where("id = ? ", rideID).First(&ride)
+
 		var endTime = time.Now()
 		var diff = endTime.Sub(ride.RideStartTime)
 		var duration = diff.Minutes()

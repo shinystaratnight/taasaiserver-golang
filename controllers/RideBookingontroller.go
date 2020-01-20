@@ -246,6 +246,12 @@ func (a *RideBookingController) BookRide(c *gin.Context) {
 				}
 				result := database.Db.Create(&data)
 				if result.Error == nil {
+					var eventLog = models.RideEventLog{
+						RideID:     data.ID,
+						RideStatus: data.RideStatus,
+						Message:    "Ride Booking Accepted By Operator",
+					}
+					database.Db.Create(&eventLog)
 					response.Message = "Ride booking success"
 					response.Status = true
 					response.RideDetails = data
@@ -307,6 +313,12 @@ func (r *RideBookingController) CancelRide(c *gin.Context) {
 			return
 		} else {
 			database.Db.Model(&ride).UpdateColumn("ride_status", 6)
+			var eventLog = models.RideEventLog{
+				RideID:     ride.ID,
+				RideStatus: ride.RideStatus,
+				Message:    "Ride Cancelled",
+			}
+			database.Db.Create(&eventLog)
 			database.Db.Model(&models.DriverVehicleAssignment{}).Where("driver_id = ? AND vehicle_id = ?", ride.DriverID, ride.VehicleID).UpdateColumn("is_ride", false)
 			data, err := json.Marshal(&ride)
 			if err == nil {
@@ -321,4 +333,3 @@ func (r *RideBookingController) CancelRide(c *gin.Context) {
 		}
 	}
 }
-
