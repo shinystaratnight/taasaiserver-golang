@@ -252,7 +252,7 @@ func (a *RideBookingController) BookRide(c *gin.Context) {
 						Message:    "Ride Booking Accepted By Operator",
 					}
 					database.Db.Create(&eventLog)
-					response.Message = "Ride booking success"
+					response.Message = "Taasai " + intersectLocation.Name + " Accepted Your Request"
 					response.Status = true
 					response.RideDetails = data
 					c.JSON(http.StatusOK, response)
