@@ -142,9 +142,13 @@ func checkDriversGoingToComplete(ride models.Ride) {
 		<-timer.C
 		checkDriversGoingToComplete(ride)
 	} else {
-		database.Db.Model(&ride).UpdateColumn("ride_status", 5)
-		data, _ := json.Marshal(&ride)
-		mqttController.Publish(fmt.Sprintf("passenger/%d/driver_unavailable", ride.PassengerID), 2, string(data))
+		database.Db.Where("id = ?", ride.ID).First(&ride)
+		if ride.RideStatus != 7 {
+			database.Db.Model(&ride).UpdateColumn("ride_status", 5)
+			data, _ := json.Marshal(&ride)
+			mqttController.Publish(fmt.Sprintf("passenger/%d/driver_unavailable", ride.PassengerID), 2, string(data))
+		}
+
 	}
 }
 
