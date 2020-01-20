@@ -48,6 +48,7 @@ func SetupDb() {
 		&models.Ride{},
 		&models.SentRideRequest{},
 		&models.RideLocation{},
+		&models.RideEventLog{},
 		&models.EmergencyContact{},
 	)
 	Db.Exec("ALTER TABLE ride_locations ADD COLUMN latlng geometry;")
