@@ -25,12 +25,9 @@ type Ride struct {
 	DropLatitude  float64 `gorm:"not null"`
 	DropLongitude float64 `gorm:"not null"`
 
-	RideDateTime       time.Time `gorm:"not null"`
-	RideStartTime      time.Time `gorm:"not null"`
-	RideEndTime        time.Time `gorm:"not null"`
-	DriverAssignedTime time.Time `gorm:"not null"`
-	DriverArrivedTime  time.Time `gorm:"not null"`
-	RideCancelledTime  time.Time `gorm:"not null"`
+	RideDateTime  time.Time `gorm:"not null"`
+	RideStartTime time.Time `gorm:"not null"`
+	RideEndTime   time.Time `gorm:"not null"`
 
 	RideType    int64 `gorm:"not null"`
 	IsRideLater bool  `gorm:"not null"`
