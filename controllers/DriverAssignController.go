@@ -111,7 +111,7 @@ func CheckDriverAssignmentForRide(rideId uint) {
 func checkDriversGoingToComplete(ride models.Ride) {
 	var nearestDriver rideDriverDetail
 	var previousRequest []models.SentRideRequest
-	database.Db.Where("ride_id = ?", rideId).Find(&previousRequest)
+	database.Db.Where("ride_id = ?", ride.ID).Find(&previousRequest)
 	var previousDriverList string = ""
 
 	for i, req := range previousRequest {
