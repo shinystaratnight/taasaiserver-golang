@@ -223,6 +223,7 @@ type NearByDriver struct {
 	ID        int     `json:"id"`
 	Latitude  float64 `json:"latitude"`
 	Longitude float64 `json:"longitude"`
+	Distance  float64 `json:"distance"`
 }
 
 func (a *PassengerController) GetNearByDrivers(c *gin.Context) {
