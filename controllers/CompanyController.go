@@ -1,14 +1,5 @@
 package controllers
 
-import (
-	"net/http"
-	"taxi/models"
-	"taxi/shared/database"
-	"taxi/utils"
-
-	"github.com/gin-gonic/gin"
-)
-
 type CompanyController struct {
 }
 type addNewCompanyRequest struct {
@@ -23,7 +14,7 @@ type addNewCompanyResponse struct {
 	Status  bool
 	Message string
 }
-
+/*
 func (a *CompanyController) AddNewCompany(c *gin.Context) {
 	var data addNewCompanyRequest
 	var response = addNewCompanyResponse{Status: false}
@@ -112,4 +103,4 @@ func (a *CompanyController) DisableCompany(c *gin.Context) {
 	var response = statusChangeResponse{Status: true}
 	database.Db.Model(&models.Company{}).Where("id = ?", c.Param("companyId")).UpdateColumn("is_active", false)
 	c.JSON(http.StatusOK, response)
-}
+} */

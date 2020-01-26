@@ -1,15 +1,15 @@
 package controllers
 
 import (
+	jwt "github.com/dgrijalva/jwt-go"
+	"github.com/gin-gonic/gin"
+	"golang.org/x/crypto/bcrypt"
 	"net/http"
 	"regexp"
 	"taxi/models"
 	"taxi/shared/config"
 	"taxi/shared/database"
 	"time"
-	jwt "github.com/dgrijalva/jwt-go"
-	"github.com/gin-gonic/gin"
-	"golang.org/x/crypto/bcrypt"
 )
 
 type AdminController struct {
@@ -98,7 +98,7 @@ func validateEmail(email string) bool {
 func (a *AdminController) AddNewAdmin(c *gin.Context) {
 	var data models.Admin
 	var response = addNewAdminResponse{Status: false}
-	c.BindJSON(&data)
+	_ = c.BindJSON(&data)
 	if len(data.Name) < 3 {
 		response.Message = "Name must contain 3 characters"
 		c.JSON(http.StatusOK, response)

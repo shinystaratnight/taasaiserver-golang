@@ -1,21 +1,11 @@
 package controllers
 
 import (
-	"context"
-	"encoding/json"
-	"fmt"
-	"github.com/kelvins/geocoder"
-	"math"
+	"github.com/gin-gonic/gin"
 	"net/http"
 	"taxi/models"
 	"taxi/shared/config"
 	"taxi/shared/database"
-	"taxi/shared/googleMap"
-	"time"
-
-	"googlemaps.github.io/maps"
-
-	"github.com/gin-gonic/gin"
 )
 
 type RideBookingController struct {
@@ -58,7 +48,7 @@ type estimatedFare struct {
 }
 
 func (r *RideBookingController) GetEstimatedFare(c *gin.Context) {
-	var data estimateFareRequest
+	/*var data estimateFareRequest
 	var response = estimateFareResponse{Status: false}
 	c.BindJSON(&data)
 	var intersectLocation models.Location
@@ -135,7 +125,7 @@ func (r *RideBookingController) GetEstimatedFare(c *gin.Context) {
 		response.Message = "Sorry! Service not available at the pickup location specified."
 		c.JSON(http.StatusOK, response)
 	}
-
+*/
 }
 
 type rideBookingResponse struct {
@@ -161,7 +151,7 @@ func (a *RideBookingController) GetDriverBookingHistory(c *gin.Context) {
 }
 
 func (a *RideBookingController) BookRide(c *gin.Context) {
-	var data models.Ride
+	/*var data models.Ride
 	c.BindJSON(&data)
 	var userData = c.MustGet("jwt_data").(*config.JwtClaims)
 
@@ -277,7 +267,7 @@ func (a *RideBookingController) BookRide(c *gin.Context) {
 			return
 		}
 
-	}
+	}*/
 }
 
 type cancelRideRequest struct {
@@ -289,7 +279,7 @@ type cancelRideResponse struct {
 }
 
 func (r *RideBookingController) CancelRide(c *gin.Context) {
-	var data cancelRideRequest
+	/*var data cancelRideRequest
 	var response = cancelRideResponse{Status: false}
 	c.BindJSON(&data)
 	if data.RideID == 0 {
@@ -331,5 +321,5 @@ func (r *RideBookingController) CancelRide(c *gin.Context) {
 			c.JSON(http.StatusOK, response)
 			return
 		}
-	}
+	}*/
 }

@@ -26,30 +26,26 @@ func SetupDb() {
 		&models.Admin{},
 		&models.VehicleCategory{},
 		&models.VehicleType{},
-		&models.Location{},
+		&models.Operator{},
 		&models.Fare{},
 		&models.Zone{},
 		&models.ZoneFare{},
 	)
 	Db.Exec("CREATE EXTENSION postgis;")
-	Db.Exec("ALTER TABLE locations ADD COLUMN polygon geometry;")
+	Db.Exec("ALTER TABLE operators ADD COLUMN polygon geometry;")
 	Db.Exec("ALTER TABLE zones ADD COLUMN polygon geometry;")
 
-	Db.Exec("ALTER TABLE vehicles ADD COLUMN latlng geometry;")
 	Db.AutoMigrate(
-		&models.Company{},
-		&models.CompanyLocationAssignment{},
 		&models.Driver{},
 	)
+	Db.Exec("ALTER TABLE drivers ADD COLUMN latlng geometry;")
+
 	Db.AutoMigrate(
-		&models.Vehicle{},
-		&models.DriverVehicleAssignment{},
 		&models.Passenger{},
 		&models.Ride{},
 		&models.SentRideRequest{},
 		&models.RideLocation{},
 		&models.RideEventLog{},
-		&models.EmergencyContact{},
 	)
 	Db.Exec("ALTER TABLE ride_locations ADD COLUMN latlng geometry;")
 	Db.Exec("CREATE INDEX ride_locations_latlng_idx ON ride_locations USING gist (latlng);")

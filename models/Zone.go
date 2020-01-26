@@ -6,8 +6,7 @@ import (
 
 type Zone struct {
 	gorm.Model
-	Name       string   `gorm:"not null;unique"`
-	Location   Location `gorm:"foreignkey:LocationID"`
-	LocationID uint     `gorm:"not null"`
+	Name       string `gorm:"not null;unique"`
+	OperatorID uint   `gorm:"not null"`
 	IsActive   bool
 }

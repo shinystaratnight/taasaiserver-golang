@@ -1,9 +1,7 @@
 package controllers
 
 import (
-	"encoding/json"
 	"fmt"
-	"math"
 	"net/http"
 	"strconv"
 	"taxi/models"
@@ -18,7 +16,6 @@ type RideController struct {
 }
 type RideAcceptCustomerResponse struct {
 	DriverDetails  models.Driver
-	VehicleDetails models.Vehicle
 	RideDetails    models.Ride
 	Payload        string
 }
@@ -172,7 +169,7 @@ func (r *RideController) CheckRideQueue(c *gin.Context) {
 
 func (r *RideController) RideAccept(c *gin.Context) {
 
-	var data RideAcceptRequest
+	/*var data RideAcceptRequest
 	c.BindJSON(&data)
 
 	var rideId = data.RideID
@@ -264,7 +261,7 @@ func (r *RideController) CheckOnRide(passengerId uint) {
 
 		}
 	}
-
+*/
 }
 
 func (r *RideController) DriverArrived(c *gin.Context) {
@@ -338,7 +335,7 @@ type responseFormat struct {
 
 func (r *RideController) GetRideDetailsForMobile(c *gin.Context) {
 
-	var response = responseFormat{Status: false}
+	/*var response = responseFormat{Status: false}
 	var rideID = c.Param("rideId")
 	var ride models.Ride
 	result := database.Db.Where("id = ? ", rideID).First(&ride)
@@ -361,7 +358,7 @@ func (r *RideController) GetRideDetailsForMobile(c *gin.Context) {
 		}
 	}
 	c.JSON(http.StatusOK, response)
-
+*/
 }
 
 func (r *RideController) GetRideTimeline(c *gin.Context) {
@@ -374,6 +371,7 @@ func (r *RideController) GetRideTimeline(c *gin.Context) {
 
 func (r *RideController) StopTrip(c *gin.Context) {
 
+	/*
 	var response = responseFormat{Status: false}
 	var userData = c.MustGet("jwt_data").(*config.JwtClaims)
 	var rideID = c.Param("rideId")
@@ -500,7 +498,7 @@ func (r *RideController) StopTrip(c *gin.Context) {
 		return
 
 	}
-
+*/
 }
 
 func (r *RideController) GetRideLocations(c *gin.Context) {

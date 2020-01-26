@@ -108,10 +108,13 @@ func (a *VehicleTypeController) GetActiveVehicleTypeCategories(c *gin.Context) {
 	database.Db.Where("is_active = ?", true).Find(&list)
 	c.JSON(http.StatusOK, list)
 }
-
+type GenericResponse struct {
+	Status bool
+	Message string
+}
 func (a *VehicleTypeController) AddNewVehicleTypeCategory(c *gin.Context) {
 	var data models.VehicleCategory
-	var response = addNewVehicleCategoryResponse{Status: false}
+	var response = GenericResponse{Status: false}
 	c.BindJSON(&data)
 	if len(data.Name) < 4 {
 		response.Message = "Name should contain atleast 4 characters"
@@ -136,7 +139,7 @@ func (a *VehicleTypeController) AddNewVehicleTypeCategory(c *gin.Context) {
 
 func (a *VehicleTypeController) EditVehicleTypeCategory(c *gin.Context) {
 	var data models.VehicleCategory
-	var response = addNewVehicleCategoryResponse{Status: false}
+	var response = GenericResponse{Status: false}
 	c.BindJSON(&data)
 	if len(data.Name) < 4 {
 		response.Message = "Name should contain atleast 4 characters"

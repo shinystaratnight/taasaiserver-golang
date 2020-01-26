@@ -10,12 +10,11 @@ type Ride struct {
 	gorm.Model
 
 	PassengerID   uint `gorm:"not null;index:idx_ride"`
-	LocationID    uint `gorm:"not null;index:idx_ride"`
+	OperatorID    uint `gorm:"not null;index:idx_ride"`
 	ZoneID        uint `sql: "default: null"`
 	VehicleTypeID uint `gorm:"not null;index:idx_ride"`
 
-	DriverID  uint `gorm:"index:idx_ride",sql: "default: null"`
-	VehicleID uint `gorm:"index:idx_ride",sql: "default: null"`
+	DriverID uint `gorm:"index:idx_ride",sql: "default: null"`
 
 	PickupLocation  string  `sql: "default: null"`
 	PickupLatitude  float64 `gorm:"not null"`

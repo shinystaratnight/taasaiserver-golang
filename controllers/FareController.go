@@ -77,8 +77,8 @@ func (a *FareController) AddNewFare(c *gin.Context) {
 			response.Message = "Vehicle Type ID is required"
 			c.JSON(http.StatusOK, response)
 			return
-		} else if data.LocationID == 0 {
-			response.Message = "Location ID is required"
+		} else if data.OperatorID == 0 {
+			response.Message = "Operator ID is required"
 			c.JSON(http.StatusOK, response)
 			return
 		} else if data.DurationFare == 0 && data.DistanceFare == 0 {
@@ -87,7 +87,7 @@ func (a *FareController) AddNewFare(c *gin.Context) {
 			return
 		} else {
 			var count = 0
-			database.Db.Model(&models.Fare{}).Where("vehicle_type_id = ? AND location_id = ? AND is_active = true", data.VehicleTypeID, data.LocationID).Count(&count)
+			database.Db.Model(&models.Fare{}).Where("vehicle_type_id = ? AND operator_id = ? AND is_active = true", data.VehicleTypeID, data.OperatorID).Count(&count)
 			if count == 0 {
 				data.IsActive = true
 				result := database.Db.Create(&data)

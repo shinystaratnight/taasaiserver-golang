@@ -10,7 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type LocationController struct {
+type OperatorController struct {
 }
 type polyPoint struct {
 	Lat float64
@@ -34,7 +34,7 @@ func FloatToString(input_num float64) string {
 	return strconv.FormatFloat(input_num, 'f', 6, 64)
 }
 
-func (a *LocationController) GetLocations(c *gin.Context) {
+func (a *OperatorController) GetOperators(c *gin.Context) {
 	type locationWithFareCount struct {
 		ID             uint
 		Name           string
@@ -47,13 +47,13 @@ func (a *LocationController) GetLocations(c *gin.Context) {
 	c.JSON(http.StatusOK, list)
 }
 
-func (a *LocationController) GetZones(c *gin.Context) {
+func (a *OperatorController) GetZones(c *gin.Context) {
 	var list []models.Zone
 	database.Db.Where("location_id = ?", c.Param("locationId")).Find(&list)
 	c.JSON(http.StatusOK, list)
 }
 
-func (a *LocationController) GetCoordinates(c *gin.Context) {
+func (a *OperatorController) GetCoordinates(c *gin.Context) {
 	type locationWithCoordinate struct {
 		Coordinates string
 	}
@@ -63,13 +63,13 @@ func (a *LocationController) GetCoordinates(c *gin.Context) {
 
 }
 
-func (a *LocationController) GetActiveLocations(c *gin.Context) {
-	var list []models.Location
+func (a *OperatorController) GetActiveOperators(c *gin.Context) {
+	var list []models.Operator
 	database.Db.Where("is_active = ?", true).Find(&list)
 	c.JSON(http.StatusOK, list)
 }
 
-func (a *LocationController) GetActiveLocationsForCompany(c *gin.Context) {
+func (a *OperatorController) GetActiveLocationsForCompany(c *gin.Context) {
 	type result struct {
 		Name       string
 		ID         uint
@@ -80,18 +80,18 @@ func (a *LocationController) GetActiveLocationsForCompany(c *gin.Context) {
 	c.JSON(http.StatusOK, list)
 }
 
-func (a *LocationController) GetLocationById(c *gin.Context) {
+func (a *OperatorController) GetOperatorById(c *gin.Context) {
 	var locationId = c.Param("locationId")
-	var data models.Location
+	var data models.Operator
 	database.Db.Where("id = ?", locationId).First(&data)
 	c.JSON(http.StatusOK, data)
 }
-func (a *LocationController) EnableLocation(c *gin.Context) {
+func (a *OperatorController) EnableLocation(c *gin.Context) {
 	var response struct {
 		Status bool
 	}
 	var locationId = c.Param("locationId")
-	res := database.Db.Model(&models.Location{}).Where("id = ?", locationId).UpdateColumn("is_active", true)
+	res := database.Db.Model(&models.Operator{}).Where("id = ?", locationId).UpdateColumn("is_active", true)
 	if res.Error == nil {
 		response.Status = true
 	} else {
@@ -99,12 +99,12 @@ func (a *LocationController) EnableLocation(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, response)
 }
-func (a *LocationController) DisableLocation(c *gin.Context) {
+func (a *OperatorController) DisableLocation(c *gin.Context) {
 	var response struct {
 		Status bool
 	}
 	var locationId = c.Param("locationId")
-	res := database.Db.Model(&models.Location{}).Where("id = ?", locationId).UpdateColumn("is_active", false)
+	res := database.Db.Model(&models.Operator{}).Where("id = ?", locationId).UpdateColumn("is_active", false)
 	if res.Error == nil {
 		response.Status = true
 	} else {
@@ -113,7 +113,7 @@ func (a *LocationController) DisableLocation(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
-func (a *LocationController) EnableZone(c *gin.Context) {
+func (a *OperatorController) EnableZone(c *gin.Context) {
 	var response struct {
 		Status bool
 	}
@@ -126,7 +126,7 @@ func (a *LocationController) EnableZone(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, response)
 }
-func (a *LocationController) DisableZone(c *gin.Context) {
+func (a *OperatorController) DisableZone(c *gin.Context) {
 	var response struct {
 		Status bool
 	}
@@ -140,7 +140,7 @@ func (a *LocationController) DisableZone(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
-func (a *LocationController) AddNewLocation(c *gin.Context) {
+func (a *OperatorController) AddNewLocation(c *gin.Context) {
 	var data addLocationRequest
 	var response = sendOtpResponse{Status: false}
 	c.BindJSON(&data)
@@ -155,7 +155,7 @@ func (a *LocationController) AddNewLocation(c *gin.Context) {
 			}
 			polyString += FloatToString(data.Polygon[i].Lat) + " " + FloatToString(data.Polygon[i].Lng)
 		}
-		var intersectLocation models.Location
+		var intersectLocation models.Operator
 		var res = database.Db.Where("ST_Intersects(polygon,ST_GeometryFromText('POLYGON((" + polyString + "))'))").First(&intersectLocation)
 		log.Println("count = ", res.RowsAffected)
 		if intersectLocation.ID == 0 {
@@ -175,7 +175,7 @@ func (a *LocationController) AddNewLocation(c *gin.Context) {
 	}
 }
 
-func (a *LocationController) AddNewZone(c *gin.Context) {
+func (a *OperatorController) AddNewZone(c *gin.Context) {
 	var data addZoneRequest
 	var response = sendOtpResponse{Status: false}
 	c.BindJSON(&data)
@@ -192,7 +192,7 @@ func (a *LocationController) AddNewZone(c *gin.Context) {
 		}
 		var count = 0
 		//check if zone is within the city
-		database.Db.Model(&models.Location{}).Where("id = ? AND ST_Contains(polygon,ST_GeometryFromText('POLYGON(("+polyString+"))'))", data.LocationID).Count(&count)
+		database.Db.Model(&models.Operator{}).Where("id = ? AND ST_Contains(polygon,ST_GeometryFromText('POLYGON(("+polyString+"))'))", data.LocationID).Count(&count)
 		if count == 0 {
 			response.Message = "Some part of the zone is outside the city."
 

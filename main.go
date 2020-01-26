@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"taxi/controllers"
 	"taxi/models"
-	"taxi/paymentGateway/razorPay"
 	"taxi/shared/config"
 	"taxi/shared/database"
 	"taxi/shared/googleMap"
@@ -23,9 +22,8 @@ var g errgroup.Group
 
 var (
 	passengerController   = controllers.PassengerController{}
-	locationController    = controllers.LocationController{}
+	operatorController   = controllers.OperatorController{}
 	vehicleTypeController = controllers.VehicleTypeController{}
-	vehicleController     = controllers.VehicleController{}
 	driverController      = controllers.DriverController{}
 	fareController        = controllers.FareController{}
 	rideBookingController = controllers.RideBookingController{}
@@ -35,8 +33,6 @@ var (
 	companyController     = controllers.CompanyController{}
 	zoneFareController    = controllers.ZoneFareController{}
 	dashboardController   = controllers.DashboardController{}
-	emergencyController   = controllers.EmergencyContactController{}
-	razorPayController    = razorPay.RazorPay{}
 )
 
 func respondWithError(code int, message string, c *gin.Context) {
@@ -119,12 +115,7 @@ func setupRouter() http.Handler {
 	adminRoutePrivate := router.Group("/admin")
 	adminRoutePrivate.Use(tokenAuthMiddleware("admin"))
 	{
-		adminRoutePrivate.POST("/addNewVehicle", vehicleController.AddNewVehicle)
-		adminRoutePrivate.GET("/getVehicles", vehicleController.GetVehicles)
-		adminRoutePrivate.GET("/getVehiclesOfCompany/:companyId", vehicleController.GetVehiclesOfCompany)
 		adminRoutePrivate.POST("/addNewDriver", driverController.AddNewDriver)
-		adminRoutePrivate.GET("/getVehicleAssignments/:driverId", driverController.GetVehicleAssignmentsForID)
-		adminRoutePrivate.POST("/addNewVehicleAssignment", driverController.AddNewVehicle)
 		adminRoutePrivate.GET("/getDrivers", driverController.GetDrivers)
 		adminRoutePrivate.POST("/addNewVehicleType", vehicleTypeController.AddNewVehicleType)
 		adminRoutePrivate.POST("/editVehicleType", vehicleTypeController.EditVehicleType)
@@ -149,28 +140,23 @@ func setupRouter() http.Handler {
 		adminRoutePrivate.PUT("/disableZoneFare", zoneFareController.DisableZoneFare)
 		adminRoutePrivate.POST("/addNewFare", fareController.AddNewFare)
 		adminRoutePrivate.POST("/addNewZoneFare", zoneFareController.AddNewZoneFare)
-		adminRoutePrivate.POST("/addNewLocation", locationController.AddNewLocation)
-		adminRoutePrivate.POST("/addNewZone", locationController.AddNewZone)
-		adminRoutePrivate.POST("/addNewCompany", companyController.AddNewCompany)
-		adminRoutePrivate.GET("/getCompanies", companyController.GetCompanies)
+		adminRoutePrivate.POST("/addNewLocation", operatorController.AddNewLocation)
+		adminRoutePrivate.POST("/addNewZone", operatorController.AddNewZone)
 
 		adminRoutePrivate.GET("/getDriversForCompany/:companyId", driverController.GetDriversForCompany)
-		adminRoutePrivate.GET("/getVehiclesForCompany/:companyId", vehicleController.GetVehiclesForCompany)
 
-		adminRoutePrivate.PUT("/enableCompany/:companyId", companyController.EnableCompany)
-		adminRoutePrivate.PUT("/disableCompany/:companyId", companyController.DisableCompany)
 
-		adminRoutePrivate.GET("/getZones/:locationId", locationController.GetZones)
-		adminRoutePrivate.GET("/getLocations", locationController.GetLocations)
-		adminRoutePrivate.GET("/getActiveLocations", locationController.GetActiveLocations)
-		adminRoutePrivate.GET("/getActiveLocationsForCompany/:companyId", locationController.GetActiveLocationsForCompany)
-		adminRoutePrivate.GET("/getLocation/:locationId", locationController.GetLocationById)
-		adminRoutePrivate.GET("/getCoordinates/:locationId", locationController.GetCoordinates)
-		adminRoutePrivate.PUT("/enableLocation/:locationId", locationController.EnableLocation)
-		adminRoutePrivate.PUT("/disableLocation/:locationId", locationController.DisableLocation)
+		adminRoutePrivate.GET("/getZones/:locationId", operatorController.GetZones)
+		adminRoutePrivate.GET("/getLocations", operatorController.GetOperators)
+		adminRoutePrivate.GET("/getActiveLocations", operatorController.GetActiveOperators)
+		adminRoutePrivate.GET("/getActiveLocationsForCompany/:companyId", operatorController.GetActiveLocationsForCompany)
+		adminRoutePrivate.GET("/getLocation/:locationId", operatorController.GetOperatorById)
+		adminRoutePrivate.GET("/getCoordinates/:locationId", operatorController.GetCoordinates)
+		adminRoutePrivate.PUT("/enableLocation/:locationId", operatorController.EnableLocation)
+		adminRoutePrivate.PUT("/disableLocation/:locationId", operatorController.DisableLocation)
 
-		adminRoutePrivate.PUT("/enableZone/:locationId", locationController.EnableZone)
-		adminRoutePrivate.PUT("/disableZone/:locationId", locationController.DisableZone)
+		adminRoutePrivate.PUT("/enableZone/:locationId", operatorController.EnableZone)
+		adminRoutePrivate.PUT("/disableZone/:locationId", operatorController.DisableZone)
 		adminRoutePrivate.POST("/getRides", rideController.GetRides)
 		adminRoutePrivate.GET("/getRideDetail/:rideId", rideController.GetRideDetail)
 		adminRoutePrivate.GET("/getRideLocations/:rideId", rideController.GetRideLocations)
@@ -178,14 +164,9 @@ func setupRouter() http.Handler {
 		adminRoutePrivate.PUT("/disableVehicleCategory/:categoryId", vehicleTypeController.DisableVehicleTypeCategory)
 		adminRoutePrivate.POST("/editVehicleTypeCategory", vehicleTypeController.EditVehicleTypeCategory)
 
-		adminRoutePrivate.PUT("/enableVehicle/:vehicleId", vehicleController.EnableVehicle)
-		adminRoutePrivate.PUT("/disableVehicle/:vehicleId", vehicleController.DisableVehicle)
-
 		adminRoutePrivate.PUT("/enableDriver/:driverId", driverController.EnableDriver)
 		adminRoutePrivate.PUT("/disableDriver/:driverId", driverController.DisableDriver)
 
-		adminRoutePrivate.PUT("/enableDriverAssignment/:id", driverController.EnableAssignment)
-		adminRoutePrivate.PUT("/disableDriverAssignment/:id", driverController.DisableAssignment)
 		adminRoutePrivate.GET("/getDataCount", dashboardController.GetDataCount)
 		adminRoutePrivate.GET("/getAllPassengers", passengerController.GetAllPassengers)
 		adminRoutePrivate.GET("/getRidesForPassenger/:passengerId", rideController.GetRidesForPassenger)
@@ -208,7 +189,7 @@ func setupMobileAppRouter() http.Handler {
 	router.GET("/test", func(context *gin.Context) {
 		context.JSON(http.StatusOK, "Server running")
 	})
-	router.POST("/razorPay/webhook", razorPayController.Webhook)
+
 	customerRoutePublic := router.Group("/customer")
 	{
 		customerRoutePublic.POST("/sendOtp", passengerController.SendOtp)
@@ -229,8 +210,6 @@ func setupMobileAppRouter() http.Handler {
 		customerRoutePrivate.POST("/rateDriver", rideController.RateDriver)
 		customerRoutePrivate.POST("/getRideTimeline/:id", rideController.GetRideTimeline)
 
-		customerRoutePrivate.POST("/addNewPassengerContact", emergencyController.AddNewPassengerContact)
-		customerRoutePrivate.POST("/getPassengerEmergencyContacts", emergencyController.GetPassengerContacts)
 
 	}
 
@@ -243,7 +222,6 @@ func setupMobileAppRouter() http.Handler {
 	driverRoutePrivate := router.Group("/driver")
 	driverRoutePrivate.Use(tokenAuthMiddleware("driver"))
 	{
-		driverRoutePrivate.POST("/getVehicleAssignments", driverController.GetVehicleAssignments)
 		driverRoutePrivate.POST("/goOnline", driverController.GoOnline)
 		driverRoutePrivate.POST("/goOffline", driverController.GoOffline)
 		driverRoutePrivate.POST("/acceptRide", rideController.RideAccept)
@@ -255,8 +233,6 @@ func setupMobileAppRouter() http.Handler {
 		driverRoutePrivate.POST("/getRides", rideBookingController.GetDriverBookingHistory)
 		driverRoutePrivate.POST("/getRideDetails/:rideId", rideController.GetRideDetailsForMobile)
 		driverRoutePrivate.POST("/ratePassenger", rideController.RatePassenger)
-		driverRoutePrivate.POST("/addNewDriverContact", emergencyController.AddNewDriverContact)
-		driverRoutePrivate.POST("/getDriverEmergencyContacts", emergencyController.GetDriverContacts)
 		driverRoutePrivate.POST("/getRideTimeline/:id", rideController.GetRideTimeline)
 
 	}

@@ -4,12 +4,14 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-type Company struct {
+type Operator struct {
 	gorm.Model
 	Name       string  `gorm:"not null;unique"`
 	Email      string  `gorm:"not null;unique"`
 	Password   string  `gorm:"not null"`
-	Commission float64 `gorm:"not null"`
+	PlatformCommission float64 `gorm:"not null"`
+	OperatorCommission float64 `gorm:"not null"`
+	Currency   string
 	AuthToken  string
 	IsActive   bool
 }
