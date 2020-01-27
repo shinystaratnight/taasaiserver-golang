@@ -52,12 +52,15 @@ func (a *OperatorController) GetOperators(c *gin.Context) {
 	type locationWithFareCount struct {
 		ID             uint
 		Name           string
+		LocationName   string
+		DriverWorkTime   float64
+		DriverRestTime   float64
 		Currency       string
 		IsActive       bool
 		TotalFareCount int64
 	}
 	var list []locationWithFareCount
-	database.Db.Raw("SELECT (SELECT COUNT(*) as total_fare_count FROM fares  WHERE fares.location_id = locations.id AND fares.is_active = true),* FROM locations").Scan(&list)
+	database.Db.Raw("SELECT (SELECT COUNT(*) as total_fare_count FROM fares  WHERE fares.operator_id = operators.id AND fares.is_active = true),* FROM operators").Scan(&list)
 	c.JSON(http.StatusOK, list)
 }
 
