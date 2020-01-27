@@ -9,7 +9,7 @@ import (
 	"taxi/shared/database"
 	"time"
 
-	jwt "github.com/dgrijalva/jwt-go"
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 )
 
@@ -171,6 +171,110 @@ type verifyOtpDriverResponse struct {
 	DriverDetails models.Driver
 }
 
+
+func (a *DriverController) CreateDriverAccount(c *gin.Context) {
+	var response = verifyOtpDriverResponse{Status: false}
+
+	name := c.PostForm("Name")
+	otp := c.PostForm("Otp")
+	mobile := c.PostForm("MobileNumber")
+	countryCode := c.PostForm("CountryCode")
+	vehicleName := c.PostForm("VehicleName")
+	vehicleBrand := c.PostForm("VehicleBrand")
+	vehicleModel := c.PostForm("VehicleModel")
+	vehicleColor := c.PostForm("VehicleColor")
+	vehicleNumber := c.PostForm("VehicleNumber")
+	vehicleTypeID, vehicleTypeIdError := strconv.Atoi(c.PostForm("VehicleTypeID"))
+	dialCode, dialCodeError := strconv.Atoi(c.PostForm("DialCode"))
+	operatorID, operatorIDError := strconv.Atoi(c.PostForm("OperatorID"))
+
+	if vehicleTypeIdError==nil && dialCodeError==nil && operatorIDError==nil {
+
+		form, _ := c.MultipartForm()
+		fmt.Println("file count = %d", len(form.File))
+		// Source
+		driverImage, err := c.FormFile("driver_image")
+		if err != nil {
+			fmt.Println(err)
+			response.Message = "Driver Image is required"
+			c.JSON(http.StatusOK, response)
+			fmt.Println(response)
+			return
+		}
+
+		vehicleImage, err1 := c.FormFile("vehicle_image")
+		if err1 != nil {
+			response.Message = "Vehicle Image is required"
+			c.JSON(http.StatusOK, response)
+			return
+		}
+
+		driverImageFileName := strconv.FormatInt(time.Now().UTC().UnixNano(), 10) + "_" + driverImage.Filename
+		vehicleImageFileName := strconv.FormatInt(time.Now().UTC().UnixNano(), 10) + "_" + vehicleImage.Filename
+
+		if err := c.SaveUploadedFile(driverImage, "public/driver/"+driverImageFileName); err != nil {
+			response.Message = fmt.Sprintf("upload file err: %s", err.Error())
+			c.JSON(http.StatusOK, response)
+			return
+		} else {
+			if err := c.SaveUploadedFile(vehicleImage, "public/vehicle/"+vehicleImageFileName); err != nil {
+				response.Message = fmt.Sprintf("upload file err: %s", err.Error())
+				c.JSON(http.StatusOK, response)
+				return
+			}else{
+				var otpDetails models.Otp
+				database.Db.Where("dial_code = ? AND country_code = ? AND mobile_number = ? AND is_used = ?", dialCode, countryCode, mobile, false).First(&otpDetails)
+				if otp == otpDetails.Otp {
+					database.Db.Model(&otpDetails).UpdateColumn("is_used", true)
+					var driver = models.Driver{
+						Name:               name,
+						DialCode:           int64(dialCode),
+						MobileNumber:       mobile,
+						OperatorID:         operatorID,
+						VehicleName:        vehicleName,
+						VehicleTypeID:       uint(vehicleTypeID),
+						VehicleBrand:       vehicleBrand,
+						VehicleModel:       vehicleModel,
+						VehicleColor:       vehicleColor,
+						VehicleNumber:      vehicleNumber,
+						VehicleImage:       "public/vehicle/"+vehicleImageFileName,
+						DriverImage:        "public/driver/"+driverImageFileName,
+						IsProfileCompleted: false,
+						IsActive:           false,
+					}
+
+					database.Db.Create(&driver)
+					token := jwt.NewWithClaims(jwt.SigningMethodHS256, config.JwtClaims{
+						driver.ID,
+						"driver",
+						jwt.StandardClaims{
+							ExpiresAt: time.Now().Add(time.Hour * 24 * 30).Unix(),
+							Issuer:    "taasai",
+						},
+					})
+					tokenString, err := token.SignedString(config.JwtSecretKey)
+					if err != nil {
+						response.Message = err.Error()
+						response.Status = false
+					} else {
+						database.Db.Model(&driver).UpdateColumn("auth_token", tokenString)
+						response.DriverDetails = driver
+						response.Status = true
+						response.Message = "Driver Account Created And Submitted For Approval"
+					}
+
+				}else{
+					response.Message = "Invalid Otp"
+				}
+
+			}
+		}
+
+
+	}
+	c.JSON(http.StatusOK, response)
+
+}
 func (a *DriverController) VerifyOtp(c *gin.Context) {
 	var data verifyOtpRequest
 	var response = verifyOtpDriverResponse{Status: false}
@@ -203,7 +307,7 @@ func (a *DriverController) VerifyOtp(c *gin.Context) {
 				"driver",
 				jwt.StandardClaims{
 					ExpiresAt: time.Now().Add(time.Hour * 24 * 30).Unix(),
-					Issuer:    "onride",
+					Issuer:    "taasai",
 				},
 			})
 			tokenString, err := token.SignedString(config.JwtSecretKey)

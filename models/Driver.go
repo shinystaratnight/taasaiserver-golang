@@ -25,5 +25,7 @@ type Driver struct {
 	DriverImage string
 	FcmID       string
 
+	IsProfileCompleted bool
+
 	IsActive bool
 }
