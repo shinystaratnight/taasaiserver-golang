@@ -140,7 +140,9 @@ func setupRouter() http.Handler {
 		adminRoutePrivate.PUT("/disableZoneFare", zoneFareController.DisableZoneFare)
 		adminRoutePrivate.POST("/addNewFare", fareController.AddNewFare)
 		adminRoutePrivate.POST("/addNewZoneFare", zoneFareController.AddNewZoneFare)
-		adminRoutePrivate.POST("/addNewLocation", operatorController.AddNewLocation)
+
+		adminRoutePrivate.POST("/addNewOperator", operatorController.AddNewOperator)
+
 		adminRoutePrivate.POST("/addNewZone", operatorController.AddNewZone)
 
 		adminRoutePrivate.GET("/getDriversForCompany/:companyId", driverController.GetDriversForCompany)

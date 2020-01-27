@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -17,10 +18,23 @@ type polyPoint struct {
 	Lng float64
 }
 
-type addLocationRequest struct {
+type AddOperatorRequest struct {
 	Name     string
 	Currency string
+	Password string
+	ConfirmPassword   string
+	LocationName       string
+	Email      string
+	PlatformCommission float64
+	OperatorCommission float64
+	WorkTime int
+	RestTime int
 	Polygon  []polyPoint
+	Docs []Doc
+}
+
+type Doc struct{
+	Name string
 }
 
 type addZoneRequest struct {
@@ -140,37 +154,74 @@ func (a *OperatorController) DisableZone(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
-func (a *OperatorController) AddNewLocation(c *gin.Context) {
-	var data addLocationRequest
+func (a *OperatorController) AddNewOperator(c *gin.Context) {
+	var data AddOperatorRequest
 	var response = sendOtpResponse{Status: false}
 	c.BindJSON(&data)
 	if len(data.Name) < 3 {
 		response.Message = "Name is required"
 		c.JSON(http.StatusOK, response)
+	} else if data.Password != data.ConfirmPassword {
+		response.Message = "Passwords doesn't match"
+		c.JSON(http.StatusOK, response)
+		return
+	} else if !validateEmail(data.Email) {
+		response.Message = "Email is not valid"
+		c.JSON(http.StatusOK, response)
+		return
+	} else if data.PlatformCommission < 0 {
+		response.Message = "Commission must be greater than or equal to 0"
+		c.JSON(http.StatusOK, response)
+		return
+	}else if data.OperatorCommission < 0 {
+		response.Message = "Commission must be greater than or equal to 0"
+		c.JSON(http.StatusOK, response)
+		return
+	}else if data.WorkTime <= 0 {
+		response.Message = "WorkTime must be greater than 0"
+		c.JSON(http.StatusOK, response)
+		return
+	}else if data.RestTime <= 0 {
+		response.Message = "RestTime must be greater than 0"
+		c.JSON(http.StatusOK, response)
+		return
 	} else {
-		var polyString = ""
-		for i := 0; i < len(data.Polygon); i++ {
-			if i != 0 {
-				polyString += ","
+		hashedPassword, err := hashPassword(data.Password)
+		if err == nil {
+			var polyString = ""
+			for i := 0; i < len(data.Polygon); i++ {
+				if i != 0 {
+					polyString += ","
+				}
+				polyString += FloatToString(data.Polygon[i].Lat) + " " + FloatToString(data.Polygon[i].Lng)
 			}
-			polyString += FloatToString(data.Polygon[i].Lat) + " " + FloatToString(data.Polygon[i].Lng)
-		}
-		var intersectLocation models.Operator
-		var res = database.Db.Where("ST_Intersects(polygon,ST_GeometryFromText('POLYGON((" + polyString + "))'))").First(&intersectLocation)
-		log.Println("count = ", res.RowsAffected)
-		if intersectLocation.ID == 0 {
-			var newLocationAddResponse = database.Db.Exec("INSERT INTO locations (name,currency, polygon,is_active) VALUES ('" + data.Name + "','" + data.Currency + "',ST_GeometryFromText('POLYGON((" + polyString + "))'),true);")
-			if newLocationAddResponse.Error != nil {
-				response.Message = newLocationAddResponse.Error.Error()
+			var intersectLocation models.Operator
+			var res = database.Db.Where("ST_Intersects(polygon,ST_GeometryFromText('POLYGON((" + polyString + "))'))").First(&intersectLocation)
+			log.Println("count = ", res.RowsAffected)
+			if intersectLocation.ID == 0 {
+				var newLocationAddResponse = database.Db.Exec("INSERT INTO operators (name,currency, polygon,is_active,location_name,email,password,platform_commission,operator_commission,driver_work_time,driver_rest_time) VALUES ('" + data.Name + "','" + data.Currency + "',ST_GeometryFromText('POLYGON((" + polyString + "))'),true,"+fmt.Sprint("%s,%s,%s,%d,%d,%d,%d",data.LocationName,data.Email,hashedPassword,data.PlatformCommission,data.OperatorCommission,data.WorkTime,data.RestTime)+");")
+				if newLocationAddResponse.Error != nil {
+					response.Message = newLocationAddResponse.Error.Error()
+				} else {
+					response.Message = "Operator added successfully"
+					response.Status = true
+
+					var operator models.Operator
+					database.Db.Where("email = ?",data.Email).First(&operator)
+					if operator.ID!=0{
+						for  i:=0;i<len(data.Docs);i++{
+							doc:=models.DriverDocument{OperatorID:operator.ID,Name:data.Docs[i].Name}
+							database.Db.Create(&doc);
+						}
+					}
+				}
+
 			} else {
-				response.Message = "Location added successfully"
-				response.Status = true
+				response.Message = "Location intersects the previously created location named " + intersectLocation.Name
+
 			}
-
-		} else {
-			response.Message = "Location intersects the previously created location named " + intersectLocation.Name
-
 		}
+
 		c.JSON(http.StatusOK, response)
 	}
 }
