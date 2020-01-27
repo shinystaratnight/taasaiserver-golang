@@ -219,6 +219,10 @@ func setupMobileAppRouter() http.Handler {
 	{
 		driverRoutePublic.POST("/sendOtp", driverController.SendOtp)
 		driverRoutePublic.POST("/verifyOtp", driverController.VerifyOtp)
+		driverRoutePublic.GET("/getActiveOperators", operatorController.GetActiveOperators)
+		driverRoutePublic.GET("/getDriverDocs/:id", operatorController.GetDriverDocs)
+		driverRoutePublic.GET("/getActiveVehicleTypes", vehicleTypeController.GetActiveVehicleTypes)
+
 	}
 
 	driverRoutePrivate := router.Group("/driver")

@@ -15,6 +15,6 @@ type Operator struct {
 	DriverWorkTime int
 	DriverRestTime int
 	Currency   string
-	AuthToken  string
+	AuthToken  string `json:"-"`
 	IsActive   bool
 }

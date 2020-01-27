@@ -85,6 +85,11 @@ func (a *OperatorController) GetActiveOperators(c *gin.Context) {
 	database.Db.Where("is_active = ?", true).Find(&list)
 	c.JSON(http.StatusOK, list)
 }
+func (a *OperatorController) GetDriverDocs(c *gin.Context) {
+	var list []models.DriverDocument
+	database.Db.Where("operator_id = ? AND is_active = ?",c.Param("id"), true).Find(&list)
+	c.JSON(http.StatusOK, list)
+}
 
 func (a *OperatorController) GetActiveLocationsForCompany(c *gin.Context) {
 	type result struct {
