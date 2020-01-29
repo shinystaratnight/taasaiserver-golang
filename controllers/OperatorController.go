@@ -87,7 +87,7 @@ func (a *OperatorController) GetActiveOperators(c *gin.Context) {
 }
 func (a *OperatorController) GetDriverDocs(c *gin.Context) {
 	var list []models.DriverDocument
-	database.Db.Where("operator_id = ? AND is_active = ?",c.Param("id"), true).Find(&list)
+	database.Db.Where("operator_id = ?",c.Param("id"), true).Find(&list)
 	c.JSON(http.StatusOK, list)
 }
 
