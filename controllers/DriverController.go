@@ -172,6 +172,80 @@ type verifyOtpDriverResponse struct {
 }
 
 
+
+func (a *DriverController) SubmitForApproval(c *gin.Context) {
+	var response = verifyOtpDriverResponse{Status: false}
+
+	var userData = c.MustGet("jwt_data").(*config.JwtClaims)
+	var driver models.Driver
+	database.Db.Where("id = ?",userData.UserID).First(&driver)
+	if driver.ID == userData.UserID {
+		var documentsRequired []models.DriverDocument
+		database.Db.Where("operator_id = ? ",driver.OperatorID).Find(&documentsRequired)
+		isAllDocumentSubmitted := true
+		for i:=0;i<len(documentsRequired) ;i++  {
+			var count = 0
+			database.Db.Model(&models.DriverDocumentUpload{}).Where("doc_id = ? AND driver_id = ? AND is_active = true",documentsRequired[i].ID,userData.UserID).Count(&count)
+			if count==0 {
+				isAllDocumentSubmitted = false
+				break
+			}
+
+		}
+		if(isAllDocumentSubmitted){
+			database.Db.Model(&driver).UpdateColumn("is_profile_completed",true)
+			response.Status = true
+		}else{
+			response.Message = "Kindly Upload All Documents Before Submitting For Approval"
+		}
+	}
+	c.JSON(http.StatusOK, response)
+
+}
+
+func (a *DriverController) UploadDriverDocument(c *gin.Context) {
+	var response = verifyOtpDriverResponse{Status: false}
+
+	docID, docIdError := strconv.Atoi(c.PostForm("id"))
+	if docIdError==nil{
+		form, _ := c.MultipartForm()
+		fmt.Println("file count = %d", len(form.File))
+		// Source
+		documentImage, err := c.FormFile("document_image")
+		if err != nil {
+			fmt.Println(err)
+			response.Message = "Doc Image is required"
+			c.JSON(http.StatusOK, response)
+			fmt.Println(response)
+			return
+		}
+
+		driverImageFileName := strconv.FormatInt(time.Now().UTC().UnixNano(), 10) + "_" + documentImage.Filename
+
+		if err := c.SaveUploadedFile(documentImage, "public/driver/"+driverImageFileName); err != nil {
+			response.Message = fmt.Sprintf("upload file err: %s", err.Error())
+			c.JSON(http.StatusOK, response)
+			return
+		} else {
+			var userData = c.MustGet("jwt_data").(*config.JwtClaims)
+
+			database.Db.Model(&models.DriverDocumentUpload{}).Where("doc_id = ? AND driver_id = ?",docID,userData.UserID).UpdateColumn("is_active",false)
+
+			var newDocUpload = models.DriverDocumentUpload{
+				DocID: uint(docID),
+				DriverID: userData.UserID,
+				Image:driverImageFileName,
+				IsActive:true,
+			}
+
+			database.Db.Create(&newDocUpload);
+		}
+	}
+
+	c.JSON(http.StatusOK, response)
+
+}
+
 func (a *DriverController) CreateDriverAccount(c *gin.Context) {
 	var response = verifyOtpDriverResponse{Status: false}
 

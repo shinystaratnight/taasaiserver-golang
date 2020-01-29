@@ -230,6 +230,8 @@ func setupMobileAppRouter() http.Handler {
 	driverRoutePrivate.Use(tokenAuthMiddleware("driver"))
 	{
 		driverRoutePrivate.POST("/goOnline", driverController.GoOnline)
+		driverRoutePrivate.POST("/uploadDriverDocument", driverController.UploadDriverDocument)
+		driverRoutePrivate.POST("/submitForApproval", driverController.SubmitForApproval)
 		driverRoutePrivate.POST("/goOffline", driverController.GoOffline)
 		driverRoutePrivate.POST("/acceptRide", rideController.RideAccept)
 		driverRoutePrivate.POST("/driverArrived/:rideId", rideController.DriverArrived)

@@ -108,6 +108,9 @@ func (a *OperatorController) GetOperatorById(c *gin.Context) {
 	database.Db.Where("id = ?", locationId).First(&data)
 	c.JSON(http.StatusOK, data)
 }
+
+
+
 func (a *OperatorController) EnableLocation(c *gin.Context) {
 	var response struct {
 		Status bool
