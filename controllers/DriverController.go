@@ -27,7 +27,7 @@ type getDriverResponse struct {
 	DialCode      string `json:"dial_code"`
 	MobileNumber  string `json:"mobile_number"`
 	LicenseNumber string `json:"license_number"`
-	Image         string `json:"image"`
+	DriverImage         string `json:"driver_image"`
 	FcmID         string `json:"fcm_id"`
 	IsActive      bool   `json:"is_active"`
 	IsProfileCompleted      bool   `json:"is_profile_completed"`
