@@ -245,7 +245,7 @@ func (a *DriverController) UploadDriverDocument(c *gin.Context) {
 			database.Db.Create(&newDocUpload);
 		}
 	}else{
-		response.Message = "DocId is required"
+		response.Message = docIdError.Error()
 	}
 
 	c.JSON(http.StatusOK, response)
