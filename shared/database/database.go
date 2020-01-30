@@ -38,6 +38,7 @@ func SetupDb() {
 	Db.AutoMigrate(
 		&models.Driver{},
 		&models.DriverDocument{},
+		&models.DriverDocumentUpload{},
 	)
 	Db.Exec("ALTER TABLE drivers ADD COLUMN latlng geometry;")
 
