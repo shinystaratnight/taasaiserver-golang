@@ -157,7 +157,7 @@ func (a *MqttController) HandleMqttAuth(c *gin.Context) {
 				if claims.UserType == "passenger" {
 					database.Db.Model(&models.Passenger{}).Where("id = ? AND auth_token = ? AND is_active = true", claims.UserID, username).Count(&count)
 				} else if claims.UserType == "driver" {
-					database.Db.Model(&models.Driver{}).Where("id = ? AND auth_token = ? AND is_active = true", claims.UserID, username).Count(&count)
+					database.Db.Model(&models.Driver{}).Where("id = ? AND auth_token = ? ", claims.UserID, username).Count(&count)
 				} else if claims.UserType == "admin" {
 					database.Db.Model(&models.Admin{}).Where("id = ? AND auth_token = ? AND is_active = true", claims.UserID, username).Count(&count)
 				}
