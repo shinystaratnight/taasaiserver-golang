@@ -208,7 +208,7 @@ func (a *DriverController) SubmitForApproval(c *gin.Context) {
 }
 
 func (a *DriverController) UploadDriverDocument(c *gin.Context) {
-	var response = verifyOtpDriverResponse{Status: false}
+	var response = GenericResponse{Status: false}
 
 	docID, docIdError := strconv.Atoi(c.PostForm("id"))
 	if docIdError==nil{
@@ -244,6 +244,8 @@ func (a *DriverController) UploadDriverDocument(c *gin.Context) {
 
 			database.Db.Create(&newDocUpload);
 		}
+	}else{
+		response.Message = "DocId is required"
 	}
 
 	c.JSON(http.StatusOK, response)
