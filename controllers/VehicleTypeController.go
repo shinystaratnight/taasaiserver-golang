@@ -64,7 +64,7 @@ func (a *VehicleTypeController) GetVehicleTypesWithFare(c *gin.Context) {
 	}
 	var list []vehicleTypeWithCategory
 	fmt.Println("GetVehicleTypesWithFare : called")
-	database.Db.Raw("SELECT vehicle_types.*,vehicle_categories.name as vehicle_category_name FROM vehicle_types INNER JOIN vehicle_categories ON vehicle_categories.id = vehicle_types.vehicle_category_id  INNER JOIN fares ON fares.vehicle_type_id = vehicle_types.id AND fares.is_active = true AND fares.location_id = ? WHERE vehicle_types.is_active = true", c.Param("locationId")).Scan(&list)
+	database.Db.Raw("SELECT vehicle_types.*,vehicle_categories.name as vehicle_category_name FROM vehicle_types INNER JOIN vehicle_categories ON vehicle_categories.id = vehicle_types.vehicle_category_id  INNER JOIN fares ON fares.vehicle_type_id = vehicle_types.id AND fares.is_active = true AND fares.operator_id = ? WHERE vehicle_types.is_active = true", c.Param("operatorId")).Scan(&list)
 	c.JSON(http.StatusOK, list)
 }
 
