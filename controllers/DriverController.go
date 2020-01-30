@@ -379,7 +379,7 @@ func (a *DriverController) VerifyOtp(c *gin.Context) {
 		if data.Otp == otpDetails.Otp {
 			database.Db.Model(&otpDetails).UpdateColumn("is_used", true)
 			var driverDetails models.Driver
-			database.Db.Model(&models.Driver{}).Where("dial_code = ? AND mobile_number = ? AND is_active = true", data.DialCode, data.MobileNumber).First(&driverDetails)
+			database.Db.Model(&models.Driver{}).Where("dial_code = ? AND mobile_number = ? ", data.DialCode, data.MobileNumber).First(&driverDetails)
 			token := jwt.NewWithClaims(jwt.SigningMethodHS256, config.JwtClaims{
 				driverDetails.ID,
 				"driver",
