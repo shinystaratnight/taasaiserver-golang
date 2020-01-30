@@ -42,7 +42,7 @@ func (a *FareController) GetActiveFare(c *gin.Context) {
 
 func (a *FareController) GetActiveFareForLocation(c *gin.Context) {
 	var list []getFareResponse
-	database.Db.Raw("SELECT fares.* ,operators.currency,operators.location_name name as location_name,vehicle_types.name as vehicle_type_name,vehicle_types.image_active as vehicle_type_image FROM fares INNER JOIN operators ON fares.operator_id = operators.id INNER JOIN vehicle_types ON fares.vehicle_type_id = vehicle_types.id WHERE fares.is_active=true AND fares.deleted_at IS NULL  AND fares.operator_id = ?", c.Param("operatorId")).Find(&list)
+	database.Db.Raw("SELECT fares.* ,operators.currency,operators.location_name as location_name,vehicle_types.name as vehicle_type_name,vehicle_types.image_active as vehicle_type_image FROM fares INNER JOIN operators ON fares.operator_id = operators.id INNER JOIN vehicle_types ON fares.vehicle_type_id = vehicle_types.id WHERE fares.is_active=true AND fares.deleted_at IS NULL  AND fares.operator_id = ?", c.Param("operatorId")).Find(&list)
 	c.JSON(http.StatusOK, list)
 }
 
