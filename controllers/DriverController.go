@@ -356,6 +356,15 @@ func (a *DriverController) CreateDriverAccount(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 
 }
+func (a *DriverController) GetDriverDetails(c *gin.Context) {
+	var response = verifyOtpDriverResponse{Status: true}
+	var driverDetails models.Driver
+	var userData = c.MustGet("jwt_data").(*config.JwtClaims)
+	database.Db.Model(&models.Driver{}).Where("id = ? ",userData.UserID).First(&driverDetails)
+	response.DriverDetails = driverDetails
+	c.JSON(http.StatusOK, response)
+
+}
 func (a *DriverController) VerifyOtp(c *gin.Context) {
 	var data verifyOtpRequest
 	var response = verifyOtpDriverResponse{Status: false}
