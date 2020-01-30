@@ -42,7 +42,7 @@ type addVehicleAssignmentResponse struct {
 
 func (a *DriverController) GetDrivers(c *gin.Context) {
 	var list []getDriverResponse
-	database.Db.Raw("SELECT drivers.* ,operators.name,operators.location_name FROM drivers INNER JOIN operators ON drivers.operator_id = operators.id ").Find(&list)
+	database.Db.Raw("SELECT drivers.* ,operators.name as operator_name,operators.location_name FROM drivers INNER JOIN operators ON drivers.operator_id = operators.id ").Find(&list)
 	c.JSON(http.StatusOK, list)
 }
 
