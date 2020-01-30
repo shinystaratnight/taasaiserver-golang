@@ -143,7 +143,7 @@ func (a *DriverController) SendOtp(c *gin.Context) {
 
 		//check driver account exist
 		var driverCount = 0
-		database.Db.Model(&models.Driver{}).Where("dial_code = ? AND mobile_number = ? AND is_active = true", data.DialCode, data.MobileNumber).Count(&driverCount)
+		database.Db.Model(&models.Driver{}).Where("dial_code = ? AND mobile_number = ?", data.DialCode, data.MobileNumber).Count(&driverCount)
 		if driverCount == 0 {
 			response.IsNew = true
 		}
