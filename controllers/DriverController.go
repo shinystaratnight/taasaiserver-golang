@@ -33,6 +33,9 @@ type getDriverResponse struct {
 	IsProfileCompleted      bool   `json:"is_profile_completed"`
 	LocationName  string `json:"location_name"`
 	OperatorName  string `json:"operator_name"`
+	VehicleName   string `json:"vehicle_name"`
+	VehicleNumber string `json:"vehicle_name"`
+	VehicleImage  string `json:"vehicle_image"`
 }
 
 type addVehicleAssignmentResponse struct {
