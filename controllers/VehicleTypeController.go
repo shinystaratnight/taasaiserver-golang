@@ -79,7 +79,7 @@ func (a *VehicleTypeController) GetUnAssignedVehicleTypes(c *gin.Context) {
 		ImageActive         string
 	}
 	var list []vehicleTypeWithCategory
-	database.Db.Raw("SELECT vehicle_types.*,vehicle_categories.name as vehicle_category_name FROM vehicle_types INNER JOIN vehicle_categories ON vehicle_types.vehicle_category_id = vehicle_categories.id WHERE NOT EXISTS (SELECT * FROM fares WHERE fares.location_id = ? AND fares.vehicle_type_id = vehicle_types.id AND fares.is_active = true AND deleted_at IS NULL)", c.Param("locationId")).Scan(&list)
+	database.Db.Raw("SELECT vehicle_types.*,vehicle_categories.name as vehicle_category_name FROM vehicle_types INNER JOIN vehicle_categories ON vehicle_types.vehicle_category_id = vehicle_categories.id WHERE NOT EXISTS (SELECT * FROM fares WHERE fares.operator_id = ? AND fares.vehicle_type_id = vehicle_types.id AND fares.is_active = true AND deleted_at IS NULL)", c.Param("operatorId")).Scan(&list)
 	c.JSON(http.StatusOK, list)
 }
 func (a *VehicleTypeController) GetUnAssignedVehicleTypesForZone(c *gin.Context) {
