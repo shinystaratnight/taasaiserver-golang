@@ -23,15 +23,16 @@ type addNewDriverResponse struct {
 type getDriverResponse struct {
 	ID            int64  `json:"driver_id"`
 	Name          string `json:"driver_name"`
-	LocationId    int64  `json:"location_id"`
+	OperatorID    int64  `json:"operator_id"`
 	DialCode      string `json:"dial_code"`
 	MobileNumber  string `json:"mobile_number"`
 	LicenseNumber string `json:"license_number"`
-	AuthToken     string `json:"auth_token"`
 	Image         string `json:"image"`
 	FcmID         string `json:"fcm_id"`
 	IsActive      bool   `json:"is_active"`
+	IsProfileCompleted      bool   `json:"is_profile_completed"`
 	LocationName  string `json:"location_name"`
+	OperatorName  string `json:"operator_name"`
 }
 
 type addVehicleAssignmentResponse struct {
@@ -41,7 +42,7 @@ type addVehicleAssignmentResponse struct {
 
 func (a *DriverController) GetDrivers(c *gin.Context) {
 	var list []getDriverResponse
-	database.Db.Raw("SELECT drivers.* ,locations.name as location_name FROM drivers INNER JOIN locations ON drivers.location_id = locations.id ").Find(&list)
+	database.Db.Raw("SELECT drivers.* ,operators.name,operators.location_name FROM drivers INNER JOIN operators ON drivers.operator_id = operators.id ").Find(&list)
 	c.JSON(http.StatusOK, list)
 }
 
