@@ -243,6 +243,7 @@ func (a *DriverController) UploadDriverDocument(c *gin.Context) {
 			}
 
 			database.Db.Create(&newDocUpload);
+			response.Status = true
 		}
 	}else{
 		response.Message = docIdError.Error()
