@@ -34,7 +34,7 @@ type getDriverResponse struct {
 	LocationName  string `json:"location_name"`
 	OperatorName  string `json:"operator_name"`
 	VehicleName   string `json:"vehicle_name"`
-	VehicleNumber string `json:"vehicle_name"`
+	VehicleNumber string `json:"vehicle_number"`
 	VehicleImage  string `json:"vehicle_image"`
 }
 
