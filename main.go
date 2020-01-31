@@ -117,6 +117,7 @@ func setupRouter() http.Handler {
 	{
 		adminRoutePrivate.POST("/addNewDriver", driverController.AddNewDriver)
 		adminRoutePrivate.GET("/getDrivers", driverController.GetDrivers)
+		adminRoutePrivate.GET("/getDriverDetailsWithDoc/:id", driverController.GetDriverDetailsWithDoc)
 		adminRoutePrivate.POST("/addNewVehicleType", vehicleTypeController.AddNewVehicleType)
 		adminRoutePrivate.POST("/editVehicleType", vehicleTypeController.EditVehicleType)
 		adminRoutePrivate.POST("/addNewVehicleTypeCategory", vehicleTypeController.AddNewVehicleTypeCategory)
