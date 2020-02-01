@@ -322,7 +322,7 @@ func (r *RideBookingController) CancelRide(c *gin.Context) {
 			var eventLog = models.RideEventLog{
 				RideID:     ride.ID,
 				RideStatus: ride.RideStatus,
-				Message:    "Ride Cancelled By Driver",
+				Message:    "Ride Cancelled",
 			}
 			database.Db.Create(&eventLog)
 			database.Db.Model(&models.Driver{}).Where("id = ? ", ride.DriverID).UpdateColumn("is_ride", false)
@@ -367,7 +367,7 @@ func (r *RideBookingController) CancelRideDriver(c *gin.Context) {
 			var eventLog = models.RideEventLog{
 				RideID:     ride.ID,
 				RideStatus: ride.RideStatus,
-				Message:    "Ride Cancelled",
+				Message:    "Ride Cancelled  By Driver",
 			}
 			database.Db.Create(&eventLog)
 			database.Db.Model(&models.Driver{}).Where("id = ? ", ride.DriverID).UpdateColumn("is_ride", false)
@@ -387,8 +387,9 @@ func (r *RideBookingController) CancelRideDriver(c *gin.Context) {
 			database.Db.Create(&eventLog)
 			response.Message = "Ride cancelled successfully!"
 			response.Status = true
+			go AssignDriverForRide(ride)
+
 			c.JSON(http.StatusOK, response)
-			AssignDriverForRide(ride)
 			return
 		}
 	}
