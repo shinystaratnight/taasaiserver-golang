@@ -40,6 +40,7 @@ type Doc struct{
 type addZoneRequest struct {
 	Name       string
 	LocationID uint
+	PickupPoints []models.PickupPoint
 	Polygon    []polyPoint
 }
 
@@ -238,6 +239,8 @@ func (a *OperatorController) AddNewOperator(c *gin.Context) {
 	}
 }
 
+
+
 func (a *OperatorController) AddNewZone(c *gin.Context) {
 	var data addZoneRequest
 	var response = sendOtpResponse{Status: false}
@@ -265,12 +268,19 @@ func (a *OperatorController) AddNewZone(c *gin.Context) {
 			var res = database.Db.Where("ST_Intersects(polygon,ST_GeometryFromText('POLYGON((" + polyString + "))'))").First(&intersectLocation)
 			log.Println("count = ", res.RowsAffected)
 			if intersectLocation.ID == 0 {
-				var newLocationAddResponse = database.Db.Exec("INSERT INTO zones (name,location_id, polygon,is_active) VALUES ('" + data.Name + "','" + strconv.Itoa(int(data.LocationID)) + "',ST_GeometryFromText('POLYGON((" + polyString + "))'),true);")
+				var newZone models.Zone
+				var newLocationAddResponse = database.Db.Raw("INSERT INTO zones (name,operator_id, polygon,is_active) VALUES ('" + data.Name + "','" + strconv.Itoa(int(data.LocationID)) + "',ST_GeometryFromText('POLYGON((" + polyString + "))'),true) RETURNING id;").Scan(&newZone)
 				if newLocationAddResponse.Error != nil {
 					response.Message = newLocationAddResponse.Error.Error()
 				} else {
 					response.Message = "Zone added successfully"
 					response.Status = true
+
+					for _, item := range data.PickupPoints {
+						item.IsActive = true
+						item.ZoneID = newZone.ID
+						database.Db.Create(&item)
+					}
 				}
 
 			} else {
