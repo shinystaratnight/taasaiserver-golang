@@ -475,6 +475,7 @@ func (d *DriverController) GoOnline(c *gin.Context) {
 	var userData = c.MustGet("jwt_data").(*config.JwtClaims)
 	var response = DriverStatusResponse{Status: true,Message : "Success! Now you are Online"}
 	database.Db.Model(&models.Driver{}).Where("id = ?  AND is_active = true", userData.UserID).UpdateColumn("is_online", true)
+	database.Db.Model(&models.Driver{}).Where("id = ?  AND is_active = true", userData.UserID).UpdateColumn("is_ride", false)
 	c.JSON(http.StatusOK, response)
 	return
 }
