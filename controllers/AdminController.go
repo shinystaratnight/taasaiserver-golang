@@ -32,6 +32,7 @@ type authRequest struct {
 type authResponse struct {
 	Status  bool
 	Message string
+	IsAdmin bool
 	Token   string
 }
 
@@ -58,7 +59,7 @@ func (a *AdminController) Authenticate(c *gin.Context) {
 					"admin",
 					jwt.StandardClaims{
 						ExpiresAt: time.Now().Add(time.Hour * 24 * 2).Unix(),
-						Issuer:    "onride",
+						Issuer:    "taasai",
 					},
 				})
 				tokenString, err := token.SignedString(config.JwtSecretKey)
@@ -68,6 +69,7 @@ func (a *AdminController) Authenticate(c *gin.Context) {
 				} else {
 					database.Db.Model(&admin).UpdateColumn("auth_token", tokenString)
 					response.Status = true
+					response.IsAdmin = true
 					response.Token = tokenString
 					response.Message = "User verified successfully"
 				}
@@ -78,10 +80,43 @@ func (a *AdminController) Authenticate(c *gin.Context) {
 				c.JSON(http.StatusOK, response)
 				return
 			}
-		} else {
-			response.Message = "Email or Password incorrect"
-			c.JSON(http.StatusOK, response)
-			return
+		}  else {
+			var operator models.Operator
+			database.Db.Where("email = ? AND is_active = true", data.Email).First(&operator)
+			if operator.ID != 0{
+				if checkPasswordHash(data.Password, operator.Password) {
+					token := jwt.NewWithClaims(jwt.SigningMethodHS256, config.JwtClaims{
+						(operator.ID),
+						"operator",
+						jwt.StandardClaims{
+							ExpiresAt: time.Now().Add(time.Hour * 24 * 2).Unix(),
+							Issuer:    "taasai",
+						},
+					})
+					tokenString, err := token.SignedString(config.JwtSecretKey)
+					if err != nil {
+						response.Message = err.Error()
+						response.Status = false
+					} else {
+						database.Db.Model(&admin).UpdateColumn("auth_token", tokenString)
+						response.Status = true
+						response.Token = tokenString
+						response.Message = "User verified successfully"
+					}
+					c.JSON(http.StatusOK, response)
+					return
+				} else {
+					response.Message = "Email or Password incorrect"
+					c.JSON(http.StatusOK, response)
+					return
+				}
+			}else{
+				response.Message = "Email or Password incorrect"
+				c.JSON(http.StatusOK, response)
+				return
+			}
+
+
 		}
 	}
 }
