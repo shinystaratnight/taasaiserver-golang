@@ -1,7 +1,9 @@
 package controllers
 
 import (
+	"encoding/json"
 	"fmt"
+	"math"
 	"net/http"
 	"strconv"
 	"taxi/models"
@@ -169,11 +171,10 @@ func (r *RideController) CheckRideQueue(c *gin.Context) {
 
 func (r *RideController) RideAccept(c *gin.Context) {
 
-	/*var data RideAcceptRequest
+	var data RideAcceptRequest
 	c.BindJSON(&data)
 
 	var rideId = data.RideID
-	var vehicleId = data.VehicleID
 	var userData = c.MustGet("jwt_data").(*config.JwtClaims)
 	var driverId = userData.UserID
 
@@ -186,27 +187,22 @@ func (r *RideController) RideAccept(c *gin.Context) {
 
 	if ride.RideStatus == 0 {
 
-		var driverAssignment models.DriverVehicleAssignment
-		database.Db.Model(&models.DriverVehicleAssignment{}).Where("driver_id = ? AND vehicle_id = ?", driverId, vehicleId).First(&driverAssignment)
+		var driverDetails models.Driver
+		database.Db.Where("id=?", driverId).First(&driverDetails)
 
-		if driverAssignment.IsRide {
-			database.Db.Model(&ride).UpdateColumns(&models.Ride{VehicleID: vehicleId, DriverID: driverId, RideStatus: 7})
+		if driverDetails.IsRide {
+			database.Db.Model(&ride).UpdateColumns(&models.Ride{ DriverID: driverId, RideStatus: 7})
 		} else {
-			database.Db.Model(&ride).UpdateColumns(&models.Ride{VehicleID: vehicleId, DriverID: driverId, RideStatus: 1})
-			database.Db.Model(&driverAssignment).UpdateColumn("is_ride", true)
+			database.Db.Model(&ride).UpdateColumns(&models.Ride{ DriverID: driverId, RideStatus: 1})
+			database.Db.Model(&driverDetails).UpdateColumn("is_ride", true)
 		}
 
-		var driverDetails models.Driver
-		var vehicleDetails models.Vehicle
 		var passengerDetails models.Passenger
 
-		database.Db.Where("id=?", driverId).First(&driverDetails)
 		database.Db.Where("id=?", ride.PassengerID).First(&passengerDetails)
-		database.Db.Where("id=?", vehicleId).First(&vehicleDetails)
 
 		var passengerResponse = RideAcceptCustomerResponse{
 			DriverDetails:  driverDetails,
-			VehicleDetails: vehicleDetails,
 			RideDetails:    ride,
 		}
 
@@ -243,14 +239,11 @@ func (r *RideController) CheckOnRide(passengerId uint) {
 		result := database.Db.Where("passenger_id = ? AND ride_status IN (1,2,3)", passengerId).First(&ride)
 		if result.RowsAffected != 0 {
 			var driverDetails models.Driver
-			var vehicleDetails models.Vehicle
 			var passengerDetails models.Passenger
 			database.Db.Where("id=?", ride.DriverID).First(&driverDetails)
 			database.Db.Where("id=?", ride.PassengerID).First(&passengerDetails)
-			database.Db.Where("id=?", ride.VehicleID).First(&vehicleDetails)
 			var passengerResponse = RideAcceptCustomerResponse{
 				DriverDetails:  driverDetails,
-				VehicleDetails: vehicleDetails,
 				RideDetails:    ride,
 			}
 
@@ -261,7 +254,7 @@ func (r *RideController) CheckOnRide(passengerId uint) {
 
 		}
 	}
-*/
+
 }
 
 func (r *RideController) DriverArrived(c *gin.Context) {
@@ -371,7 +364,7 @@ func (r *RideController) GetRideTimeline(c *gin.Context) {
 
 func (r *RideController) StopTrip(c *gin.Context) {
 
-	/*
+
 	var response = responseFormat{Status: false}
 	var userData = c.MustGet("jwt_data").(*config.JwtClaims)
 	var rideID = c.Param("rideId")
@@ -426,15 +419,13 @@ func (r *RideController) StopTrip(c *gin.Context) {
 					TotalFare:        totalFare,
 					DurationReadable: diff.String(),
 				})
-				database.Db.Model(&models.DriverVehicleAssignment{}).Where("driver_id = ? AND vehicle_id = ?", ride.DriverID, ride.VehicleID).UpdateColumn("is_ride", false)
-				var location models.Location
-				database.Db.Where("id = ?", ride.LocationID).First(&location)
+				database.Db.Model(&models.Driver{}).Where("id = ? ", ride.DriverID).UpdateColumns(&models.Driver{IsRide:false,IsOnline:true})
+				var location models.Operator
+				database.Db.Where("id = ?", ride.OperatorID).First(&location)
 				response.RideDetails = ride
 				response.Currency = location.Currency
 				response.BaseFareDetails = fare
 				response.Status = true
-
-				database.Db.Model(&models.DriverVehicleAssignment{}).Where("driver_id = ? AND vehicle_id = ?", ride.DriverID, ride.VehicleID).UpdateColumn("is_online", true)
 
 				//paytmpg ends here
 				data, err := json.Marshal(&response)
@@ -473,14 +464,13 @@ func (r *RideController) StopTrip(c *gin.Context) {
 					TotalFare:        totalFare,
 					DurationReadable: diff.String(),
 				})
-				database.Db.Model(&models.DriverVehicleAssignment{}).Where("driver_id = ? AND vehicle_id = ?", ride.DriverID, ride.VehicleID).UpdateColumn("is_ride", false)
-				var location models.Location
-				database.Db.Where("id = ?", ride.LocationID).First(&location)
+				database.Db.Model(&models.Driver{}).Where("id = ? ", ride.DriverID).UpdateColumns(&models.Driver{IsRide:false,IsOnline:true})
+				var location models.Operator
+				database.Db.Where("id = ?", ride.OperatorID).First(&location)
 				response.RideDetails = ride
 				response.Currency = location.Currency
 				response.BaseFareDetails = models.Fare{BaseFare: fare.BaseFare, BaseFareDistance: fare.BaseFareDistance, BaseFareDuration: fare.BaseFareDuration}
 				response.Status = true
-				database.Db.Model(&models.DriverVehicleAssignment{}).Where("driver_id = ? AND vehicle_id = ?", ride.DriverID, ride.VehicleID).UpdateColumn("is_online", true)
 
 				data, err := json.Marshal(&response)
 				if err == nil {
@@ -498,7 +488,7 @@ func (r *RideController) StopTrip(c *gin.Context) {
 		return
 
 	}
-*/
+
 }
 
 func (r *RideController) GetRideLocations(c *gin.Context) {
