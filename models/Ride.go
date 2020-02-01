@@ -16,6 +16,7 @@ type Ride struct {
 
 	DriverID uint `gorm:"index:idx_ride",sql: "default: null"`
 
+	PickupPoint  string
 	PickupLocation  string  `sql: "default: null"`
 	PickupLatitude  float64 `gorm:"not null"`
 	PickupLongitude float64 `gorm:"not null"`
