@@ -76,7 +76,7 @@ func (a *OperatorController) GetCoordinates(c *gin.Context) {
 		Coordinates string
 	}
 	var location locationWithCoordinate
-	database.Db.Raw("select btrim(st_astext(polygon), 'POLYGON()') as coordinates from locations Where locations.id = " + c.Param("locationId")).Scan(&location)
+	database.Db.Raw("select btrim(st_astext(polygon), 'POLYGON()') as coordinates from operators Where operators.id = " + c.Param("locationId")).Scan(&location)
 	c.JSON(http.StatusOK, location)
 
 }
