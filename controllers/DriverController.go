@@ -474,7 +474,7 @@ type DriverStatusResponse struct {
 func (d *DriverController) GoOnline(c *gin.Context) {
 	var userData = c.MustGet("jwt_data").(*config.JwtClaims)
 	var response = DriverStatusResponse{Status: true,Message : "Success! Now you are Online"}
-	database.Db.Model(&models.Driver{}).Where("driver_id = ?  AND is_active = true", userData.UserID).UpdateColumn("is_online", true)
+	database.Db.Model(&models.Driver{}).Where("id = ?  AND is_active = true", userData.UserID).UpdateColumn("is_online", true)
 	c.JSON(http.StatusOK, response)
 	return
 }
@@ -482,7 +482,7 @@ func (d *DriverController) GoOnline(c *gin.Context) {
 func (d *DriverController) GoOffline(c *gin.Context) {
 	var userData = c.MustGet("jwt_data").(*config.JwtClaims)
 	var response = DriverStatusResponse{Status: true,Message: "Success! Now you are Offline"}
-	database.Db.Model(&models.Driver{}).Where("driver_id = ?", userData.UserID).UpdateColumn("is_online", false)
+	database.Db.Model(&models.Driver{}).Where("id = ?", userData.UserID).UpdateColumn("is_online", false)
 	c.JSON(http.StatusOK, response)
 	return
 }
