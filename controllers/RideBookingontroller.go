@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/kelvins/geocoder"
@@ -286,7 +287,7 @@ type cancelRideResponse struct {
 }
 
 func (r *RideBookingController) CancelRide(c *gin.Context) {
-	/*var data cancelRideRequest
+	var data cancelRideRequest
 	var response = cancelRideResponse{Status: false}
 	c.BindJSON(&data)
 	if data.RideID == 0 {
@@ -316,7 +317,7 @@ func (r *RideBookingController) CancelRide(c *gin.Context) {
 				Message:    "Ride Cancelled",
 			}
 			database.Db.Create(&eventLog)
-			database.Db.Model(&models.DriverVehicleAssignment{}).Where("driver_id = ? AND vehicle_id = ?", ride.DriverID, ride.VehicleID).UpdateColumn("is_ride", false)
+			database.Db.Model(&models.Driver{}).Where("id = ? ", ride.DriverID).UpdateColumn("is_ride", false)
 			data, err := json.Marshal(&ride)
 			if err == nil {
 				mqttController.Publish(fmt.Sprintf("driver/%d/ride_cancelled", ride.DriverID), 2, string(data))
@@ -328,5 +329,5 @@ func (r *RideBookingController) CancelRide(c *gin.Context) {
 			c.JSON(http.StatusOK, response)
 			return
 		}
-	}*/
+	}
 }
