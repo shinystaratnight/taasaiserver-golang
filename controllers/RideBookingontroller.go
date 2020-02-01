@@ -1,11 +1,16 @@
 package controllers
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"golang.org/x/net/context"
+	"googlemaps.github.io/maps"
+	"math"
 	"net/http"
 	"taxi/models"
 	"taxi/shared/config"
 	"taxi/shared/database"
+	"taxi/shared/googleMap"
 )
 
 type RideBookingController struct {
@@ -27,7 +32,7 @@ type estimatedFare struct {
 	ID                       uint    `json:"fare_id"`
 	CategoryID               string  `json:"category_id"`
 	VehicleTypeID            uint    `json:"vehicle_type_id"`
-	LocationID               uint    `json:"location_id"`
+	OperatorID               uint    `json:"operator_id"`
 	MinimumFare              float64 `json:"minimum_fare"`
 	WaitingFare              float64 `json:"waiting_fare"`
 	BaseFare                 float64 `json:"base_fare"`
@@ -48,10 +53,10 @@ type estimatedFare struct {
 }
 
 func (r *RideBookingController) GetEstimatedFare(c *gin.Context) {
-	/*var data estimateFareRequest
+	var data estimateFareRequest
 	var response = estimateFareResponse{Status: false}
 	c.BindJSON(&data)
-	var intersectLocation models.Location
+	var intersectLocation models.Operator
 	database.Db.Where("is_active = true AND ST_Contains(polygon,ST_GeometryFromText('POINT(" + data.PickupLatitude + " " + data.PickupLongitude + ")'))").First(&intersectLocation)
 	if intersectLocation.ID != 0 {
 
@@ -68,7 +73,7 @@ func (r *RideBookingController) GetEstimatedFare(c *gin.Context) {
 				estimatedDuration := distanceMatrixResponse.Rows[0].Elements[0].Duration.Minutes()
 
 				var fareList []estimatedFare
-				fareResult := database.Db.Raw("SELECT fares.*,vehicle_categories.id as category_id,vehicle_categories.name as category_name ,locations.currency,locations.name as location_name,vehicle_types.description as vehicle_type_desc,vehicle_types.name as vehicle_type_name,vehicle_types.image as vehicle_type_image_inactive,vehicle_types.image_active as vehicle_type_image FROM fares INNER JOIN locations ON fares.location_id = locations.id AND locations.is_active = true INNER JOIN vehicle_types ON fares.vehicle_type_id = vehicle_types.id AND vehicle_types.is_active = true INNER JOIN vehicle_categories ON vehicle_types.vehicle_category_id = vehicle_categories.id AND vehicle_categories.is_active = true WHERE fares.is_active=true AND fares.deleted_at IS NULL AND fares.location_id = ?", intersectLocation.ID).Find(&fareList)
+				fareResult := database.Db.Raw("SELECT fares.*,vehicle_categories.id as category_id,vehicle_categories.name as category_name ,operators.currency,operators.name as operator_name,operators.location_name as location_name,vehicle_types.description as vehicle_type_desc,vehicle_types.name as vehicle_type_name,vehicle_types.image as vehicle_type_image_inactive,vehicle_types.image_active as vehicle_type_image FROM fares INNER JOIN operators ON fares.operator_id = operators.id AND operators.is_active = true INNER JOIN vehicle_types ON fares.vehicle_type_id = vehicle_types.id AND vehicle_types.is_active = true INNER JOIN vehicle_categories ON vehicle_types.vehicle_category_id = vehicle_categories.id AND vehicle_categories.is_active = true WHERE fares.is_active=true AND fares.deleted_at IS NULL AND fares.operator_id = ?", intersectLocation.ID).Find(&fareList)
 				if fareResult.RowsAffected != 0 {
 					for index, fare := range fareList {
 						totalFare := fare.BaseFare
@@ -85,7 +90,7 @@ func (r *RideBookingController) GetEstimatedFare(c *gin.Context) {
 					}
 					//check if location comes under a zone
 					var intersectZoneLocation models.Zone
-					database.Db.Where("is_active = true AND location_id = ?  AND ST_Contains(polygon,ST_GeometryFromText('POINT("+data.PickupLatitude+" "+data.PickupLongitude+")'))", intersectLocation.ID).First(&intersectZoneLocation)
+					database.Db.Where("is_active = true AND operator_id = ?  AND ST_Contains(polygon,ST_GeometryFromText('POINT("+data.PickupLatitude+" "+data.PickupLongitude+")'))", intersectLocation.ID).First(&intersectZoneLocation)
 					if intersectZoneLocation.ID != 0 {
 						var zoneFareList []models.ZoneFare
 						database.Db.Where("is_active = true AND deleted_at IS NULL AND zone_id = ?", intersectZoneLocation.ID).Find(&zoneFareList)
@@ -125,7 +130,6 @@ func (r *RideBookingController) GetEstimatedFare(c *gin.Context) {
 		response.Message = "Sorry! Service not available at the pickup location specified."
 		c.JSON(http.StatusOK, response)
 	}
-*/
 }
 
 type rideBookingResponse struct {
@@ -191,7 +195,7 @@ func (a *RideBookingController) BookRide(c *gin.Context) {
 			data.PassengerID = userData.UserID
 			data.LocationID = intersectLocation.ID
 			var intersectZoneLocation models.Zone
-			database.Db.Where("is_active = true AND location_id = ?  AND ST_Contains(polygon,ST_GeometryFromText('POINT("+fmt.Sprintf("%f", data.PickupLatitude)+" "+fmt.Sprintf("%f", data.PickupLongitude)+")'))", intersectLocation.ID).First(&intersectZoneLocation)
+			database.Db.Where("is_active = true AND operator_id = ?  AND ST_Contains(polygon,ST_GeometryFromText('POINT("+fmt.Sprintf("%f", data.PickupLatitude)+" "+fmt.Sprintf("%f", data.PickupLongitude)+")'))", intersectLocation.ID).First(&intersectZoneLocation)
 			if intersectZoneLocation.ID != 0 {
 				var zoneFare models.ZoneFare
 				database.Db.Where("is_active = true AND vehicle_type_id = ? AND deleted_at IS NULL AND zone_id = ?", data.VehicleTypeID, intersectZoneLocation.ID).Find(&zoneFare)
@@ -201,7 +205,7 @@ func (a *RideBookingController) BookRide(c *gin.Context) {
 				}
 			}
 			var fare models.Fare
-			database.Db.Where("is_active = true AND vehicle_type_id = ? AND deleted_at IS NULL AND location_id = ?", data.VehicleTypeID, intersectLocation.ID).Find(&fare)
+			database.Db.Where("is_active = true AND vehicle_type_id = ? AND deleted_at IS NULL AND operator_id = ?", data.VehicleTypeID, intersectLocation.ID).Find(&fare)
 			if fare.ID != 0 {
 				data.FareID = fare.ID
 				data.RideDateTime = time.Now()
