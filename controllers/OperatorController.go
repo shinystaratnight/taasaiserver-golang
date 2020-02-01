@@ -67,7 +67,7 @@ func (a *OperatorController) GetOperators(c *gin.Context) {
 
 func (a *OperatorController) GetZones(c *gin.Context) {
 	var list []models.Zone
-	database.Db.Where("location_id = ?", c.Param("locationId")).Find(&list)
+	database.Db.Where("operator_id = ?", c.Param("locationId")).Find(&list)
 	c.JSON(http.StatusOK, list)
 }
 
