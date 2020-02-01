@@ -246,7 +246,7 @@ func setupMobileAppRouter() http.Handler {
 		driverRoutePrivate.POST("/startTrip/:rideId", rideController.StartTrip)
 		driverRoutePrivate.POST("/stopTrip/:rideId", rideController.StopTrip)
 		driverRoutePrivate.POST("/checkQueuedRide", rideController.CheckRideQueue)
-		driverRoutePrivate.POST("/updateRideLocations", rideController.UpdateRideLocations)
+		driverRoutePrivate.POST("/updateRideLocations", rideController.UpdateRideOperators)
 		driverRoutePrivate.POST("/getRides", rideBookingController.GetDriverBookingHistory)
 		driverRoutePrivate.POST("/getRideDetails/:rideId", rideController.GetRideDetailsForMobile)
 		driverRoutePrivate.POST("/ratePassenger", rideController.RatePassenger)

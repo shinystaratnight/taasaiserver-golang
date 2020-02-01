@@ -328,14 +328,14 @@ type responseFormat struct {
 
 func (r *RideController) GetRideDetailsForMobile(c *gin.Context) {
 
-	/*var response = responseFormat{Status: false}
+	var response = responseFormat{Status: false}
 	var rideID = c.Param("rideId")
 	var ride models.Ride
 	result := database.Db.Where("id = ? ", rideID).First(&ride)
 	if result.RowsAffected == 1 {
 		response.RideDetails = ride
-		var location models.Location
-		database.Db.Where("id = ?", ride.LocationID).First(&location)
+		var location models.Operator
+		database.Db.Where("id = ?", ride.OperatorID).First(&location)
 		response.Currency = location.Currency
 		if ride.ZoneFareID == 0 {
 			var fare models.Fare
@@ -351,7 +351,7 @@ func (r *RideController) GetRideDetailsForMobile(c *gin.Context) {
 		}
 	}
 	c.JSON(http.StatusOK, response)
-*/
+
 }
 
 func (r *RideController) GetRideTimeline(c *gin.Context) {
@@ -491,7 +491,7 @@ func (r *RideController) StopTrip(c *gin.Context) {
 
 }
 
-func (r *RideController) GetRideoperators(c *gin.Context) {
+func (r *RideController) GetRideLocations(c *gin.Context) {
 	type latlng struct {
 		Lat float64 `json:"lat"`
 		Lng float64 `json:"lng"`
@@ -515,7 +515,7 @@ type rideLocationResponse struct {
 	Status bool
 }
 
-func (r *RideController) UpdateRideoperators(c *gin.Context) {
+func (r *RideController) UpdateRideOperators(c *gin.Context) {
 	var locationUpdateRequest rideLocationUpdateRequest
 	c.BindJSON(&locationUpdateRequest)
 	var response = rideLocationResponse{Status: false}
