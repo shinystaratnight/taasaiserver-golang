@@ -72,8 +72,6 @@ func respondWithError(code int, message string, c *gin.Context) {
 type LocationUpdateRequest struct {
 	Latitude      float64 `json:"latitude"`
 	Longitude     float64 `json:"longitude"`
-	VehicleID     uint    `json:"vehicle_id"`
-	VehicleTypeID uint    `json:"vehicle_type_id"`
 }
 
 func (a *MqttController) WebHook(c *gin.Context) {
@@ -83,15 +81,15 @@ func (a *MqttController) WebHook(c *gin.Context) {
 		return config.JwtSecretKey, nil
 	})
 	if err == nil {
-		if _, ok := token.Claims.(*config.JwtClaims); ok && token.Valid {
+		if claims, ok := token.Claims.(*config.JwtClaims); ok && token.Valid {
 			payloadString, payloadError := base64.StdEncoding.DecodeString(requestData.Payload)
 			if payloadError == nil {
 				if requestData.Topic == "locationUpdate" {
 					var locationUpdateRequest LocationUpdateRequest
 					err := json.Unmarshal(payloadString, &locationUpdateRequest)
 					if err == nil {
-						var newLocationUpdateResponse = database.Db.Exec("UPDATE vehicles SET latlng = ST_GeometryFromText('POINT(" + fmt.Sprintf("%f", locationUpdateRequest.Latitude) + " " + fmt.Sprintf("%f", locationUpdateRequest.Longitude) + ")') where id = " + fmt.Sprintf("%d", locationUpdateRequest.VehicleID))
-						//database.Db.Model(&models.DriverVehicleAssignment{}).Where("driver_id = ? AND vehicle_id = ?", claims.UserID, locationUpdateRequest.VehicleID).UpdateColumn("is_online", true)
+						var newLocationUpdateResponse = database.Db.Exec("UPDATE drivers SET latlng = ST_GeometryFromText('POINT(" + fmt.Sprintf("%f", locationUpdateRequest.Latitude) + " " + fmt.Sprintf("%f", locationUpdateRequest.Longitude) + ")') where id = " + fmt.Sprintf("%d", claims.UserID))
+						database.Db.Model(&models.Driver{}).Where("id = ? ", claims.UserID).UpdateColumn("is_online", true)
 						if newLocationUpdateResponse.Error != nil {
 							fmt.Println("latlng update error!")
 						} else {
@@ -120,7 +118,7 @@ func (a *MqttController) ClientGone(c *gin.Context) {
 	c.BindJSON(&requestData)
 	clientData := strings.Split(requestData.ClientId, "#")
 	if clientData[0] == "driver" {
-		//database.Db.Model(&models.DriverVehicleAssignment{}).Where("is_online = true AND driver_id = ?", clientData[1]).UpdateColumn("is_online", false)
+		database.Db.Model(&models.Driver{}).Where("id = ?", clientData[1]).UpdateColumn("is_online", false)
 	} else if clientData[0] == "passenger" {
 
 	}
