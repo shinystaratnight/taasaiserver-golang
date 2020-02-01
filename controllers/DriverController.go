@@ -370,19 +370,23 @@ func (a *DriverController) GetDriverDetails(c *gin.Context) {
 }
 type GetDriverDetailsWithDocResponse struct {
 	 DriverDetails models.Driver
+	 OperatorDetails models.Operator
 	 DocsRequired []models.DriverDocument
 	 UploadedDocs []models.DriverDocumentUpload
 }
 func (a *DriverController) GetDriverDetailsWithDoc(c *gin.Context) {
 	var response = GetDriverDetailsWithDocResponse{}
 	var driverDetails models.Driver
+	var operatorDetails models.Operator
 	var docsRequired []models.DriverDocument
 	var docsuploaded []models.DriverDocumentUpload
 	database.Db.Model(&models.Driver{}).Where("id = ? ",c.Param("id")).First(&driverDetails)
-	database.Db.Where("operator_id = ?",driverDetails.OperatorID).First(&docsRequired)
-	database.Db.Where("driver_id = ? AND is_active = true",driverDetails.ID).First(&docsuploaded)
+	database.Db.Model(&models.Operator{}).Where("id = ? ",driverDetails.OperatorID).First(&driverDetails)
+	database.Db.Where("operator_id = ?",driverDetails.OperatorID).Find(&docsRequired)
+	database.Db.Where("driver_id = ? AND is_active = true",driverDetails.ID).Find(&docsuploaded)
 	response.DriverDetails = driverDetails
 	response.DocsRequired = docsRequired
+	response.OperatorDetails = operatorDetails
 	response.UploadedDocs = docsuploaded
 	c.JSON(http.StatusOK, response)
 
