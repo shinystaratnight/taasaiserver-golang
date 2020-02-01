@@ -30,6 +30,7 @@ type estimateFareResponse struct {
 	Status  bool
 	Message string
 	Data    []estimatedFare
+	PickupPoints []models.PickupPoint
 }
 type estimatedFare struct {
 	ID                       uint    `json:"fare_id"`
@@ -115,6 +116,11 @@ func (r *RideBookingController) GetEstimatedFare(c *gin.Context) {
 									}
 								}
 							}
+							var pickupPoint []models.PickupPoint
+							database.Db.Where("zone_id = ? AND is_active = true",intersectZoneLocation.ID).Find(&pickupPoint)
+							response.PickupPoints = pickupPoint
+
+
 						}
 					}
 
