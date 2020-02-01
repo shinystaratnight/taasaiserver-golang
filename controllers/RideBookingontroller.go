@@ -379,10 +379,10 @@ func (r *RideBookingController) CancelRideDriver(c *gin.Context) {
 				Message:    "Ride status changed to waiting & operator started new driver search",
 			}
 			database.Db.Create(&eventLog)
-			AssignDriverForRide(ride)
 			response.Message = "Ride cancelled successfully!"
 			response.Status = true
 			c.JSON(http.StatusOK, response)
+			AssignDriverForRide(ride)
 			return
 		}
 	}
