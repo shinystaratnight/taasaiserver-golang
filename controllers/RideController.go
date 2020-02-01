@@ -121,15 +121,15 @@ func (r *RideController) GetRideDetail(c *gin.Context) {
 	database.Db.Where("id=?", c.Param("rideId")).First(&ride)
 	if ride.ZoneFareID == 0 {
 		if ride.RideStatus == 4 {
-			database.Db.Raw("SELECT rides.*,locations.name as service_area,locations.currency,fares.base_fare_distance as km_in_base_fare,fares.base_fare_duration as duration_in_base_fare,fares.base_fare,fares.duration_fare as base_duration_fare,fares.distance_fare as base_distance_fare,fares.tax as tax_percentage,passengers.name as passenger_name,passengers.dial_code as passenger_dial_code,passengers.mobile_number as passenger_mobile,drivers.name as driver_name,drivers.dial_code as driver_dial_code,drivers.mobile_number as driver_mobile,vehicles.name as vehicle_name,vehicles.vehicle_number FROM rides INNER JOIN vehicles ON vehicles.id = rides.vehicle_id INNER JOIN locations ON rides.location_id = locations.id INNER JOIN fares ON fares.id = rides.fare_id INNER JOIN drivers ON drivers.id = rides.driver_id INNER JOIN passengers ON passengers.id = rides.passenger_id WHERE rides.id = " + c.Param("rideId")).Scan(&detail)
+			database.Db.Raw("SELECT rides.*,operators.name as service_area,operators.currency,fares.base_fare_distance as km_in_base_fare,fares.base_fare_duration as duration_in_base_fare,fares.base_fare,fares.duration_fare as base_duration_fare,fares.distance_fare as base_distance_fare,fares.tax as tax_percentage,passengers.name as passenger_name,passengers.dial_code as passenger_dial_code,passengers.mobile_number as passenger_mobile,drivers.name as driver_name,drivers.dial_code as driver_dial_code,drivers.mobile_number as driver_mobile,vehicles.name as vehicle_name,vehicles.vehicle_number FROM rides INNER JOIN vehicles ON vehicles.id = rides.vehicle_id INNER JOIN operators ON rides.operator_id = operators.id INNER JOIN fares ON fares.id = rides.fare_id INNER JOIN drivers ON drivers.id = rides.driver_id INNER JOIN passengers ON passengers.id = rides.passenger_id WHERE rides.id = " + c.Param("rideId")).Scan(&detail)
 		} else {
-			database.Db.Raw("SELECT rides.*,locations.name as service_area,locations.currency,passengers.name as passenger_name,passengers.dial_code as passenger_dial_code,passengers.mobile_number as passenger_mobile FROM rides INNER JOIN locations ON rides.location_id = locations.id INNER JOIN passengers ON passengers.id = rides.passenger_id WHERE rides.id = " + c.Param("rideId")).Scan(&detail)
+			database.Db.Raw("SELECT rides.*,operators.name as service_area,operators.currency,passengers.name as passenger_name,passengers.dial_code as passenger_dial_code,passengers.mobile_number as passenger_mobile FROM rides INNER JOIN operators ON rides.operator_id = operators.id INNER JOIN passengers ON passengers.id = rides.passenger_id WHERE rides.id = " + c.Param("rideId")).Scan(&detail)
 		}
 	} else {
 		if ride.RideStatus == 4 {
-			database.Db.Raw("SELECT rides.*,locations.name as service_area,locations.currency,zone_fares.base_fare_distance as km_in_base_fare,zone_fares.base_fare_duration as duration_in_base_fare,zone_fares.base_fare,zone_fares.duration_fare as base_duration_fare,zone_fares.distance_fare as base_distance_fare,zone_fares.tax as tax_percentage,passengers.name as passenger_name,passengers.dial_code as passenger_dial_code,passengers.mobile_number as passenger_mobile,drivers.name as driver_name,drivers.dial_code as driver_dial_code,drivers.mobile_number as driver_mobile,vehicles.name as vehicle_name,vehicles.vehicle_number FROM rides INNER JOIN vehicles ON vehicles.id = rides.vehicle_id INNER JOIN locations ON rides.location_id = locations.id INNER JOIN zone_fares ON zone_fares.id = rides.zone_fare_id INNER JOIN drivers ON drivers.id = rides.driver_id INNER JOIN passengers ON passengers.id = rides.passenger_id WHERE rides.id = " + c.Param("rideId")).Scan(&detail)
+			database.Db.Raw("SELECT rides.*,operators.name as service_area,operators.currency,zone_fares.base_fare_distance as km_in_base_fare,zone_fares.base_fare_duration as duration_in_base_fare,zone_fares.base_fare,zone_fares.duration_fare as base_duration_fare,zone_fares.distance_fare as base_distance_fare,zone_fares.tax as tax_percentage,passengers.name as passenger_name,passengers.dial_code as passenger_dial_code,passengers.mobile_number as passenger_mobile,drivers.name as driver_name,drivers.dial_code as driver_dial_code,drivers.mobile_number as driver_mobile,vehicles.name as vehicle_name,vehicles.vehicle_number FROM rides INNER JOIN vehicles ON vehicles.id = rides.vehicle_id INNER JOIN operators ON rides.operator_id = operators.id INNER JOIN zone_fares ON zone_fares.id = rides.zone_fare_id INNER JOIN drivers ON drivers.id = rides.driver_id INNER JOIN passengers ON passengers.id = rides.passenger_id WHERE rides.id = " + c.Param("rideId")).Scan(&detail)
 		} else {
-			database.Db.Raw("SELECT rides.*,locations.name as service_area,locations.currency,passengers.name as passenger_name,passengers.dial_code as passenger_dial_code,passengers.mobile_number as passenger_mobile FROM rides INNER JOIN locations ON rides.location_id = locations.id INNER JOIN passengers ON passengers.id = rides.passenger_id WHERE rides.id = " + c.Param("rideId")).Scan(&detail)
+			database.Db.Raw("SELECT rides.*,operators.name as service_area,operators.currency,passengers.name as passenger_name,passengers.dial_code as passenger_dial_code,passengers.mobile_number as passenger_mobile FROM rides INNER JOIN operators ON rides.operator_id = operators.id INNER JOIN passengers ON passengers.id = rides.passenger_id WHERE rides.id = " + c.Param("rideId")).Scan(&detail)
 		}
 	}
 
@@ -384,7 +384,7 @@ func (r *RideController) StopTrip(c *gin.Context) {
 			Distance float64
 		}
 		var rideDistance dist
-		database.Db.Raw("UPDATE rides SET distance = RideDistance.distance  FROM (SELECT (round( CAST(float8 (st_Length(ST_MakeLine(RideLocations.latlng)::geography)/1000) as numeric), 2)+0.01)::float as distance FROM (SELECT latlng,ride_id FROM ride_locations Where ride_id =" + rideID + " ORDER BY time ASC) as RideLocations GROUP by RideLocations.ride_id ) as RideDistance").Scan(&rideDistance)
+		database.Db.Raw("UPDATE rides SET distance = RideDistance.distance  FROM (SELECT (round( CAST(float8 (st_Length(ST_MakeLine(Rideoperators.latlng)::geography)/1000) as numeric), 2)+0.01)::float as distance FROM (SELECT latlng,ride_id FROM ride_operators Where ride_id =" + rideID + " ORDER BY time ASC) as Rideoperators GROUP by Rideoperators.ride_id ) as RideDistance").Scan(&rideDistance)
 		database.Db.Where("id = ? ", rideID).First(&ride)
 
 		var endTime = time.Now()
@@ -491,14 +491,14 @@ func (r *RideController) StopTrip(c *gin.Context) {
 
 }
 
-func (r *RideController) GetRideLocations(c *gin.Context) {
+func (r *RideController) GetRideoperators(c *gin.Context) {
 	type latlng struct {
 		Lat float64 `json:"lat"`
 		Lng float64 `json:"lng"`
 	}
-	var rideLocations []latlng
-	database.Db.Raw("SELECT ST_X(latlng) as lat, ST_Y(latlng) as lng,ride_id FROM ride_locations Where ride_id = " + c.Param("rideId") + " ORDER BY time ASC").Scan(&rideLocations)
-	c.JSON(http.StatusOK, rideLocations)
+	var rideoperators []latlng
+	database.Db.Raw("SELECT ST_X(latlng) as lat, ST_Y(latlng) as lng,ride_id FROM ride_operators Where ride_id = " + c.Param("rideId") + " ORDER BY time ASC").Scan(&rideoperators)
+	c.JSON(http.StatusOK, rideoperators)
 }
 
 type rideLocationItem struct {
@@ -509,20 +509,20 @@ type rideLocationItem struct {
 
 type rideLocationUpdateRequest struct {
 	RideID    int64
-	Locations []rideLocationItem
+	operators []rideLocationItem
 }
 type rideLocationResponse struct {
 	Status bool
 }
 
-func (r *RideController) UpdateRideLocations(c *gin.Context) {
+func (r *RideController) UpdateRideoperators(c *gin.Context) {
 	var locationUpdateRequest rideLocationUpdateRequest
 	c.BindJSON(&locationUpdateRequest)
 	var response = rideLocationResponse{Status: false}
-	var query = "INSERT INTO ride_locations (ride_id,time,latlng) VALUES "
+	var query = "INSERT INTO ride_operators (ride_id,time,latlng) VALUES "
 
 	if locationUpdateRequest.RideID != 0 {
-		for i, location := range locationUpdateRequest.Locations {
+		for i, location := range locationUpdateRequest.operators {
 			var prefix = ""
 			if i != 0 {
 				prefix = ","
