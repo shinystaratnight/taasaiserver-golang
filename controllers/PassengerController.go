@@ -230,7 +230,7 @@ func (a *PassengerController) GetNearByDrivers(c *gin.Context) {
 	var data GetNearByDriversRequest
 	var response []NearByDriver
 	c.BindJSON(&data)
-	database.Db.Raw("SELECT driver_vehicle_assignments.driver_id as id,ST_X(vehicles.latlng) AS latitude,ST_Y(vehicles.latlng) AS longitude,ST_Distance(vehicles.latlng, ref_geom) AS distance from vehicles INNER JOIN driver_vehicle_assignments ON driver_vehicle_assignments.vehicle_id = vehicles.id AND driver_vehicle_assignments.is_online = true AND driver_vehicle_assignments.is_ride = false CROSS JOIN (SELECT ST_MakePoint(" + fmt.Sprintf("%f", data.Latitude) + "," + fmt.Sprintf("%f", data.Longitude) + ")::geography AS ref_geom) AS r  WHERE ST_DWithin(vehicles.latlng, ref_geom, 5000)  ORDER BY ST_Distance(vehicles.latlng, ref_geom)").Scan(&response)
+	database.Db.Raw("SELECT drivers.id,ST_X(drivers.latlng) AS latitude,ST_Y(drivers.latlng) AS longitude,ST_Distance(drivers.latlng, ref_geom) AS distance from drivers  CROSS JOIN (SELECT ST_MakePoint(" + fmt.Sprintf("%f", data.Latitude) + "," + fmt.Sprintf("%f", data.Longitude) + ")::geography AS ref_geom) AS r  WHERE  drivers.is_online = true AND drivers.is_ride = false AND ST_DWithin(drivers.latlng, ref_geom, 5000)  ORDER BY ST_Distance(drivers.latlng, ref_geom)").Scan(&response)
 	c.JSON(http.StatusOK, response)
 }
 
