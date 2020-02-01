@@ -290,6 +290,53 @@ func (r *RideBookingController) CancelRide(c *gin.Context) {
 	var data cancelRideRequest
 	var response = cancelRideResponse{Status: false}
 	c.BindJSON(&data)
+	var userData = c.MustGet("jwt_data").(*config.JwtClaims)
+
+	if data.RideID == 0 {
+		response.Message = "Ride Id is required"
+		c.JSON(http.StatusOK, response)
+		return
+	} else {
+		var ride models.Ride
+		database.Db.Where("id = ? AND driver_id = ?", data.RideID,userData.UserID).First(&ride)
+		if ride.ID == 0 {
+			response.Message = "Ride details not found"
+			c.JSON(http.StatusOK, response)
+			return
+		} else if ride.RideStatus == 6 {
+			response.Message = "Ride already cancelled!"
+			c.JSON(http.StatusOK, response)
+			return
+		} else if ride.RideStatus != 0 && ride.RideStatus != 1 && ride.RideStatus != 2 {
+			response.Message = "Ride cannot be cancelled now!"
+			c.JSON(http.StatusOK, response)
+			return
+		} else {
+			database.Db.Model(&ride).UpdateColumn("ride_status", 6)
+			var eventLog = models.RideEventLog{
+				RideID:     ride.ID,
+				RideStatus: ride.RideStatus,
+				Message:    "Ride Cancelled By Driver",
+			}
+			database.Db.Create(&eventLog)
+			database.Db.Model(&models.Driver{}).Where("id = ? ", ride.DriverID).UpdateColumn("is_ride", false)
+			data, err := json.Marshal(&ride)
+			if err == nil {
+				mqttController.Publish(fmt.Sprintf("driver/%d/ride_cancelled", ride.DriverID), 2, string(data))
+			} else {
+				mqttController.Publish(fmt.Sprintf("driver/%d/ride_cancelled", ride.DriverID), 2, string(data))
+			}
+			response.Message = "Ride cancelled successfully!"
+			response.Status = true
+			c.JSON(http.StatusOK, response)
+			return
+		}
+	}
+}
+func (r *RideBookingController) CancelRideDriver(c *gin.Context) {
+	var data cancelRideRequest
+	var response = cancelRideResponse{Status: false}
+	c.BindJSON(&data)
 	if data.RideID == 0 {
 		response.Message = "Ride Id is required"
 		c.JSON(http.StatusOK, response)
@@ -324,6 +371,15 @@ func (r *RideBookingController) CancelRide(c *gin.Context) {
 			} else {
 				mqttController.Publish(fmt.Sprintf("driver/%d/ride_cancelled", ride.DriverID), 2, string(data))
 			}
+			database.Db.Model(&ride).UpdateColumn("ride_status", 0)
+
+			eventLog = models.RideEventLog{
+				RideID:     ride.ID,
+				RideStatus: ride.RideStatus,
+				Message:    "Ride status changed to waiting & operator started new driver search",
+			}
+			database.Db.Create(&eventLog)
+			AssignDriverForRide(ride)
 			response.Message = "Ride cancelled successfully!"
 			response.Status = true
 			c.JSON(http.StatusOK, response)

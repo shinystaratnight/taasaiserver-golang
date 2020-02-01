@@ -3,6 +3,7 @@ module taxi
 go 1.12
 
 require (
+	github.com/appleboy/go-fcm v0.1.5 // indirect
 	github.com/denisenkom/go-mssqldb v0.0.0-20191128021309-1d7a30a10f73 // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/eclipse/paho.mqtt.golang v1.1.1

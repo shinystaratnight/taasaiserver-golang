@@ -207,6 +207,7 @@ func setupMobileAppRouter() http.Handler {
 	customerRoutePrivate.Use(tokenAuthMiddleware("passenger"))
 	{
 		customerRoutePrivate.POST("/completeProfile", passengerController.AddCustomerBasicDetails)
+		customerRoutePrivate.POST("/updateFcm", passengerController.UpdateFcm)
 		customerRoutePrivate.POST("/getVehicleTypes", rideBookingController.GetEstimatedFare)
 		customerRoutePrivate.POST("/bookRide", rideBookingController.BookRide)
 		customerRoutePrivate.POST("/getRides", rideBookingController.GetBookingHistory)
@@ -235,6 +236,7 @@ func setupMobileAppRouter() http.Handler {
 	driverRoutePrivate.Use(tokenAuthMiddleware("driver"))
 	{
 		driverRoutePrivate.POST("/goOnline", driverController.GoOnline)
+		driverRoutePrivate.POST("/cancelRide", rideBookingController.CancelRideDriver)
 		driverRoutePrivate.POST("/getDriverDetails", driverController.GetDriverDetails)
 		driverRoutePrivate.POST("/uploadDriverDocument", driverController.UploadDriverDocument)
 		driverRoutePrivate.POST("/submitForApproval", driverController.SubmitForApproval)

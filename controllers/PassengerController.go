@@ -94,7 +94,20 @@ func (a *PassengerController) SendOtp(c *gin.Context) {
 		}
 	}
 }
+type UpdateFcmRequest struct {
+	Token string
+}
+func (a *PassengerController) UpdateFcm(c *gin.Context) {
+	var userData = c.MustGet("jwt_data").(*config.JwtClaims)
 
+	var data UpdateFcmRequest
+
+	c.BindJSON(&data)
+
+	database.Db.Model(&models.Passenger{}).Where("id = ?",userData.UserID).UpdateColumn("fcm_id",data.Token)
+	c.JSON(http.StatusOK, GenericResponse{Message:"",Status:true})
+
+}
 func (a *PassengerController) VerifyOtp(c *gin.Context) {
 	var data verifyOtpRequest
 	var response = verifyOtpResponse{Status: false}
