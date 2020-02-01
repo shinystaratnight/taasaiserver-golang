@@ -66,10 +66,10 @@ func tokenAuthMiddleware(userType string) gin.HandlerFunc {
 							database.Db.Model(&models.Driver{}).Where("id = ? AND auth_token = ? ", claims.UserID, tokenString).Count(&count)
 						} else if claims.UserType == "admin" {
 							database.Db.Model(&models.Admin{}).Where("id = ? AND auth_token = ? AND is_active = true", claims.UserID, tokenString).Count(&count)
-							if count == 0{
-								database.Db.Model(&models.Operator{}).Where("id = ? AND auth_token = ? AND is_active = true", claims.UserID, tokenString).Count(&count)
-							}
+
 						}
+					}else if claims.UserType == "operator" {
+						database.Db.Model(&models.Operator{}).Where("id = ? AND auth_token = ? AND is_active = true", claims.UserID, tokenString).Count(&count)
 					}
 
 				}
