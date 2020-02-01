@@ -26,6 +26,8 @@ type Driver struct {
 	FcmID       string
 
 	IsProfileCompleted bool
+	IsOnline bool
+	IsRide bool
 
 	IsActive bool
 }

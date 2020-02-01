@@ -472,57 +472,19 @@ type DriverStatusResponse struct {
 }
 
 func (d *DriverController) GoOnline(c *gin.Context) {
-	/*var userData = c.MustGet("jwt_data").(*config.JwtClaims)
-	var data DriverStatusChangeRequest
-	var response = DriverStatusResponse{Status: false}
-	c.BindJSON(&data)
-	if data.VehicleId == 0 {
-		response.Message = "Invalid vehicle id"
-		c.JSON(http.StatusOK, response)
-		return
-	} else {
-		var isAlreadyOnline = 0
-		database.Db.Model(&models.DriverVehicleAssignment{}).Where("driver_id = ? AND vehicle_id != ? AND is_online = true AND is_active = true", userData.UserID, data.VehicleId).Count(&isAlreadyOnline)
-		if isAlreadyOnline == 1 {
-			response.Message = "Sorry ! You cannot go online for more than 1 vehicle in same time."
-			c.JSON(http.StatusOK, response)
-			return
-		} else {
-			var vehicleAssignment models.DriverVehicleAssignment
-			database.Db.Where("driver_id = ? AND vehicle_id = ? AND is_active = true", userData.UserID, data.VehicleId).First(&vehicleAssignment)
-			if vehicleAssignment.ID == 0 {
-				response.Message = "Sorry ! Access to the vehicle is currently removed.Please try another vehicle."
-				c.JSON(http.StatusOK, response)
-				return
-			} else {
-				var count = 0
-				database.Db.Model(&models.DriverVehicleAssignment{}).Where("vehicle_id = ? AND driver_id != ? AND is_active = true AND is_online = true", data.VehicleId, userData.UserID).Count(&count)
-				if count == 0 {
-					database.Db.Model(&vehicleAssignment).UpdateColumn("is_online", true)
-					response.Status = true
-					response.Message = "Success! Now you are Online"
-				} else {
-					response.Message = "The vehicle is already in use.Please select another vehicle."
-				}
-				c.JSON(http.StatusOK, response)
-				return
-			}
-		}
-
-	}*/
-
+	var userData = c.MustGet("jwt_data").(*config.JwtClaims)
+	var response = DriverStatusResponse{Status: true,Message : "Success! Now you are Online"}
+	database.Db.Model(&models.Driver{}).Where("driver_id = ?  AND is_active = true", userData.UserID).UpdateColumn("is_online", true)
+	c.JSON(http.StatusOK, response)
+	return
 }
 
 func (d *DriverController) GoOffline(c *gin.Context) {
-	/*var userData = c.MustGet("jwt_data").(*config.JwtClaims)
-	var response = DriverStatusResponse{Status: false}
-	database.Db.Model(&models.DriverVehicleAssignment{}).Where("driver_id = ? AND is_online = true", userData.UserID).UpdateColumn("is_online", false)
-	database.Db.Model(&models.DriverVehicleAssignment{}).Where("driver_id = ? ", userData.UserID).UpdateColumn("is_ride", false)
-	response.Status = true
-	response.Message = "Success! Now you are Offline"
+	var userData = c.MustGet("jwt_data").(*config.JwtClaims)
+	var response = DriverStatusResponse{Status: true,Message: "Success! Now you are Offline"}
+	database.Db.Model(&models.Driver{}).Where("driver_id = ?", userData.UserID).UpdateColumn("is_online", false)
 	c.JSON(http.StatusOK, response)
-	return*/
-
+	return
 }
 
 func (a *DriverController) EnableDriver(c *gin.Context) {
