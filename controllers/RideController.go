@@ -55,6 +55,7 @@ type RideListItem struct {
 }
 
 type RideDetail struct {
+	TimeLine []models.RideEventLog
 	PassengerName     string
 	PassengerMobile   string
 	PassengerDialCode int64
@@ -132,7 +133,9 @@ func (r *RideController) GetRideDetail(c *gin.Context) {
 			database.Db.Raw("SELECT rides.*,operators.name as service_area,operators.currency,passengers.name as passenger_name,passengers.dial_code as passenger_dial_code,passengers.mobile_number as passenger_mobile FROM rides INNER JOIN operators ON rides.operator_id = operators.id INNER JOIN passengers ON passengers.id = rides.passenger_id WHERE rides.id = " + c.Param("rideId")).Scan(&detail)
 		}
 	}
-
+	var events []models.RideEventLog
+	database.Db.Where("ride_id = ? ", c.Param("rideId")).Find(&events)
+	detail.TimeLine = events
 	c.JSON(http.StatusOK, detail)
 }
 
