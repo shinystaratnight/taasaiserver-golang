@@ -22,7 +22,7 @@ func AssignDriverForRide(ride models.Ride) {
 
 	var nearestDriver rideDriverDetail
 
-	database.Db.Raw("SELECT drivers.id as driver_id,ST_Distance(vehicles.latlng, ref_geom) AS distance from drivers  CROSS JOIN (SELECT ST_MakePoint(" + fmt.Sprintf("%f", ride.PickupLatitude) + "," + fmt.Sprintf("%f", ride.PickupLongitude) + ")::geography AS ref_geom) AS r  WHERE ST_DWithin(drivers.latlng, ref_geom, 10000) AND drivers.vehicle_type_id =" + strconv.Itoa(int(ride.VehicleTypeID)) + "  ORDER BY ST_Distance(drivers.latlng, ref_geom) LIMIT 1").Scan(&nearestDriver)
+	database.Db.Raw("SELECT drivers.id as driver_id,ST_Distance(drivers.latlng, ref_geom) AS distance from drivers  CROSS JOIN (SELECT ST_MakePoint(" + fmt.Sprintf("%f", ride.PickupLatitude) + "," + fmt.Sprintf("%f", ride.PickupLongitude) + ")::geography AS ref_geom) AS r  WHERE ST_DWithin(drivers.latlng, ref_geom, 10000) AND drivers.vehicle_type_id =" + strconv.Itoa(int(ride.VehicleTypeID)) + "  ORDER BY ST_Distance(drivers.latlng, ref_geom) LIMIT 1").Scan(&nearestDriver)
 	fmt.Println(nearestDriver.DriverID)
 	fmt.Println(nearestDriver.Distance)
 
