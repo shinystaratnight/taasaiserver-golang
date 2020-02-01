@@ -116,6 +116,7 @@ func setupRouter() http.Handler {
 	adminRoutePrivate.Use(tokenAuthMiddleware("admin"))
 	{
 		adminRoutePrivate.POST("/addNewDriver", driverController.AddNewDriver)
+		adminRoutePrivate.POST("/approveDriver", driverController.ApproveDriver)
 		adminRoutePrivate.GET("/getDrivers", driverController.GetDrivers)
 		adminRoutePrivate.GET("/getDriverDetailsWithDoc/:id", driverController.GetDriverDetailsWithDoc)
 		adminRoutePrivate.POST("/addNewVehicleType", vehicleTypeController.AddNewVehicleType)

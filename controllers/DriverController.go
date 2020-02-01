@@ -175,8 +175,19 @@ type verifyOtpDriverResponse struct {
 	DriverDetails models.Driver
 }
 
+type ApproveDriverRequest struct {
+	DriverID int
+}
 
 
+func (a *DriverController) ApproveDriver(c *gin.Context) {
+	var response = GenericResponse{Status: true}
+	var data ApproveDriverRequest
+	c.BindJSON(&data)
+	database.Db.Model(&models.Driver{}).Where("id = ?",data.DriverID).UpdateColumn("is_active",true)
+	c.JSON(http.StatusOK, response)
+
+}
 func (a *DriverController) SubmitForApproval(c *gin.Context) {
 	var response = verifyOtpDriverResponse{Status: false}
 
