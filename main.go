@@ -69,7 +69,7 @@ func tokenAuthMiddleware(userType string) gin.HandlerFunc {
 
 						}
 					}else if claims.UserType == "operator" {
-						database.Db.Model(&models.Operator{}).Where("id = ? AND auth_token = ? AND is_active = true", claims.UserID, tokenString).Count(&count)
+						database.Db.Model(&models.Operator{}).Where("id = ? AND auth_token = ?", claims.UserID, tokenString).Count(&count)
 					}
 
 				}
