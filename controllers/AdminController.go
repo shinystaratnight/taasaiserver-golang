@@ -98,7 +98,7 @@ func (a *AdminController) Authenticate(c *gin.Context) {
 						response.Message = err.Error()
 						response.Status = false
 					} else {
-						database.Db.Model(&admin).UpdateColumn("auth_token", tokenString)
+						database.Db.Model(&operator).UpdateColumn("auth_token", tokenString)
 						response.Status = true
 						response.Token = tokenString
 						response.Message = "User verified successfully"
