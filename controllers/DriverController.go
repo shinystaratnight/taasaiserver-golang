@@ -379,7 +379,7 @@ func (a *DriverController) GetDriverDetailsWithDoc(c *gin.Context) {
 	var docsRequired []models.DriverDocument
 	var docsuploaded []models.DriverDocumentUpload
 	database.Db.Model(&models.Driver{}).Where("id = ? ",c.Param("id")).First(&driverDetails)
-	database.Db.Where("operator_id = ? AND is_active = true",driverDetails.OperatorID).First(&docsRequired)
+	database.Db.Where("operator_id = ?",driverDetails.OperatorID).First(&docsRequired)
 	database.Db.Where("driver_id = ? AND is_active = true",driverDetails.ID).First(&docsuploaded)
 	response.DriverDetails = driverDetails
 	response.DocsRequired = docsRequired
