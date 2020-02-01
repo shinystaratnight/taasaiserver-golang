@@ -3,6 +3,7 @@ package controllers
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/kelvins/geocoder"
 	"golang.org/x/net/context"
 	"googlemaps.github.io/maps"
 	"math"
@@ -11,6 +12,7 @@ import (
 	"taxi/shared/config"
 	"taxi/shared/database"
 	"taxi/shared/googleMap"
+	"time"
 )
 
 type RideBookingController struct {
@@ -45,6 +47,7 @@ type estimatedFare struct {
 	IsActive                 bool    `json:"is_active"`
 	Currency                 string  `json:"currency"`
 	LocationName             string  `json:"location_name"`
+	OperatorName             string  `json:"operator_name"`
 	CategoryName             string  `json:"category_name"`
 	VehicleTypeName          string  `json:"vehicle_type_name"`
 	VehicleTypeDesc          string  `json:"vehicle_type_desc"`
@@ -155,7 +158,7 @@ func (a *RideBookingController) GetDriverBookingHistory(c *gin.Context) {
 }
 
 func (a *RideBookingController) BookRide(c *gin.Context) {
-	/*var data models.Ride
+	var data models.Ride
 	c.BindJSON(&data)
 	var userData = c.MustGet("jwt_data").(*config.JwtClaims)
 
@@ -189,11 +192,11 @@ func (a *RideBookingController) BookRide(c *gin.Context) {
 		c.JSON(http.StatusOK, response)
 		return
 	} else {
-		var intersectLocation models.Location
+		var intersectLocation models.Operator
 		database.Db.Where("is_active = true AND ST_Contains(polygon,ST_GeometryFromText('POINT(" + fmt.Sprintf("%f", data.PickupLatitude) + " " + fmt.Sprintf("%f", data.PickupLongitude) + ")'))").First(&intersectLocation)
 		if intersectLocation.ID != 0 {
 			data.PassengerID = userData.UserID
-			data.LocationID = intersectLocation.ID
+			data.OperatorID = intersectLocation.ID
 			var intersectZoneLocation models.Zone
 			database.Db.Where("is_active = true AND operator_id = ?  AND ST_Contains(polygon,ST_GeometryFromText('POINT("+fmt.Sprintf("%f", data.PickupLatitude)+" "+fmt.Sprintf("%f", data.PickupLongitude)+")'))", intersectLocation.ID).First(&intersectZoneLocation)
 			if intersectZoneLocation.ID != 0 {
@@ -243,10 +246,10 @@ func (a *RideBookingController) BookRide(c *gin.Context) {
 					var eventLog = models.RideEventLog{
 						RideID:     data.ID,
 						RideStatus: data.RideStatus,
-						Message:    "Ride Booking Accepted By Operator",
+						Message:    "Ride Booking Accepted By "+intersectLocation.Name+" Operator",
 					}
 					database.Db.Create(&eventLog)
-					response.Message = "Taasai " + intersectLocation.Name + " Accepted Your Request"
+					response.Message = intersectLocation.Name + " Accepted Your Request"
 					response.Status = true
 					response.RideDetails = data
 					c.JSON(http.StatusOK, response)
@@ -271,7 +274,7 @@ func (a *RideBookingController) BookRide(c *gin.Context) {
 			return
 		}
 
-	}*/
+	}
 }
 
 type cancelRideRequest struct {
