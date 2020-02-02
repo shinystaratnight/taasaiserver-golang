@@ -105,7 +105,9 @@ type DriverDocument struct {
 
 func (a *OperatorController) OperatorDocs(c *gin.Context) {
 	var list []DriverDocument
-	database.Db.Where("operator_id = ?",c.Param("id")).Find(&list)
+	var userData = c.MustGet("jwt_data").(*config.JwtClaims)
+
+	database.Db.Where("operator_id = ?",userData.UserID).Find(&list)
 	c.JSON(http.StatusOK, list)
 }
 
