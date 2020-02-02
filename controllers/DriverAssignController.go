@@ -99,6 +99,12 @@ func CheckDriverAssignmentForRide(rideId uint) {
 			} else {
 
 				database.Db.Model(&ride).UpdateColumn("ride_status", 5)
+				eventLog := models.RideEventLog{
+					RideID:     ride.ID,
+					RideStatus: ride.RideStatus,
+					Message:    "Driver unavailable",
+				}
+				database.Db.Create(&eventLog)
 				data, _ := json.Marshal(&ride)
 				mqttController.Publish(fmt.Sprintf("passenger/%d/driver_unavailable", ride.PassengerID), 2, string(data))
 
@@ -145,6 +151,12 @@ func checkDriversGoingToComplete(ride models.Ride) {
 		database.Db.Where("id = ?", ride.ID).First(&ride)
 		if ride.RideStatus == 0 {
 			database.Db.Model(&ride).UpdateColumn("ride_status", 5)
+			eventLog := models.RideEventLog{
+				RideID:     ride.ID,
+				RideStatus: ride.RideStatus,
+				Message:    "Driver unavailable",
+			}
+			database.Db.Create(&eventLog)
 			data, _ := json.Marshal(&ride)
 			mqttController.Publish(fmt.Sprintf("passenger/%d/driver_unavailable", ride.PassengerID), 2, string(data))
 		}

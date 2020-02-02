@@ -373,9 +373,9 @@ func (r *RideBookingController) CancelRideDriver(c *gin.Context) {
 			database.Db.Model(&models.Driver{}).Where("id = ? ", ride.DriverID).UpdateColumn("is_ride", false)
 			data, err := json.Marshal(&ride)
 			if err == nil {
-				mqttController.Publish(fmt.Sprintf("passenger/%d/ride_cancelled", ride.DriverID), 2, string(data))
+				mqttController.Publish(fmt.Sprintf("passenger/%d/ride_cancelled", ride.PassengerID), 2, string(data))
 			} else {
-				mqttController.Publish(fmt.Sprintf("passenger/%d/ride_cancelled", ride.DriverID), 2, string(data))
+				mqttController.Publish(fmt.Sprintf("passenger/%d/ride_cancelled", ride.PassengerID), 2, string(data))
 			}
 			database.Db.Model(&ride).UpdateColumn("ride_status", 0)
 
