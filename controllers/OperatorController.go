@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strconv"
 	"taxi/models"
+	"taxi/shared/config"
 	"taxi/shared/database"
 
 	"github.com/gin-gonic/gin"
@@ -86,9 +87,27 @@ func (a *OperatorController) GetActiveOperators(c *gin.Context) {
 	database.Db.Where("is_active = ?", true).Find(&list)
 	c.JSON(http.StatusOK, list)
 }
+
+type DriverDocument struct {
+	ID uint
+	OperatorID     uint
+	Name  string
+	IsUploaded bool
+	IsActive       bool
+}
 func (a *OperatorController) GetDriverDocs(c *gin.Context) {
-	var list []models.DriverDocument
+	var list []DriverDocument
 	database.Db.Where("operator_id = ?",c.Param("id")).Find(&list)
+	var docsuploaded []models.DriverDocumentUpload
+	var userData = c.MustGet("jwt_data").(*config.JwtClaims)
+	database.Db.Where("driver_id = ?",userData.UserID).Find(&docsuploaded)
+	for i, doc := range list {
+		for _,uploadedDoc := range docsuploaded{
+			if uploadedDoc.DocID == doc.ID{
+				list[i].IsUploaded = true
+			}
+		}
+	}
 	c.JSON(http.StatusOK, list)
 }
 
