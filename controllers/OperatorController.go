@@ -102,6 +102,26 @@ type DriverDocument struct {
 	IsUploaded bool
 	IsActive       bool
 }
+
+func (a *OperatorController) OperatorDocs(c *gin.Context) {
+	var list []DriverDocument
+	database.Db.Where("operator_id = ?",c.Param("id")).Find(&list)
+	c.JSON(http.StatusOK, list)
+}
+
+type AddOperatorDoc struct{
+	Name string
+}
+
+func (a *OperatorController) AddOperatorDoc(c *gin.Context) {
+	var userData = c.MustGet("jwt_data").(*config.JwtClaims)
+	var data AddOperatorDoc
+	c.BindJSON(&data)
+	doc:=models.DriverDocument{OperatorID:userData.UserID,Name:data.Name}
+	database.Db.Create(&doc);
+	c.JSON(http.StatusOK, GenericResponse{Status:true,Message:""})
+}
+
 func (a *OperatorController) GetDriverDocs(c *gin.Context) {
 	var list []DriverDocument
 	database.Db.Where("operator_id = ?",c.Param("id")).Find(&list)
