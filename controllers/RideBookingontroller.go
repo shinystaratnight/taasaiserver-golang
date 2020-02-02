@@ -37,16 +37,20 @@ type estimatedFare struct {
 	CategoryID               string  `json:"category_id"`
 	VehicleTypeID            uint    `json:"vehicle_type_id"`
 	OperatorID               uint    `json:"operator_id"`
-	MinimumFare              float64 `json:"minimum_fare"`
-	WaitingFare              float64 `json:"waiting_fare"`
-	BaseFare                 float64 `json:"base_fare"`
-	BaseFareDistance         float64 `json:"base_fare_distance"`
-	BaseFareDuration         float64 `json:"base_fare_duration"`
-	DurationFare             float64 `json:"duration_fare"`
-	DistanceFare             float64 `json:"distance_fare"`
-	Tax                      float64 `json:"tax"`
+	BaseFare         float64 `json:"base_fare"`
+	MinimumFare float64 `json:"minimum_fare"`
+	WaitingTimeLimit float64 `json:"waiting_time_limit"`
+	WaitingFee float64 `json:"waiting_fee"`
+	CancellationTimeLimit float64 `json:"cancellation_time_limit"`
+	CancellationFee float64 `json:"cancellation_fee"`
+	DurationFare     float64 `json:"duration_fare"`
+	DistanceFare     float64 `json:"distance_fare"`
+	Tax              float64 `json:"tax"`
+	TrafficFactor            float64 `json:"traffic_factor"`
 	EstimatedFare            float64 `json:"estimated_fare"`
+	EstimatedFareMax         float64 `json:"estimated_fare_max"`
 	IsActive                 bool    `json:"is_active"`
+
 	Currency                 string  `json:"currency"`
 	LocationName             string  `json:"location_name"`
 	OperatorName             string  `json:"operator_name"`
@@ -82,14 +86,20 @@ func (r *RideBookingController) GetEstimatedFare(c *gin.Context) {
 				if fareResult.RowsAffected != 0 {
 					for index, fare := range fareList {
 						totalFare := fare.BaseFare
-						if estimatedDistance > fare.BaseFareDistance {
-							totalFare += (estimatedDistance - fare.BaseFareDistance) * fare.DistanceFare
-						}
-						if estimatedDuration > fare.BaseFareDuration {
-							totalFare += (estimatedDuration - fare.BaseFareDuration) * fare.DurationFare
-						}
+
+						totalFare += (estimatedDistance * fare.DistanceFare)
+
+						totalFare += (estimatedDuration * fare.DurationFare)
+
 						totalFare += (fare.Tax / 100) * totalFare
+
 						fareList[index].EstimatedFare = math.Ceil(totalFare*100) / 100
+
+						totalFare += (fare.TrafficFactor/100)*totalFare
+
+						fareList[index].EstimatedFareMax = math.Ceil(totalFare*100) / 100
+
+
 						fmt.Println("estimatef fare : %f", totalFare)
 
 					}
@@ -102,16 +112,18 @@ func (r *RideBookingController) GetEstimatedFare(c *gin.Context) {
 						if len(zoneFareList) != 0 {
 							for _, fare := range zoneFareList {
 								totalFare := fare.BaseFare
-								if estimatedDistance > fare.BaseFareDistance {
-									totalFare += (estimatedDistance - fare.BaseFareDistance) * fare.DistanceFare
-								}
-								if estimatedDuration > fare.BaseFareDuration {
-									totalFare += (estimatedDuration - fare.BaseFareDuration) * fare.DurationFare
-								}
+								totalFare += (estimatedDistance * fare.DistanceFare)
+
+								totalFare += (estimatedDuration  * fare.DurationFare)
+
 								totalFare += (fare.Tax / 100) * totalFare
+
 								for index, normalFare := range fareList {
 									if normalFare.VehicleTypeID == fare.VehicleTypeID {
 										fareList[index].EstimatedFare = math.Ceil(totalFare*100) / 100
+										totalFare += (fare.TrafficFactor/100)*totalFare
+
+										fareList[index].EstimatedFareMax = math.Ceil(totalFare*100) / 100
 										break
 									}
 								}

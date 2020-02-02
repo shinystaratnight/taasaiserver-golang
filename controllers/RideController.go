@@ -281,7 +281,10 @@ func (r *RideController) DriverArrived(c *gin.Context) {
 	var ride models.Ride
 	result := database.Db.Where("id = ? AND driver_id = ? AND ride_status = 1", rideID, userData.UserID).First(&ride)
 	if result.RowsAffected == 1 {
-		database.Db.Model(&ride).UpdateColumn("ride_status", 2)
+		database.Db.Model(&ride).UpdateColumns(&models.Ride{
+			RideDriverArrivedTime: time.Now(),
+			RideStatus:2,
+		})
 		var eventLog = models.RideEventLog{
 			RideID:     ride.ID,
 			RideStatus: ride.RideStatus,
@@ -358,7 +361,12 @@ func (r *RideController) GetRideDetailsForMobile(c *gin.Context) {
 		} else {
 			var fare models.ZoneFare
 			database.Db.Where("id = ?", ride.ZoneFareID).First(&fare)
-			response.BaseFareDetails = models.Fare{BaseFare: fare.BaseFare, BaseFareDistance: fare.BaseFareDistance, BaseFareDuration: fare.BaseFareDuration}
+			response.BaseFareDetails = models.Fare{
+				BaseFare: fare.BaseFare,
+				DistanceFare: fare.DistanceFare,
+				DurationFare: fare.DurationFare,
+				MinimumFare: fare.MinimumFare,
+			}
 			response.Status = true
 		}
 	}
@@ -409,15 +417,23 @@ func (r *RideController) StopTrip(c *gin.Context) {
 			if fareResult.RowsAffected != 0 {
 				totalFare := fare.BaseFare
 				var distanceFare, durationFare float64
-				if ride.Distance > fare.BaseFareDistance {
-					distanceFare = (ride.Distance - fare.BaseFareDistance) * fare.DistanceFare
-					distanceFare = math.Ceil(distanceFare*100) / 100
+				distanceFare = (ride.Distance * fare.DistanceFare)
+				distanceFare = math.Ceil(distanceFare*100) / 100
+
+				durationFare = (duration * fare.DurationFare)
+				durationFare = math.Ceil(durationFare*100) / 100
+
+				var waitingTime = ride.RideStartTime.Sub(ride.RideDriverArrivedTime).Minutes()
+				var watingFee = 0.0
+				if fare.WaitingTimeLimit < waitingTime {
+					watingFee = fare.WaitingFee * waitingTime
+					if watingFee<0 {
+						watingFee *= (-1)
+					}
+					watingFee = math.Ceil(watingFee*100) / 100
 				}
-				if duration > fare.BaseFareDuration {
-					durationFare = (duration - fare.BaseFareDuration) * fare.DurationFare
-					durationFare = math.Ceil(durationFare*100) / 100
-				}
-				totalFare = totalFare + distanceFare + durationFare
+
+				totalFare = totalFare + distanceFare + durationFare +watingFee
 				var tax = (fare.Tax / 100) * totalFare
 				tax = math.Ceil(tax*100) / 100
 				totalFare += tax
@@ -428,6 +444,7 @@ func (r *RideController) StopTrip(c *gin.Context) {
 					DistanceFare:     distanceFare,
 					DurationFare:     durationFare,
 					Tax:              tax,
+					WaitingFare:watingFee,
 					TotalFare:        totalFare,
 					DurationReadable: diff.String(),
 				})
@@ -453,16 +470,25 @@ func (r *RideController) StopTrip(c *gin.Context) {
 			if fareResult.RowsAffected != 0 {
 				totalFare := fare.BaseFare
 				var distanceFare, durationFare float64
-				if ride.Distance > fare.BaseFareDistance {
-					distanceFare = (ride.Distance - fare.BaseFareDistance) * fare.DistanceFare
-					distanceFare = math.Ceil(distanceFare*100) / 100
-				}
-				if duration > fare.BaseFareDuration {
-					durationFare = (duration - fare.BaseFareDuration) * fare.DurationFare
-					durationFare = math.Ceil(durationFare*100) / 100
+
+				distanceFare = (ride.Distance  * fare.DistanceFare)
+				distanceFare = math.Ceil(distanceFare*100) / 100
+
+				durationFare = (duration  * fare.DurationFare)
+				durationFare = math.Ceil(durationFare*100) / 100
+
+				var waitingTime = ride.RideStartTime.Sub(ride.RideDriverArrivedTime).Minutes()
+				var watingFee = 0.0
+				if fare.WaitingTimeLimit < waitingTime {
+					watingFee = fare.WaitingFee * waitingTime
+					if watingFee<0 {
+						watingFee *= (-1)
+					}
+					watingFee = math.Ceil(watingFee*100) / 100
 
 				}
-				totalFare = totalFare + distanceFare + durationFare
+
+				totalFare = totalFare + distanceFare + durationFare + watingFee
 				var tax = (fare.Tax / 100) * totalFare
 				tax = math.Ceil(tax*100) / 100
 				totalFare += tax
@@ -474,6 +500,7 @@ func (r *RideController) StopTrip(c *gin.Context) {
 					DurationFare:     durationFare,
 					Tax:              tax,
 					TotalFare:        totalFare,
+					WaitingFare: watingFee,
 					DurationReadable: diff.String(),
 				})
 				database.Db.Model(&models.Driver{}).Where("id = ? ", ride.DriverID).UpdateColumns(&models.Driver{IsRide:false,IsOnline:true})
@@ -481,7 +508,12 @@ func (r *RideController) StopTrip(c *gin.Context) {
 				database.Db.Where("id = ?", ride.OperatorID).First(&location)
 				response.RideDetails = ride
 				response.Currency = location.Currency
-				response.BaseFareDetails = models.Fare{BaseFare: fare.BaseFare, BaseFareDistance: fare.BaseFareDistance, BaseFareDuration: fare.BaseFareDuration}
+				response.BaseFareDetails = models.Fare{
+					BaseFare: fare.BaseFare,
+					DistanceFare: fare.DistanceFare,
+					DurationFare: fare.DurationFare,
+					MinimumFare: fare.MinimumFare,
+				}
 				response.Status = true
 
 				data, err := json.Marshal(&response)

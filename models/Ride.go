@@ -26,6 +26,7 @@ type Ride struct {
 	DropLongitude float64 `gorm:"not null"`
 
 	RideDateTime  time.Time `gorm:"not null"`
+	RideDriverArrivedTime  time.Time `gorm:"not null"`
 	RideStartTime time.Time `gorm:"not null"`
 	RideEndTime   time.Time `gorm:"not null"`
 
@@ -40,6 +41,8 @@ type Ride struct {
 	ZoneFareID    uint    `gorm:"index:idx_ride",sql: "default: null"`
 	DistanceFare  float64 `sql: "default: null"`
 	DurationFare  float64 `sql: "default: null"`
+	WaitingFare  float64 `sql: "default: null"`
+	CancellationFee  float64 `sql: "default: null"`
 	Tax           float64 `sql: "default: null"`
 	IsPaid        bool    `sql: "default: null"`
 	TransactionID string  `sql: "default: null"`
