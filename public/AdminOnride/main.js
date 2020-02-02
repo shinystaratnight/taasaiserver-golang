@@ -4012,7 +4012,8 @@ var MainComponent = /** @class */ (function () {
         this.isAdmin = false;
         translate.setDefaultLang('en');
         var currentUser = this.authenticationService.currentUserValue;
-        this.isAdmin = currentUser.IsAdmin;
+        if (currentUser != null)
+            this.isAdmin = currentUser.IsAdmin;
     }
     MainComponent.prototype.ngOnInit = function () {
     };
