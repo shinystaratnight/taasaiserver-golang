@@ -101,12 +101,21 @@ func (r *RideController) GetRides(c *gin.Context) {
 	var data GetRidesRequest
 	var list []RideListItem
 	c.BindJSON(&data)
-
-	if data.RideStatus == -1 {
-		database.Db.Raw("SELECT rides.*,operators.name as service_area,passengers.name as passenger_name FROM rides INNER JOIN operators ON rides.operator_id = operators.id INNER JOIN passengers ON passengers.id = rides.passenger_id ORDER BY rides.created_at DESC").Scan(&list)
-	} else {
-		database.Db.Raw("SELECT rides.*,operators.name as service_area,passengers.name as passenger_name FROM rides INNER JOIN operators ON rides.operator_id = operators.id INNER JOIN passengers ON passengers.id = rides.passenger_id WHERE rides.ride_status = " + strconv.Itoa(int(data.RideStatus)) + " ORDER BY rides.created_at DESC").Scan(&list)
+	var userData = c.MustGet("jwt_data").(*config.JwtClaims)
+	if userData.UserType == "admin" {
+		if data.RideStatus == -1 {
+			database.Db.Raw("SELECT rides.*,operators.name as service_area,passengers.name as passenger_name FROM rides INNER JOIN operators ON rides.operator_id = operators.id INNER JOIN passengers ON passengers.id = rides.passenger_id ORDER BY rides.created_at DESC").Scan(&list)
+		} else {
+			database.Db.Raw("SELECT rides.*,operators.name as service_area,passengers.name as passenger_name FROM rides INNER JOIN operators ON rides.operator_id = operators.id INNER JOIN passengers ON passengers.id = rides.passenger_id WHERE rides.ride_status = " + strconv.Itoa(int(data.RideStatus)) + " ORDER BY rides.created_at DESC").Scan(&list)
+		}
+	}else{
+		if data.RideStatus == -1 {
+			database.Db.Raw("SELECT rides.*,operators.name as service_area,passengers.name as passenger_name FROM rides INNER JOIN operators ON rides.operator_id = "+strconv.Itoa(int(userData.UserID))+ "INNER JOIN passengers ON passengers.id = rides.passenger_id ORDER BY rides.created_at DESC").Scan(&list)
+		} else {
+			database.Db.Raw("SELECT rides.*,operators.name as service_area,passengers.name as passenger_name FROM rides INNER JOIN operators ON rides.operator_id = "+strconv.Itoa(int(userData.UserID))+" INNER JOIN passengers ON passengers.id = rides.passenger_id WHERE rides.ride_status = " + strconv.Itoa(int(data.RideStatus)) + " ORDER BY rides.created_at DESC").Scan(&list)
+		}
 	}
+
 	c.JSON(http.StatusOK, list)
 }
 

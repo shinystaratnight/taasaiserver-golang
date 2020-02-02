@@ -249,6 +249,11 @@ func (a *PassengerController) GetNearByDrivers(c *gin.Context) {
 
 func (a *PassengerController) GetAllPassengers(c *gin.Context) {
 	var list []models.Passenger
-	database.Db.Select([]string{"id", "name", "image", "dial_code", "mobile_number", "is_active"}).Find(&list)
+	var userData = c.MustGet("jwt_data").(*config.JwtClaims)
+	if userData.UserType == "admin" {
+		database.Db.Select([]string{"id", "name", "image", "dial_code", "mobile_number", "is_active"}).Find(&list)
+	}else{
+		database.Db.Raw("SELECT passengers.id,passengers.name,passengers.image,passengers.dial_code,passengers.mobile_number,passengers.is_active FROM passengers INNER JOIN rides ON rides.passenger_id = passengers.id AND rides.operator_id = "+strconv.Itoa(int(userData.UserID))).Scan(&list)
+	}
 	c.JSON(http.StatusOK, list)
 }
