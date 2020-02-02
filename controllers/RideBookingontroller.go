@@ -304,7 +304,7 @@ func (r *RideBookingController) CancelRide(c *gin.Context) {
 		return
 	} else {
 		var ride models.Ride
-		database.Db.Where("id = ? AND driver_id = ?", data.RideID,userData.UserID).First(&ride)
+		database.Db.Where("id = ? AND passenger_id = ?", data.RideID,userData.UserID).First(&ride)
 		if ride.ID == 0 {
 			response.Message = "Ride details not found"
 			c.JSON(http.StatusOK, response)
