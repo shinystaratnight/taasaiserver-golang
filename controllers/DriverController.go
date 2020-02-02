@@ -50,7 +50,7 @@ func (a *DriverController) GetDrivers(c *gin.Context) {
 		database.Db.Raw("SELECT drivers.* ,operators.name as operator_name,operators.location_name FROM drivers INNER JOIN operators ON drivers.operator_id = operators.id ").Find(&list)
 
 	}else{
-		database.Db.Raw("SELECT drivers.* ,operators.name as operator_name,operators.location_name FROM drivers INNER JOIN operators ON drivers.operator_id = "+strconv.Itoa(int(userData.UserID))).Find(&list)
+		database.Db.Raw("SELECT drivers.* ,operators.name as operator_name,operators.location_name FROM drivers INNER JOIN operators ON operators.id = "+strconv.Itoa(int(userData.UserID))).Find(&list)
 
 	}
 	c.JSON(http.StatusOK, list)
