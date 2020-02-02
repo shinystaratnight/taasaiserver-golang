@@ -387,7 +387,7 @@ func (r *RideBookingController) CancelRideDriver(c *gin.Context) {
 			database.Db.Create(&eventLog)
 			response.Message = "Ride cancelled successfully!"
 			response.Status = true
-			go AssignDriverForRide(ride)
+			go scheduleNextAssignment(ride.ID)
 
 			c.JSON(http.StatusOK, response)
 			return
