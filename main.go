@@ -234,7 +234,7 @@ func setupMobileAppRouter() http.Handler {
 	driverRoutePrivate := router.Group("/driver")
 	driverRoutePrivate.Use(tokenAuthMiddleware("driver"))
 	{
-		driverRoutePublic.GET("/getDriverDocs/:id", operatorController.GetDriverDocs)
+		driverRoutePrivate.GET("/getDriverDocs/:id", operatorController.GetDriverDocs)
 
 		driverRoutePrivate.POST("/goOnline", driverController.GoOnline)
 		driverRoutePrivate.POST("/cancelRide", rideBookingController.CancelRideDriver)

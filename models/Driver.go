@@ -13,7 +13,7 @@ type Driver struct {
 
 	OperatorID int `gorm:"not null"`
 
-	LicenseNumber   string `gorm:"not null"`
+	LicenseNumber   string
 	VehicleName   string `gorm:"not null"`
 	VehicleTypeID uint   `gorm:"not null;index:idx_vehicle"`
 	VehicleBrand  string `gorm:"not null"`
