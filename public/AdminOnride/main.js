@@ -385,10 +385,9 @@ var JwtInterceptor = /** @class */ (function () {
         // add authorization header with jwt token if available
         var currentUser = this.authenticationService.currentUserValue;
         if (currentUser && currentUser.Token) {
-            console.log("token = " + currentUser.Token);
             request = request.clone({
                 setHeaders: {
-                    "Authorization": currentUser.Token
+                    Authorization: currentUser.Token
                 }
             });
         }
@@ -550,7 +549,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content\">\n\n  <div class=\"row\">\n    <div class=\"col-lg-12 \">\n      <div class=\"card mb-4\">\n        <div class=\"card-header\" translate>company_add</div>\n        <div class=\"card-body\">\n          <form [formGroup]=\"companyForm\">\n            <div class=\"form-group\">\n              <label for=\"name\" translate>add_company_name</label>\n              <input type=\"text\" formControlName=\"name\" placeholder=\"Enter Company Name\" name=\"name\" [(ngModel)]=\"name\"\n                class=\"form-control\" [ngClass]=\"{'is-invalid': submitted && f.name.errors}\" autocomplete=\"off\">\n              <div *ngIf=\"submitted && f.name.errors\" class=\"invalid-feedback\">\n                <div *ngIf=\"f.name.errors.required\" translate>add_company_name_required</div>\n              </div>\n            </div>\n\n\n            <div class=\"form-group\">\n              <label for=\"name\" translate>add_company_email</label>\n              <input type=\"email\" formControlName=\"email\" placeholder=\"Enter email address\"\n                name=\"email\" [(ngModel)]=\"email\" class=\"form-control\"\n                [ngClass]=\"{'is-invalid': submitted && f.email.errors}\" autocomplete=\"off\">\n              <div *ngIf=\"submitted && f.email.errors\" class=\"invalid-feedback\">\n                <div *ngIf=\"f.email.errors.required\" translate>add_company_email_required</div>\n              </div>\n            </div>\n            \n\n              <div class=\"form-group\">\n                <label for=\"name\" translate>add_company_locations</label>\n                <ngx-select-dropdown formControlName=\"location_id\" name=\"location_id\" [(ngModel)]=\"location_id\" [config]=\"config\" [multiple]=\"true\"\n                  [options]=\"locationList\" [ngClass]=\"{'is-invalid': submitted && f.location_id.errors}\"></ngx-select-dropdown>                \n                  <div *ngIf=\"submitted && f.location_id.errors\" class=\"invalid-feedback\">\n                  <div *ngIf=\"f.location_id.errors.required\" translate>add_company_locations_required</div>\n                </div>\n              </div>\n            <div class=\"form-group\">\n              <label for=\"name\"><p translate>add_company_commission</p><span class=\"strong\" style=\"color: black;font-weight: 400;\" translate>add_company_commission_include</span> </label>\n              <input type=\"number\" formControlName=\"commission\" placeholder=\"Enter your commisson\" name=\"commission\" [(ngModel)]=\"commission\"\n                class=\"form-control\" [ngClass]=\"{'is-invalid': submitted && f.commission.errors}\" autocomplete=\"off\">\n              <div *ngIf=\"submitted && f.commission.errors\" class=\"invalid-feedback\">\n                <div *ngIf=\"f.commission.errors.required\" translate>add_company_commission_required</div>\n              </div>\n            </div>\n            <div class=\"form-group\">\n              <label for=\"name\" translate>add_company_password</label>\n              <input type=\"text\" formControlName=\"password\" placeholder=\"Enter Password\" name=\"password\"\n                [(ngModel)]=\"password\" class=\"form-control\" [ngClass]=\"{'is-invalid': submitted && f.password.errors}\"\n                autocomplete=\"off\">\n              <div *ngIf=\"submitted && f.password.errors\" class=\"invalid-feedback\">\n                <div *ngIf=\"f.password.errors.required\" translate>Password Is Required</div>\n              </div>\n            </div>\n\n            <div class=\"form-group\">\n              <label for=\"name\" translate>confirm_password</label>\n              <input type=\"text\" formControlName=\"confirmPassword\" placeholder=\"Enter Confirm Password\" name=\"confirmPassword\"\n                [(ngModel)]=\"confirmPassword\" class=\"form-control\" [ngClass]=\"{'is-invalid': submitted && f.confirmPassword.errors}\"\n                autocomplete=\"off\">\n              <div *ngIf=\"submitted && f.email.errors\" class=\"invalid-feedback\">\n                <div *ngIf=\"f.confirmPassword.errors.required\" translate>confirm_password_required</div>\n              </div>\n            </div>\n          \n            <div class=\"form-group\">\n              <span><button (click)=onSubmit() class=\"btn btn-primary\" translate>add_company_submit</button></span>\n              <span style=\"margin-left: 20px;\"><button (click)=onCancel()\n                  class=\"btn btn-danger\" translate>add_company_cancel</button></span>\n            </div>\n          </form>\n        </div>\n      </div>\n    </div>\n  </div>"
+module.exports = "<div class=\"content\">\n\n  <div class=\"row\">\n    <div class=\"col-lg-12 \">\n      <div class=\"card mb-4\">\n        <div class=\"card-header\" translate>company_add</div>\n        <div class=\"card-body\">\n          <form [formGroup]=\"companyForm\">\n            \n            <div class=\"form-group\">\n              <label for=\"name\" translate>add_company_name</label>\n              <input type=\"text\" formControlName=\"name\" placeholder=\"Enter Company Name\" name=\"name\" [(ngModel)]=\"name\"\n                class=\"form-control\" [ngClass]=\"{'is-invalid': submitted && f.name.errors}\" autocomplete=\"off\">\n              <div *ngIf=\"submitted && f.name.errors\" class=\"invalid-feedback\">\n                <div *ngIf=\"f.name.errors.required\" translate>add_company_name_required</div>\n              </div>\n            </div>\n\n\n            <div class=\"form-group\">\n              <label for=\"name\" translate>add_company_email</label>\n              <input type=\"email\" formControlName=\"email\" placeholder=\"Enter email address\"\n                name=\"email\" [(ngModel)]=\"email\" class=\"form-control\"\n                [ngClass]=\"{'is-invalid': submitted && f.email.errors}\" autocomplete=\"off\">\n              <div *ngIf=\"submitted && f.email.errors\" class=\"invalid-feedback\">\n                <div *ngIf=\"f.email.errors.required\" translate>add_company_email_required</div>\n              </div>\n            </div>\n            \n\n              <div class=\"form-group\">\n                <label for=\"name\" translate>add_company_locations</label>\n                <ngx-select-dropdown formControlName=\"location_id\" name=\"location_id\" [(ngModel)]=\"location_id\" [config]=\"config\" [multiple]=\"true\"\n                  [options]=\"locationList\" [ngClass]=\"{'is-invalid': submitted && f.location_id.errors}\"></ngx-select-dropdown>                \n                  <div *ngIf=\"submitted && f.location_id.errors\" class=\"invalid-feedback\">\n                  <div *ngIf=\"f.location_id.errors.required\" translate>add_company_locations_required</div>\n                </div>\n              </div>\n            <div class=\"form-group\">\n              <label for=\"name\"><p translate>add_company_commission</p><span class=\"strong\" style=\"color: black;font-weight: 400;\" translate>add_company_commission_include</span> </label>\n              <input type=\"number\" formControlName=\"commission\" placeholder=\"Enter your commisson\" name=\"commission\" [(ngModel)]=\"commission\"\n                class=\"form-control\" [ngClass]=\"{'is-invalid': submitted && f.commission.errors}\" autocomplete=\"off\">\n              <div *ngIf=\"submitted && f.commission.errors\" class=\"invalid-feedback\">\n                <div *ngIf=\"f.commission.errors.required\" translate>add_company_commission_required</div>\n              </div>\n            </div>\n            <div class=\"form-group\">\n              <label for=\"name\" translate>add_company_password</label>\n              <input type=\"text\" formControlName=\"password\" placeholder=\"Enter Password\" name=\"password\"\n                [(ngModel)]=\"password\" class=\"form-control\" [ngClass]=\"{'is-invalid': submitted && f.password.errors}\"\n                autocomplete=\"off\">\n              <div *ngIf=\"submitted && f.password.errors\" class=\"invalid-feedback\">\n                <div *ngIf=\"f.password.errors.required\" translate>Password Is Required</div>\n              </div>\n            </div>\n\n            <div class=\"form-group\">\n              <label for=\"name\" translate>confirm_password</label>\n              <input type=\"text\" formControlName=\"confirmPassword\" placeholder=\"Enter Confirm Password\" name=\"confirmPassword\"\n                [(ngModel)]=\"confirmPassword\" class=\"form-control\" [ngClass]=\"{'is-invalid': submitted && f.confirmPassword.errors}\"\n                autocomplete=\"off\">\n              <div *ngIf=\"submitted && f.email.errors\" class=\"invalid-feedback\">\n                <div *ngIf=\"f.confirmPassword.errors.required\" translate>confirm_password_required</div>\n              </div>\n            </div>\n          \n            <div class=\"form-group\">\n              <span><button (click)=onSubmit() class=\"btn btn-primary\" translate>add_company_submit</button></span>\n              <span style=\"margin-left: 20px;\"><button (click)=onCancel()\n                  class=\"btn btn-danger\" translate>add_company_cancel</button></span>\n            </div>\n          </form>\n        </div>\n      </div>\n    </div>\n  </div>"
 
 /***/ }),
 
@@ -830,7 +829,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row page-tilte align-items-center\">\n\n    <div class=\"col-md-auto\">\n        <a href=\"#\" class=\"mt-3 d-md-none float-right toggle-controls\"><span\n                class=\"material-icons\">keyboard_arrow_down</span></a>\n        <h1 class=\"weight-300 h3 title\">{{location_name}}</h1>\n       \n        <p class=\"text-muted m-0 desc\"></p>\n    </div>\n</div>\n<div class=\"content\">\n\n        <div class=\"row\">\n            <div class=\"col-lg-12 \">\n                <div class=\"card mb-4\">\n                <div class=\"card-header\" translate>add_fare_title</div>,\n                    <div class=\"card-body\">\n    \n                    <form [formGroup]=\"fareForm\">\n\n                        <div class=\"form-group\">\n                            <label for=\"sel1\" translate>add_fare_vehicle_type</label>\n                            <select class=\"form-control\" formControlName=\"vehicle_type_id\" name=\"vehicle_type_id\" [(ngModel)]=\"vehicle_type_id\" [ngClass]=\"{'is-invalid': submitted && f.vehicle_type_id.errors}\">\n                                    <option [ngValue]=\"undefined\" disabled  selected>Select Vehicle Type</option>\n                                <option *ngFor=\"let vehicletype of vehicletypes\" value=\"{{vehicletype.ID}}\">{{vehicletype.VehicleCategoryName+\" - \"+vehicletype.Name}}</option>\n                            </select>\n                            <div *ngIf=\"submitted && f.vehicle_type_id.errors\" class=\"invalid-feedback\">\n                                <div *ngIf=\"f.vehicle_type_id.errors.required\" translate>add_fare_vehicle_type_name</div>\n                            </div>\n                        </div>    \n          \n                        <div class=\"form-group\">\n                            <label translate>add_basefare</label>\n                            <div class=\"input-group\">\n                                <input  type=\"number\" min=\"0\" class=\"form-control\" formControlName=\"base_fare\" name=\"base_fare\" [(ngModel)]=\"base_fare\"  placeholder=\"Enter Base Fare\" [ngClass]=\"{'is-invalid': submitted && f.base_fare.errors}\">\n                            <div *ngIf=\"submitted && f.base_fare.errors\" class=\"invalid-feedback\">\n                                <div *ngIf=\"f.base_fare.errors.required\" translate>add_basefare_required</div>\n                            </div>\n                            </div>\n                        </div>\n\n                        <div>\n                            <label translate>add_fare_km_basefare</label>\n                            <div class=\"form-group input-group mb-3\">\n                                <input type=\"number\" min=\"0\" class=\"form-control\" formControlName=\"base_fare_distance\" [ngClass]=\"{'is-invalid': submitted && f.base_fare_distance.errors}\" name=\"base_fare_distance\" [(ngModel)]=\"base_fare_distance\" placeholder=\"Enter Km included in Base Fare\" aria-label=\"Recipient's username\" aria-describedby=\"basic-addon2\">\n                                <div class=\"input-group-append\">\n                                    <span class=\"input-group-text\" id=\"basic-addon2\">KM</span>\n                                </div>\n                                <div *ngIf=\"submitted && f.base_fare_distance.errors\" class=\"invalid-feedback\">\n                                    <div *ngIf=\"f.base_fare_distance.errors.required\" translate>add_fare_km_basefare_required</div>\n                                </div>\n                            </div>\n                        </div>\n\n                        <div>\n                            <label translate>add_fare_ride_basefare</label>\n                            <div class=\"form-group input-group mb-3\">\n                                <input type=\"number\" min=\"0\" class=\"form-control\" formControlName=\"base_fare_duration\" [ngClass]=\"{'is-invalid': submitted && f.base_fare_duration.errors}\" name=\"base_fare_duration\" [(ngModel)]=\"base_fare_duration\" placeholder=\"Enter Ride Minutes included in Base Fare\" aria-label=\"Recipient's username\" aria-describedby=\"basic-addon2\">\n                                <div class=\"input-group-append\">\n                                    <span class=\"input-group-text\" id=\"basic-addon2\">Minutes</span>\n                                </div>\n                                <div *ngIf=\"submitted && f.base_fare_duration.errors\" class=\"invalid-feedback\">\n                                    <div *ngIf=\"f.base_fare_duration.errors.required\" translate>add_fare_ride_basefare_required</div>            \n                                </div>\n                            </div>\n                        </div>\n\n                        <div>\n                            <label translate>add_distancefare</label>\n                            <div class=\"form-group input-group mb-3\">\n                                <input type=\"number\" min=\"0\" class=\"form-control\" formControlName=\"distance_fare\" [ngClass]=\"{'is-invalid': submitted && f.distance_fare.errors}\" name=\"distance_fare\" [(ngModel)]=\"distance_fare\" placeholder=\"Enter Distance Fare\" aria-label=\"Recipient's username\" aria-describedby=\"basic-addon2\">\n                                <div class=\"input-group-append\">\n                                    <span class=\"input-group-text\" id=\"basic-addon2\">Per Km</span>\n                                </div>\n                                <div *ngIf=\"submitted && f.distance_fare.errors\" class=\"invalid-feedback\">\n                                    <div *ngIf=\"f.distance_fare.errors.required\" translate>add_distancefare_required</div>\n                                </div>\n                            </div>\n                        </div>\n\n                        <div>\n                            <label translate>add_durationfare</label>\n                            <div class=\"form-group input-group mb-3\">\n                                <input type=\"number\" min=\"0\" class=\"form-control\" formControlName=\"duration_fare\" [ngClass]=\"{'is-invalid': submitted && f.duration_fare.errors}\" name=\"duration_fare\" [(ngModel)]=\"duration_fare\" placeholder=\"Enter Duration Fare\" aria-label=\"Recipient's username\" aria-describedby=\"basic-addon2\">\n                                <div class=\"input-group-append\">\n                                    <span class=\"input-group-text\" id=\"basic-addon2\">Per Minute</span>\n                                </div>\n                                <div *ngIf=\"submitted && f.duration_fare.errors\" class=\"invalid-feedback\">\n                                    <div *ngIf=\"f.duration_fare.errors.required\" translate>add_durationfare_required</div>\n                                </div>\n                            </div>\n                        </div>\n\n                        <div>\n                            <label translate>add_tax</label>\n                            <div class=\"form-group input-group mb-3\">\n                                <input type=\"number\" step=\"0.01\" min=\"0\" class=\"form-control\" formControlName=\"Tax\" [ngClass]=\"{'is-invalid': submitted && f.Tax.errors}\" name=\"tax\" [(ngModel)]=\"tax\" placeholder=\"Enter Tax %\" aria-label=\"Recipient's username\" aria-describedby=\"basic-addon2\">\n                                <div class=\"input-group-append\">\n                                    <span class=\"input-group-text\" id=\"basic-addon2\">%</span>\n                                </div>\n                                <div *ngIf=\"submitted && f.Tax.errors\" class=\"invalid-feedback\">\n                                    <div *ngIf=\"f.Tax.errors.required\">add_tax_required </div>\n                                </div>\n                            </div>\n                        </div>\n            \n                        <div class=\"form-group\">\n                                <span><button (click)=onSubmit() class=\"btn btn-primary\" translate>add_fare_submit</button></span>\n                                <span style=\"margin-left: 20px;\"><button (click)=onCancel()() class=\"btn btn-danger\" translate>add_fare_cancel</button></span> \n                        </div>\n                     </form>\n                     </div>\n                </div>\n            </div>\n</div>"
+module.exports = "<div class=\"row page-tilte align-items-center\">\n\n    <div class=\"col-md-auto\">\n        <a href=\"#\" class=\"mt-3 d-md-none float-right toggle-controls\"><span\n                class=\"material-icons\">keyboard_arrow_down</span></a>\n        <h1 class=\"weight-300 h3 title\">{{location_name}}</h1>\n       \n        <p class=\"text-muted m-0 desc\"></p>\n    </div>\n</div>\n<div class=\"content\">\n\n        <div class=\"row\">\n            <div class=\"col-lg-12 \">\n                <div class=\"card mb-4\">\n                <div class=\"card-header\" translate>add_fare_title</div>,\n                    <div class=\"card-body\">\n    \n                    <form [formGroup]=\"fareForm\">\n\n                        <div class=\"form-group\">\n                            <label for=\"sel1\" translate>add_fare_vehicle_type</label>\n                            <select class=\"form-control\" formControlName=\"vehicle_type_id\" name=\"vehicle_type_id\" [(ngModel)]=\"vehicle_type_id\" [ngClass]=\"{'is-invalid': submitted && f.vehicle_type_id.errors}\">\n                                    <option [ngValue]=\"undefined\" disabled  selected>Select Vehicle Type</option>\n                                <option *ngFor=\"let vehicletype of vehicletypes\" value=\"{{vehicletype.ID}}\">{{vehicletype.VehicleCategoryName+\" - \"+vehicletype.Name}}</option>\n                            </select>\n                            <div *ngIf=\"submitted && f.vehicle_type_id.errors\" class=\"invalid-feedback\">\n                                <div *ngIf=\"f.vehicle_type_id.errors.required\" translate>add_fare_vehicle_type_name</div>\n                            </div>\n                        </div>    \n          \n                        <div class=\"form-group\">\n                            <label translate>add_basefare</label>\n                            <div class=\"input-group\">\n                                <input  type=\"number\" min=\"0\" class=\"form-control\" formControlName=\"base_fare\" name=\"base_fare\" [(ngModel)]=\"base_fare\"  placeholder=\"Enter Base Fare\" [ngClass]=\"{'is-invalid': submitted && f.base_fare.errors}\">\n                            <div *ngIf=\"submitted && f.base_fare.errors\" class=\"invalid-feedback\">\n                                <div *ngIf=\"f.base_fare.errors.required\" translate>add_basefare_required</div>\n                            </div>\n                            </div>\n                        </div>\n\n                        <div>\n                            <label >Minimum Fare</label>\n                            <div class=\"form-group input-group mb-3\">\n                                <input type=\"number\" min=\"0\" class=\"form-control\" formControlName=\"minimum_fare\" [ngClass]=\"{'is-invalid': submitted && f.base_fare_distance.errors}\" name=\"minimum_fare\" [(ngModel)]=\"minimum_fare\" placeholder=\"Enter Minimum Fare\" aria-label=\"Recipient's username\" aria-describedby=\"basic-addon2\">\n\n                                <div *ngIf=\"submitted && f.base_fare_distance.errors\" class=\"invalid-feedback\">\n                                    <div *ngIf=\"f.base_fare_distance.errors.required\" translate>add_fare_km_basefare_required</div>\n                                </div>\n                            </div>\n                        </div>\n\n                        <div>\n                            <label translate>add_distancefare</label>\n                            <div class=\"form-group input-group mb-3\">\n                                <input type=\"number\" min=\"0\" class=\"form-control\" formControlName=\"distance_fare\" [ngClass]=\"{'is-invalid': submitted && f.distance_fare.errors}\" name=\"distance_fare\" [(ngModel)]=\"distance_fare\" placeholder=\"Enter Distance Fare\" aria-label=\"Recipient's username\" aria-describedby=\"basic-addon2\">\n                                <div class=\"input-group-append\">\n                                    <span class=\"input-group-text\" id=\"basic-addon2\">Per Km</span>\n                                </div>\n                                <div *ngIf=\"submitted && f.distance_fare.errors\" class=\"invalid-feedback\">\n                                    <div *ngIf=\"f.distance_fare.errors.required\" translate>add_distancefare_required</div>\n                                </div>\n                            </div>\n                        </div>\n\n                        <div>\n                            <label translate>add_durationfare</label>\n                            <div class=\"form-group input-group mb-3\">\n                                <input type=\"number\" min=\"0\" class=\"form-control\" formControlName=\"duration_fare\" [ngClass]=\"{'is-invalid': submitted && f.duration_fare.errors}\" name=\"duration_fare\" [(ngModel)]=\"duration_fare\" placeholder=\"Enter Duration Fare\" aria-label=\"Recipient's username\" aria-describedby=\"basic-addon2\">\n                                <div class=\"input-group-append\">\n                                    <span class=\"input-group-text\" id=\"basic-addon2\">Per Minute</span>\n                                </div>\n                                <div *ngIf=\"submitted && f.duration_fare.errors\" class=\"invalid-feedback\">\n                                    <div *ngIf=\"f.duration_fare.errors.required\" translate>add_durationfare_required</div>\n                                </div>\n                            </div>\n                        </div>\n\n                        <div>\n                            <label >Ride Cancellation Time Limit</label>\n                            <div class=\"form-group input-group mb-3\">\n                                <input type=\"number\" min=\"0\" class=\"form-control\" formControlName=\"cancellationTimeLimit\" [ngClass]=\"{'is-invalid': submitted && f.duration_fare.errors}\" name=\"cancellationTimeLimit\" [(ngModel)]=\"cancellationTimeLimit\" placeholder=\"Enter Ride Cancellation Time Limit\" aria-label=\"Recipient's username\" aria-describedby=\"basic-addon2\">\n                                <div class=\"input-group-append\">\n                                    <span class=\"input-group-text\" id=\"basic-addon2\"> Minutes</span>\n                                </div>\n                                <div *ngIf=\"submitted && f.duration_fare.errors\" class=\"invalid-feedback\">\n                                    <div *ngIf=\"f.duration_fare.errors.required\" translate>add_durationfare_required</div>\n                                </div>\n                            </div>\n                        </div>\n\n\n                        <div>\n                            <label >Ride Cancellation Charges</label>\n                            <div class=\"form-group input-group mb-3\">\n                                <input type=\"number\" min=\"0\" class=\"form-control\" formControlName=\"cancellationFee\" [ngClass]=\"{'is-invalid': submitted && f.base_fare_distance.errors}\" name=\"cancellationFee\" [(ngModel)]=\"cancellationFee\" placeholder=\"Enter Ride Cancellation Fee\" aria-label=\"Recipient's username\" aria-describedby=\"basic-addon2\">\n\n                                <div *ngIf=\"submitted && f.base_fare_distance.errors\" class=\"invalid-feedback\">\n                                    <div *ngIf=\"f.base_fare_distance.errors.required\" translate>add_fare_km_basefare_required</div>\n                                </div>\n                            </div>\n                        </div>\n\n                        <div>\n                            <label >Waiting Time Limit</label>\n                            <div class=\"form-group input-group mb-3\">\n                                <input type=\"number\" min=\"0\" class=\"form-control\" formControlName=\"waitingTimeLimit\" [ngClass]=\"{'is-invalid': submitted && f.duration_fare.errors}\" name=\"waitingTimeLimit\" [(ngModel)]=\"waitingTimeLimit\" placeholder=\"Enter Waiting Time Limit\" aria-label=\"Recipient's username\" aria-describedby=\"basic-addon2\">\n                                <div class=\"input-group-append\">\n                                    <span class=\"input-group-text\" id=\"basic-addon2\"> Minutes</span>\n                                </div>\n                                <div *ngIf=\"submitted && f.duration_fare.errors\" class=\"invalid-feedback\">\n                                    <div *ngIf=\"f.duration_fare.errors.required\" translate>add_durationfare_required</div>\n                                </div>\n                            </div>\n                        </div>\n\n\n                        <div>\n                            <label >Waiting Charges</label>\n                            <div class=\"form-group input-group mb-3\">\n                                <input type=\"number\" min=\"0\" class=\"form-control\" formControlName=\"waitingFee\" [ngClass]=\"{'is-invalid': submitted && f.base_fare_distance.errors}\" name=\"waitingFee\" [(ngModel)]=\"waitingFee\" placeholder=\"Enter Waiting Fee\" aria-label=\"Recipient's username\" aria-describedby=\"basic-addon2\">\n                                <div class=\"input-group-append\">\n                                    <span class=\"input-group-text\" id=\"basic-addon2\">Per Minute</span>\n                                </div>\n                                <div *ngIf=\"submitted && f.base_fare_distance.errors\" class=\"invalid-feedback\">\n                                    <div *ngIf=\"f.base_fare_distance.errors.required\" translate>add_fare_km_basefare_required</div>\n                                </div>\n                            </div>\n                        </div>\n\n                        <div>\n                            <label translate>add_tax</label>\n                            <div class=\"form-group input-group mb-3\">\n                                <input type=\"number\" step=\"0.01\" min=\"0\" class=\"form-control\" formControlName=\"Tax\" [ngClass]=\"{'is-invalid': submitted && f.Tax.errors}\" name=\"tax\" [(ngModel)]=\"tax\" placeholder=\"Enter Tax %\" aria-label=\"Recipient's username\" aria-describedby=\"basic-addon2\">\n                                <div class=\"input-group-append\">\n                                    <span class=\"input-group-text\" id=\"basic-addon2\">%</span>\n                                </div>\n                                <div *ngIf=\"submitted && f.Tax.errors\" class=\"invalid-feedback\">\n                                    <div *ngIf=\"f.Tax.errors.required\">add_tax_required </div>\n                                </div>\n                            </div>\n                        </div>\n                        <div>\n                            <label >Traffic Factor(%)</label>\n                            <div class=\"form-group input-group mb-3\">\n                                <input type=\"number\" step=\"0.01\" min=\"0\" class=\"form-control\" formControlName=\"trafficFactor\" [ngClass]=\"{'is-invalid': submitted && f.Tax.errors}\" name=\"trafficFactor\" [(ngModel)]=\"trafficFactor\" placeholder=\"Enter Traffic Factor %\" aria-label=\"Recipient's username\" aria-describedby=\"basic-addon2\">\n                                <div class=\"input-group-append\">\n                                    <span class=\"input-group-text\" id=\"basic-addon2\">%</span>\n                                </div>\n                                <div *ngIf=\"submitted && f.Tax.errors\" class=\"invalid-feedback\">\n                                    <div *ngIf=\"f.Tax.errors.required\">add_tax_required </div>\n                                </div>\n                            </div>\n                        </div>\n            \n                        <div class=\"form-group\">\n                                <span><button (click)=onSubmit() class=\"btn btn-primary\" translate>add_fare_submit</button></span>\n                                <span style=\"margin-left: 20px;\"><button (click)=onCancel()() class=\"btn btn-danger\" translate>add_fare_cancel</button></span> \n                        </div>\n                     </form>\n                     </div>\n                </div>\n            </div>\n</div>\n"
 
 /***/ }),
 
@@ -871,16 +870,20 @@ var AddNewFareComponent = /** @class */ (function () {
         this.fareForm = this.formBuilder.group({
             vehicle_type_id: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required],
             base_fare: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required],
-            base_fare_distance: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required],
-            base_fare_duration: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required],
+            minimum_fare: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required],
+            cancellationTimeLimit: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required],
+            waitingTimeLimit: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required],
+            cancellationFee: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required],
+            waitingFee: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required],
             distance_fare: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required],
             duration_fare: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required],
             Tax: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required],
+            trafficFactor: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required],
         });
         this.activetedRoute.params.subscribe(function (params) {
-            _this.location_id = params['id'];
-            _this.location_name = params['name'];
-            _this.location_currency = params['currency'];
+            _this.location_id = params.id;
+            _this.location_name = params.name;
+            _this.location_currency = params.currency;
             _this.onLocationSelected(_this.location_id);
         });
     };
@@ -906,15 +909,14 @@ var AddNewFareComponent = /** @class */ (function () {
         if (this.fareForm.invalid) {
             return;
         }
-        console.log(this.location_id, this.vehicle_type_id, this.base_fare, this.base_fare_distance, this.base_fare_duration, this.duration_fare, this.distance_fare, this.tax);
-        this.dataService.addNewFare(this.location_id, this.vehicle_type_id, this.base_fare, this.base_fare_distance, this.base_fare_duration, this.duration_fare, this.distance_fare, this.tax).subscribe(function (data) {
+        this.dataService.addNewFare(this.location_id, this.vehicle_type_id, this.base_fare, this.minimum_fare, this.duration_fare, this.distance_fare, this.waitingTimeLimit, this.waitingFee, this.cancellationTimeLimit, this.cancellationFee, this.tax, this.trafficFactor).subscribe(function (data) {
             console.log(data.Message);
             if (data.Status) {
                 _this.notifier.show({
                     type: 'success',
                     message: data.Message,
                 });
-                _this.router.navigate(["admin/locations/fares/" + _this.location_id + "/" + _this.location_name + "/" + _this.location_currency]);
+                _this.router.navigate(['admin/locations/fares/' + _this.location_id + '/' + _this.location_name + '/' + _this.location_currency]);
             }
             else {
                 _this.notifier.show({
@@ -925,7 +927,7 @@ var AddNewFareComponent = /** @class */ (function () {
         });
     };
     AddNewFareComponent.prototype.onCancel = function () {
-        this.router.navigate(["admin/locations/fares/" + this.location_id + "/" + this.location_name + "/" + this.location_name]);
+        this.router.navigate(['admin/locations/fares/' + this.location_id + '/' + this.location_name + '/' + this.location_name]);
     };
     AddNewFareComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -960,7 +962,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n  <div class=\"content\">\n    <div class=\"card mb-4\">\n      <div class=\"card-header\" translate>add_location_title</div>\n      <div class=\"card-body\">\n          <div class=\"row\">\n              <div class=\"col-lg-6 \">\n                  <form [formGroup]=\"locationForm\" >\n                      <div class=\"form-group\">\n                        <label for=\"exampleFormControlInput1\" translate>add_location_address</label>\n                        <input class=\"form-control is-invalid\" formControlName=\"address\" [(ngModel)]=\"address\" name=\"address\"  placeholder=\"Choose a location\" ngx-google-places-autocomplete #placesRef=\"ngx-places\" (onAddressChange)=\"handleAddressChange($event)\" [ngClass]=\"{'is-invalid': submitted && f.address.errors}\"/>\n                        <div *ngIf=\"submitted && f.address.errors\" class=\"invalid-feedback\">\n                          <div *ngIf=\"f.address.errors.required\" translate>add_location_address_required</div>\n                        </div>\n                      </div>\n\n\n                      <div class=\"form-group\">\n                        <label for=\"inputPassword4\" translate>add_location_name</label>\n                        <input  class=\"form-control danger is-invalid\" formControlName=\"name\" [(ngModel)]=\"name\" name=\"name\" id=\"inputPassword4\" placeholder=\"Enter location name\" [ngClass]=\"{'is-invalid': submitted && f.name.errors}\" autocomplete=\"off\">\n                        <div *ngIf=\"submitted && f.name.errors\" class=\"invalid-feedback\">\n                            <div *ngIf=\"f.name.errors.required\" translate>add_location_name_required</div>\n                          </div>\n                      </div>\n\n                      <div class=\"form-group\">\n                          <label for=\"inputAddress\" translate>add_currency_symbol</label>\n                          <input type=\"text\" formControlName=\"currency\" [(ngModel)]=\"currency\" name=\"currency\" class=\"form-control is-invalid\" id=\"inputAddress\" placeholder=\"Enter a currency symbol\" [ngClass]=\"{'is-invalid': submitted && f.currency.errors}\">\n                          <div *ngIf=\"submitted && f.currency.errors\" class=\"invalid-feedback\">\n                              <div *ngIf=\"f.currency.errors.required\" translate>add_currency_symbol_required</div>\n                            </div>\n                        </div>\n                        <span><button (click)=onSubmit() class=\"btn btn-primary\" translate>add_location_submit</button></span>\n                        <span style=\"margin-left: 20px;\"><button (click)=onCancel() class=\"btn btn-danger\" translate>add_location_cancel</button></span>\n                  </form>\n                  <br>\n                  <div class=\"alert alert-info mb-0\" role=\"alert\">\n                    <h4 class=\"alert-heading weight-400\" translate>howto_add_location</h4>\n                    <p translate>add_location_desc</p>\n                  </div>\n                </div>\n                <div class=\"col-md-6\">\n                  <agm-map [latitude]=\"latitude\" [longitude]=\"longitude\" [zoom]=\"10\">     \n                  </agm-map>\n             </div>\n           </div>          \n      </div>\n    </div> \n  </div>\n"
+module.exports = "\n  <div class=\"content\">\n    <div class=\"card mb-4\">\n      <div class=\"card-header\">Add New Operator</div>\n      <div class=\"card-body\">\n          <div class=\"row\">\n              <div class=\"col-lg-6 \">\n                  <form [formGroup]=\"locationForm\" >\n                    <div class=\"form-group\">\n                      <label for=\"name\" >Operator Name</label>\n                      <input type=\"text\" formControlName=\"name\" placeholder=\"Enter Company Name\" name=\"name\" [(ngModel)]=\"name\"\n                        class=\"form-control\" [ngClass]=\"{'is-invalid': submitted && f.name.errors}\" autocomplete=\"off\">\n                      <div *ngIf=\"submitted && f.name.errors\" class=\"invalid-feedback\">\n                        <div *ngIf=\"f.name.errors.required\" translate>add_company_name_required</div>\n                      </div>\n                    </div>\n        \n        \n                    <div class=\"form-group\">\n                      <label for=\"name\" translate>add_company_email</label>\n                      <input type=\"email\" formControlName=\"email\" placeholder=\"Enter email address\"\n                        name=\"email\" [(ngModel)]=\"email\" class=\"form-control\"\n                        [ngClass]=\"{'is-invalid': submitted && f.email.errors}\" autocomplete=\"off\">\n                      <div *ngIf=\"submitted && f.email.errors\" class=\"invalid-feedback\">\n                        <div *ngIf=\"f.email.errors.required\" translate>add_company_email_required</div>\n                      </div>\n                    </div>\n                    \n                      <div class=\"form-group\">\n                        <label for=\"exampleFormControlInput1\" >Operator Location (Select from the dropdown)</label>\n                        <input class=\"form-control is-invalid\" formControlName=\"address\" [(ngModel)]=\"address\" name=\"address\"  placeholder=\"Choose a location\" ngx-google-places-autocomplete #placesRef=\"ngx-places\" (onAddressChange)=\"handleAddressChange($event)\" [ngClass]=\"{'is-invalid': submitted && f.address.errors}\"/>\n                        <div *ngIf=\"submitted && f.address.errors\" class=\"invalid-feedback\">\n                          <div *ngIf=\"f.address.errors.required\" >Location is required</div>\n                        </div>\n                      </div>\n\n\n                      <div class=\"form-group\">\n                        <label for=\"inputPassword4\" >Location Name</label>\n                        <input  class=\"form-control danger is-invalid\" formControlName=\"locationName\" [(ngModel)]=\"locationName\" name=\"name\" id=\"inputPassword4\" placeholder=\"Enter location name\" [ngClass]=\"{'is-invalid': submitted && f.name.errors}\" autocomplete=\"off\">\n                        <div *ngIf=\"submitted && f.name.errors\" class=\"invalid-feedback\">\n                            <div *ngIf=\"f.locationName.errors.required\" >Location name is required</div>\n                          </div>\n                      </div>\n\n                      <div class=\"form-group\">\n                          <label for=\"inputAddress\" >Currency Symbol</label>\n                          <input type=\"text\" formControlName=\"currency\" [(ngModel)]=\"currency\" name=\"currency\" class=\"form-control is-invalid\" id=\"inputAddress\" placeholder=\"Enter a currency symbol\" [ngClass]=\"{'is-invalid': submitted && f.currency.errors}\">\n                          <div *ngIf=\"submitted && f.currency.errors\" class=\"invalid-feedback\">\n                              <div *ngIf=\"f.currency.errors.required\" >Currency symbol is required</div>\n                            </div>\n                        </div>\n\n                        <div class=\"form-group\">\n                          <label for=\"name\">Taasai Commission</label>\n                          <input type=\"number\" formControlName=\"platformCommission\" placeholder=\"Enter your commisson\" name=\"commission\" [(ngModel)]=\"platformCommission\"\n                            class=\"form-control\" [ngClass]=\"{'is-invalid': submitted && f.platformCommission.errors}\" autocomplete=\"off\">\n                          <div *ngIf=\"submitted && f.platformCommission.errors\" class=\"invalid-feedback\">\n                            <div *ngIf=\"f.platformCommission.errors.required\" translate>Taasai commission is required</div>\n                          </div>\n                        </div>\n                        <div class=\"form-group\">\n                          <label for=\"name\">Operator Commission</label>\n                          <input type=\"number\" formControlName=\"operatorCommission\" placeholder=\"Enter your commisson\" name=\"commission\" [(ngModel)]=\"operatorCommission\"\n                            class=\"form-control\" [ngClass]=\"{'is-invalid': submitted && f.operatorCommission.errors}\" autocomplete=\"off\">\n                          <div *ngIf=\"submitted && f.operatorCommission.errors\" class=\"invalid-feedback\">\n                            <div *ngIf=\"f.operatorCommission.errors.required\" translate>Operator commission is required</div>\n                          </div>\n                        </div>\n\n\n                        <div class=\"form-group\">\n                          <label for=\"name\">Driver Maximum Work Time (hours per day)</label>\n                          <input type=\"number\" formControlName=\"driverWorkTime\" placeholder=\"Enter driver work time\" name=\"driverWorkTime\" [(ngModel)]=\"driverWorkTime\"\n                            class=\"form-control\" [ngClass]=\"{'is-invalid': submitted && f.driverWorkTime.errors}\" autocomplete=\"off\">\n                          <div *ngIf=\"submitted && f.driverWorkTime.errors\" class=\"invalid-feedback\">\n                            <div *ngIf=\"f.driverWorkTime.errors.required\" translate>DriverWorkTime is required</div>\n                          </div>\n                        </div>\n\n                        <div class=\"form-group\">\n                          <label for=\"name\">Driver Rest Time After Reaching Maximum Work Time (in hours)</label>\n                          <input type=\"number\" formControlName=\"driverRestTime\" placeholder=\"Enter driver rest time\" name=\"driverRestTime\" [(ngModel)]=\"driverRestTime\"\n                            class=\"form-control\" [ngClass]=\"{'is-invalid': submitted && f.driverRestTime.errors}\" autocomplete=\"off\">\n                          <div *ngIf=\"submitted && f.driverRestTime.errors\" class=\"invalid-feedback\">\n                            <div *ngIf=\"f.driverRestTime.errors.required\" translate>DriverRestTime is required</div>\n                          </div>\n                        </div>\n                        <div class=\"form-group\">\n                          <label for=\"name\">How many documents driver need to upload while sign up</label>\n                          <select type=\"number\" (ngModelChange)=\"onDocsCountChange($event)\" formControlName=\"docsCount\"  name=\"docsCount\" [(ngModel)]=\"docsCount\"\n                            class=\"form-control\" [ngClass]=\"{'is-invalid': submitted && f.docsCount.errors}\" autocomplete=\"off\">\n                            <option value=\"1\">1</option>\n                            <option value=\"2\">2</option>\n                            <option value=\"3\">3</option>\n                            <option value=\"4\">4</option>\n                            <option value=\"5\">5</option>\n                            <option value=\"6\">6</option>\n                            <option value=\"7\">7</option>\n                            <option value=\"8\">8</option>\n                            <option value=\"9\">9</option>\n                            <option value=\"10\">10</option>\n                          </select>\n                          <div *ngIf=\"submitted && f.docsCount.errors\" class=\"invalid-feedback\">\n                            <div *ngIf=\"f.docsCount.errors.required\" translate>DocsCount is required</div>\n                          </div>\n                        </div>\n\n                    <div formArrayName=\"docs\" *ngFor=\"let doc of locationForm.get('docs').controls ;let i = index\" [attr.data-index]=\"i\" class=\"form-group\">\n                      <div  [formGroupName]=\"i\" >\n                        <label for=\"Name\">Document {{i+1}}  Name</label>\n                        <input type=\"text\" formControlName=\"Name\" placeholder=\"Enter Document Name\" [(ngModel)]=\"doc.Name\"\n                               class=\"form-control\" >\n                      </div>\n\n                    </div>\n\n                        <div class=\"form-group\">\n                          <label for=\"name\" translate>add_company_password</label>\n                          <input type=\"text\" formControlName=\"password\" placeholder=\"Enter Password\" name=\"password\"\n                            [(ngModel)]=\"password\" class=\"form-control\" [ngClass]=\"{'is-invalid': submitted && f.password.errors}\"\n                            autocomplete=\"off\">\n                          <div *ngIf=\"submitted && f.password.errors\" class=\"invalid-feedback\">\n                            <div *ngIf=\"f.password.errors.required\" translate>Password Is Required</div>\n                          </div>\n                        </div>\n            \n                        <div class=\"form-group\">\n                          <label for=\"name\" translate>confirm_password</label>\n                          <input type=\"text\" formControlName=\"confirmPassword\" placeholder=\"Enter Confirm Password\" name=\"confirmPassword\"\n                            [(ngModel)]=\"confirmPassword\" class=\"form-control\" [ngClass]=\"{'is-invalid': submitted && f.confirmPassword.errors}\"\n                            autocomplete=\"off\">\n                          <div *ngIf=\"submitted && f.email.errors\" class=\"invalid-feedback\">\n                            <div *ngIf=\"f.confirmPassword.errors.required\" translate>confirm_password_required</div>\n                          </div>\n                        </div>\n                        <span><button (click)=onSubmit() class=\"btn btn-primary\" translate>add_location_submit</button></span>\n                        <span style=\"margin-left: 20px;\"><button (click)=onCancel() class=\"btn btn-danger\" translate>add_location_cancel</button></span>\n                  </form>\n                  <br>\n                  <!--div class=\"alert alert-info mb-0\" role=\"alert\">\n                    <h4 class=\"alert-heading weight-400\" translate>howto_add_location</h4>\n                    <p translate>add_location_desc</p>\n                  </div-->\n                </div>\n                <div class=\"col-md-6\">\n                  <agm-map [latitude]=\"latitude\" [longitude]=\"longitude\" [zoom]=\"10\">     \n                  </agm-map>\n             </div>\n           </div>          \n      </div>\n    </div> \n  </div>\n"
 
 /***/ }),
 
@@ -1000,6 +1002,7 @@ var AddNewLocationComponent = /** @class */ (function () {
         this.submitted = false;
         this.distance = 10 * 1000;
         this.paths = [];
+        this.docsCount = 0;
     }
     AddNewLocationComponent.prototype.handleAddressChange = function (address) {
         var _this = this;
@@ -1030,7 +1033,17 @@ var AddNewLocationComponent = /** @class */ (function () {
         this.locationForm = this.formBuilder.group({
             address: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_6__["Validators"].required],
             name: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_6__["Validators"].required],
-            currency: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_6__["Validators"].required]
+            locationName: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_6__["Validators"].required],
+            currency: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_6__["Validators"].required],
+            password: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_6__["Validators"].required],
+            confirmPassword: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_6__["Validators"].required],
+            email: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_6__["Validators"].required],
+            platformCommission: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_6__["Validators"].required],
+            operatorCommission: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_6__["Validators"].required],
+            driverWorkTime: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_6__["Validators"].required],
+            driverRestTime: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_6__["Validators"].required],
+            docsCount: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_6__["Validators"].required],
+            docs: this.formBuilder.array([]),
         });
     };
     Object.defineProperty(AddNewLocationComponent.prototype, "f", {
@@ -1040,8 +1053,17 @@ var AddNewLocationComponent = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
+    AddNewLocationComponent.prototype.onDocsCountChange = function (value) {
+        this.locationForm.setControl('docs', this.formBuilder.array([]));
+        var fa = this.locationForm.get('docs');
+        for (var i = 0; i < Number(value); i++) {
+            fa.push(this.formBuilder.group({
+                Name: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_6__["Validators"].required]
+            }));
+        }
+    };
     AddNewLocationComponent.prototype.createCoordinate = function (bearing) {
-        var radius = 6371e3; //meters
+        var radius = 6371e3; // meters
         var δ = Number(this.distance) / radius; // angular distance in radians
         var θ = this.toRad(Number(bearing));
         var φ1 = this.toRad(this.latitude);
@@ -1049,33 +1071,34 @@ var AddNewLocationComponent = /** @class */ (function () {
         var φ2 = Math.asin(Math.sin(φ1) * Math.cos(δ) + Math.cos(φ1) * Math.sin(δ) * Math.cos(θ));
         var λ2 = λ1 + Math.atan2(Math.sin(θ) * Math.sin(δ) * Math.cos(φ1), Math.cos(δ) - Math.sin(φ1) * Math.sin(φ2));
         λ2 = (λ2 + 3 * Math.PI) % (2 * Math.PI) - Math.PI; // normalise to -180..+180°
-        return { lng: this.toDeg(λ2), lat: this.toDeg(φ2) }; //[lon, lat]
+        return { lng: this.toDeg(λ2), lat: this.toDeg(φ2) }; // [lon, lat]
     };
     AddNewLocationComponent.prototype.toDeg = function (value) { return value * 180 / Math.PI; };
     AddNewLocationComponent.prototype.toRad = function (value) { return value * Math.PI / 180; };
     AddNewLocationComponent.prototype.onSubmit = function () {
         var _this = this;
         this.submitted = true;
+        console.log(this.locationForm.get('docs').getRawValue());
         if (this.locationForm.invalid) {
             return;
         }
-        console.log("address =" + this.f.address.value);
-        console.log("address =" + this.f.name.value);
-        console.log("address =" + this.f.currency.value);
+        console.log('address =' + this.f.address.value);
+        console.log('address =' + this.f.name.value);
+        console.log('address =' + this.f.currency.value);
         var path;
         path = this.polygon.getPath();
         var polygonPoints = [];
         path.forEach(function (element) {
-            polygonPoints.push({ "Lat": element.lat(), "Lng": element.lng() });
+            polygonPoints.push({ Lat: element.lat(), Lng: element.lng() });
         });
         polygonPoints.push(polygonPoints[0]);
-        this.dataService.addNewLocation(polygonPoints, this.currency, this.name).subscribe(function (data) {
+        this.dataService.addNewOperator(polygonPoints, this.currency, this.name, this.email, this.locationName, this.platformCommission, this.operatorCommission, this.driverWorkTime, this.driverRestTime, this.locationForm.get('docs').getRawValue(), this.password, this.confirmPassword).subscribe(function (data) {
             if (data.Status) {
                 _this.notifier.show({
                     type: 'success',
                     message: _this.name + ' ' + data.Message,
                 });
-                _this.router.navigate(["admin/locations"]);
+                _this.router.navigate(['admin/locations']);
             }
             else {
                 _this.notifier.show({
@@ -1086,10 +1109,10 @@ var AddNewLocationComponent = /** @class */ (function () {
         });
     };
     AddNewLocationComponent.prototype.onCancel = function () {
-        this.router.navigate(["admin/locations"]);
+        this.router.navigate(['admin/locations']);
     };
     tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewChild"])("placesRef"),
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewChild"])('placesRef'),
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", ngx_google_places_autocomplete__WEBPACK_IMPORTED_MODULE_3__["GooglePlaceDirective"])
     ], AddNewLocationComponent.prototype, "placesRef", void 0);
     tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
@@ -1102,7 +1125,8 @@ var AddNewLocationComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./add-new-location.component.html */ "./src/app/add-new-location/add-new-location.component.html"),
             styles: [__webpack_require__(/*! ./add-new-location.component.css */ "./src/app/add-new-location/add-new-location.component.css")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_data_service__WEBPACK_IMPORTED_MODULE_5__["DataService"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"], _angular_forms__WEBPACK_IMPORTED_MODULE_6__["FormBuilder"], angular_notifier__WEBPACK_IMPORTED_MODULE_7__["NotifierService"]])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_data_service__WEBPACK_IMPORTED_MODULE_5__["DataService"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"],
+            _angular_forms__WEBPACK_IMPORTED_MODULE_6__["FormBuilder"], angular_notifier__WEBPACK_IMPORTED_MODULE_7__["NotifierService"]])
     ], AddNewLocationComponent);
     return AddNewLocationComponent;
 }());
@@ -1665,7 +1689,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content\">\n  <div class=\"card mb-4\">\n    <div class=\"card-header\" translate>add_zone_title</div>\n    <div class=\"card-body\">\n      <div class=\"row\">\n        <div class=\"col-lg-6 \">\n          <form [formGroup]=\"locationForm\">\n            <div class=\"form-group\">\n              <label for=\"exampleFormControlInput1\" translate>add_zone_address</label>\n              <input class=\"form-control is-invalid\" formControlName=\"address\" [(ngModel)]=\"address\" name=\"address\"\n                placeholder=\"Choose a location\" ngx-google-places-autocomplete #placesRef=\"ngx-places\"\n                (onAddressChange)=\"handleAddressChange($event)\"\n                [ngClass]=\"{'is-invalid': submitted && f.address.errors}\" />\n              <div *ngIf=\"submitted && f.address.errors\" class=\"invalid-feedback\">\n                <div *ngIf=\"f.address.errors.required\" translate>add_zone_address_required</div>\n              </div>\n            </div>\n\n\n            <div class=\"form-group\">\n              <label for=\"inputPassword4\" translate>add_zone_name</label>\n              <input class=\"form-control danger is-invalid\" formControlName=\"name\" [(ngModel)]=\"name\" name=\"name\"\n                id=\"inputPassword4\" placeholder=\"Enter location name\"\n                [ngClass]=\"{'is-invalid': submitted && f.name.errors}\" autocomplete=\"off\">\n              <div *ngIf=\"submitted && f.name.errors\" class=\"invalid-feedback\">\n                <div *ngIf=\"f.name.errors.required\" translate>add_zone_name_required</div>\n              </div>\n            </div>\n          <!---div class=\"form-group\">\n            <label for=\"sel1\">Zone Purpose:</label>\n            <select class=\"form-control\" formControlName=\"purpose\" name=\"purpose\" [(ngModel)]=\"purpose\"\n              (change)=\"onPurposeSelected($event.target.value)\">\n              <option [ngValue]=\"undefined\" disabled selected>Select Zone Purpose</option>\n              <option [ngValue]=\"1\" >To create a seperate fare for this area</option>\n              <option [ngValue]=\"2\">To restrict bookings from this area</option>\n            </select>\n            <div *ngIf=\"submitted && f.location_id.errors\" class=\"invalid-feedback\">\n              <div *ngIf=\"f.location_id.errors.required\">Select Zone Purpose</div>\n            </div>\n          </div-->\n            <span><button (click)=onSubmit() class=\"btn btn-primary\" translate>add_zone_submit</button></span>\n            <span style=\"margin-left: 20px;\"><button (click)=\"onCancel()\" class=\"btn btn-danger\" translate>add_zone_cancel</button></span>\n          </form>\n          <br>\n          <div class=\"alert alert-info mb-0\" role=\"alert\">\n            <h4 class=\"alert-heading weight-400\" translate>howto_add_location</h4>\n            <p translate>add_location_desc</p>\n          </div>\n        </div>\n        <div class=\"col-md-6\">\n          <agm-map [latitude]=\"latitude\" [longitude]=\"longitude\" [zoom]=\"10\">\n          </agm-map>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>"
+module.exports = "<div class=\"content\">\n  <div class=\"card mb-4\">\n    <div class=\"card-header\" translate>add_zone_title</div>\n    <div class=\"card-body\">\n      <div class=\"row\">\n        <div class=\"col-lg-6 \">\n          <form [formGroup]=\"locationForm\">\n            <div class=\"form-group\">\n              <label for=\"exampleFormControlInput1\" translate>add_zone_address</label>\n              <input class=\"form-control is-invalid\" formControlName=\"address\" [(ngModel)]=\"address\" name=\"address\"\n                placeholder=\"Choose a location\" ngx-google-places-autocomplete #placesRef=\"ngx-places\"\n                (onAddressChange)=\"handleAddressChange($event)\"\n                [ngClass]=\"{'is-invalid': submitted && f.address.errors}\" />\n              <div *ngIf=\"submitted && f.address.errors\" class=\"invalid-feedback\">\n                <div *ngIf=\"f.address.errors.required\" translate>add_zone_address_required</div>\n              </div>\n            </div>\n\n\n            <div class=\"form-group\">\n              <label for=\"inputPassword4\" translate>add_zone_name</label>\n              <input class=\"form-control danger is-invalid\" formControlName=\"name\" [(ngModel)]=\"name\" name=\"name\"\n                id=\"inputPassword4\" placeholder=\"Enter location name\"\n                [ngClass]=\"{'is-invalid': submitted && f.name.errors}\" autocomplete=\"off\">\n              <div *ngIf=\"submitted && f.name.errors\" class=\"invalid-feedback\">\n                <div *ngIf=\"f.name.errors.required\" translate>add_zone_name_required</div>\n              </div>\n            </div>\n\n            <div class=\"form-group\">\n              <label for=\"name\">Pickup Points</label>\n              <select type=\"number\" (ngModelChange)=\"onDocsCountChange($event)\" formControlName=\"docsCount\"  name=\"docsCount\" [(ngModel)]=\"docsCount\"\n                      class=\"form-control\" [ngClass]=\"{'is-invalid': submitted && f.docsCount.errors}\" autocomplete=\"off\">\n                <option value=\"1\">1</option>\n                <option value=\"2\">2</option>\n                <option value=\"3\">3</option>\n                <option value=\"4\">4</option>\n                <option value=\"5\">5</option>\n                <option value=\"6\">6</option>\n                <option value=\"7\">7</option>\n                <option value=\"8\">8</option>\n                <option value=\"9\">9</option>\n                <option value=\"10\">10</option>\n              </select>\n              <div *ngIf=\"submitted && f.docsCount.errors\" class=\"invalid-feedback\">\n                <div *ngIf=\"f.docsCount.errors.required\" translate>Pickup Point is required</div>\n              </div>\n            </div>\n\n            <div formArrayName=\"docs\" *ngFor=\"let doc of locationForm.get('docs').controls ;let i = index\" [attr.data-index]=\"i\" class=\"form-group\">\n              <div  [formGroupName]=\"i\" >\n                <label for=\"Name\">Pickup Point {{i+1}}  Name</label>\n                <input type=\"text\" formControlName=\"Name\" placeholder=\"Enter Pickup Point Name\" [(ngModel)]=\"doc.Name\"\n                       class=\"form-control\" >\n              </div>\n\n            </div>\n\n          <!---div class=\"form-group\">\n            <label for=\"sel1\">Zone Purpose:</label>\n            <select class=\"form-control\" formControlName=\"purpose\" name=\"purpose\" [(ngModel)]=\"purpose\"\n              (change)=\"onPurposeSelected($event.target.value)\">\n              <option [ngValue]=\"undefined\" disabled selected>Select Zone Purpose</option>\n              <option [ngValue]=\"1\" >To create a seperate fare for this area</option>\n              <option [ngValue]=\"2\">To restrict bookings from this area</option>\n            </select>\n            <div *ngIf=\"submitted && f.location_id.errors\" class=\"invalid-feedback\">\n              <div *ngIf=\"f.location_id.errors.required\">Select Zone Purpose</div>\n            </div>\n          </div-->\n            <span><button (click)=onSubmit() class=\"btn btn-primary\" translate>add_zone_submit</button></span>\n            <span style=\"margin-left: 20px;\"><button (click)=\"onCancel()\" class=\"btn btn-danger\" translate>add_zone_cancel</button></span>\n          </form>\n          <br>\n          <div class=\"alert alert-info mb-0\" role=\"alert\">\n            <h4 class=\"alert-heading weight-400\" translate>howto_add_location</h4>\n            <p translate>add_location_desc</p>\n          </div>\n        </div>\n        <div class=\"col-md-6\">\n          <agm-map [latitude]=\"latitude\" [longitude]=\"longitude\" [zoom]=\"10\">\n          </agm-map>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -1704,6 +1728,7 @@ var AddNewZoneComponent = /** @class */ (function () {
         this.formBuilder = formBuilder;
         this.notifier = notifier;
         this.submitted = false;
+        this.docsCount = 0;
         this.distance = 2 * 1000;
         this.paths = [];
         this.cityPolygonPoints = [];
@@ -1742,11 +1767,22 @@ var AddNewZoneComponent = /** @class */ (function () {
             this.polygon.setPath(this.paths);
         }
     };
+    AddNewZoneComponent.prototype.onDocsCountChange = function (value) {
+        this.locationForm.setControl('docs', this.formBuilder.array([]));
+        var fa = this.locationForm.get('docs');
+        for (var i = 0; i < Number(value); i++) {
+            fa.push(this.formBuilder.group({
+                Name: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required]
+            }));
+        }
+    };
     AddNewZoneComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.locationForm = this.formBuilder.group({
             address: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required],
-            name: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required]
+            name: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required],
+            docsCount: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required],
+            docs: this.formBuilder.array([]),
         });
         this.activatedRoute.params.subscribe(function (params) {
             _this.location_id = params['id'];
@@ -1808,7 +1844,7 @@ var AddNewZoneComponent = /** @class */ (function () {
             polygonPoints.push({ "Lat": element.lat(), "Lng": element.lng() });
         });
         polygonPoints.push(polygonPoints[0]);
-        this.dataService.addNewZone(polygonPoints, this.location_id, this.name).subscribe(function (result) {
+        this.dataService.addNewZone(polygonPoints, this.location_id, this.name, this.locationForm.get('docs').getRawValue()).subscribe(function (result) {
             if (result.Status) {
                 _this.notifier.show({
                     type: 'success',
@@ -1892,6 +1928,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _add_dispatcher_add_dispatcher_component__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./add-dispatcher/add-dispatcher.component */ "./src/app/add-dispatcher/add-dispatcher.component.ts");
 /* harmony import */ var _passenger_list_passenger_list_component__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./passenger-list/passenger-list.component */ "./src/app/passenger-list/passenger-list.component.ts");
 /* harmony import */ var _passenger_ride_history_list_passenger_ride_history_list_component__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./passenger-ride-history-list/passenger-ride-history-list.component */ "./src/app/passenger-ride-history-list/passenger-ride-history-list.component.ts");
+/* harmony import */ var _driver_detail_driver_detail_component__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./driver-detail/driver-detail.component */ "./src/app/driver-detail/driver-detail.component.ts");
+/* harmony import */ var _driver_document_driver_document_component__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./driver-document/driver-document.component */ "./src/app/driver-document/driver-document.component.ts");
+
+
 
 
 
@@ -1926,51 +1966,53 @@ __webpack_require__.r(__webpack_exports__);
 
 var routes = [
     {
-        path: "",
-        redirectTo: "admin",
+        path: '',
+        redirectTo: 'admin',
         pathMatch: 'full'
     },
     {
-        path: "admin",
+        path: 'admin',
         component: _main_main_component__WEBPACK_IMPORTED_MODULE_10__["MainComponent"],
         children: [
             {
-                path: "",
-                redirectTo: "dashboard",
+                path: '',
+                redirectTo: 'dashboard',
                 pathMatch: 'full',
             },
-            { path: "dashboard", component: _dashboard_dashboard_component__WEBPACK_IMPORTED_MODULE_19__["DashboardComponent"] },
-            { path: "vehicletypecategory", component: _vehicle_type_category_list_vehicle_type_category_list_component__WEBPACK_IMPORTED_MODULE_18__["VehicleTypeCategoryListComponent"] },
-            { path: "vehicletypecategory/new", component: _add_new_vehicle_type_category_add_new_vehicle_type_category_component__WEBPACK_IMPORTED_MODULE_16__["AddNewVehicleTypeCategoryComponent"] },
-            { path: "vehicletypecategory/edit/:name/:id", component: _edit_vehicle_category_edit_vehicle_category_component__WEBPACK_IMPORTED_MODULE_24__["EditVehicleCategoryComponent"] },
-            { path: "drivers/:id/:name/new", component: _add_new_drivers_add_new_drivers_component__WEBPACK_IMPORTED_MODULE_13__["AddNewDriversComponent"] },
-            { path: "locations", component: _location_list_location_list_component__WEBPACK_IMPORTED_MODULE_3__["LocationListComponent"] },
-            { path: "locations/fares/:id/:name/:currency", component: _fare_list_fare_list_component__WEBPACK_IMPORTED_MODULE_5__["FareListComponent"] },
-            { path: "locations/new", component: _add_new_location_add_new_location_component__WEBPACK_IMPORTED_MODULE_12__["AddNewLocationComponent"] },
-            { path: "vehicletypecategory/types/:id/:name", component: _vehicle_type_list_vehicle_type_list_component__WEBPACK_IMPORTED_MODULE_4__["VehicleTypeListComponent"] },
-            { path: "locations/fares/:id/:name/:currency/new", component: _add_new_fare_add_new_fare_component__WEBPACK_IMPORTED_MODULE_9__["AddNewFareComponent"] },
-            { path: "vehicletypecategory/types/:categoryId/:categoryName/edit/:name/:id", component: _edit_vehicle_type_edit_vehicle_type_component__WEBPACK_IMPORTED_MODULE_25__["EditVehicleTypeComponent"] },
-            { path: "vehicletypecategory/types/:id/:name/new", component: _add_new_vehicle_type_add_new_vehicle_type_component__WEBPACK_IMPORTED_MODULE_8__["AddNewVehicleTypeComponent"] },
-            { path: "dispatcher", component: _add_dispatcher_add_dispatcher_component__WEBPACK_IMPORTED_MODULE_29__["AddDispatcherComponent"] },
-            { path: "rides", component: _rides_list_rides_list_component__WEBPACK_IMPORTED_MODULE_17__["RidesListComponent"] },
-            { path: "rides/:id", component: _ride_detail_ride_detail_component__WEBPACK_IMPORTED_MODULE_28__["RideDetailComponent"] },
-            { path: "locations/zones/:id/:name", component: _zone_list_zone_list_component__WEBPACK_IMPORTED_MODULE_20__["ZoneListComponent"] },
-            { path: "locations/zones/:id/:name/fares", component: _zone_fare_list_zone_fare_list_component__WEBPACK_IMPORTED_MODULE_26__["ZoneFareListComponent"] },
-            { path: "locations/zones/:id/:name/new", component: _add_new_zone_add_new_zone_component__WEBPACK_IMPORTED_MODULE_21__["AddNewZoneComponent"] },
-            { path: "locations/zones/:id/:name/fares/new", component: _add_new_zone_fare_add_new_zone_fare_component__WEBPACK_IMPORTED_MODULE_27__["AddNewZoneFareComponent"] },
-            { path: "companies", component: _company_list_company_list_component__WEBPACK_IMPORTED_MODULE_22__["CompanyListComponent"] },
-            { path: "companies/new", component: _add_new_company_add_new_company_component__WEBPACK_IMPORTED_MODULE_23__["AddNewCompanyComponent"] },
-            { path: "companies/:id/:name/vehicles", component: _vehicles_list_vehicles_list_component__WEBPACK_IMPORTED_MODULE_7__["VehiclesListComponent"] },
-            { path: "companies/:id/:name/vehicles/new", component: _add_new_vehicles_add_new_vehicles_component__WEBPACK_IMPORTED_MODULE_14__["AddNewVehiclesComponent"] },
-            { path: "companies/:id/:name/drivers", component: _driver_list_driver_list_component__WEBPACK_IMPORTED_MODULE_6__["DriverListComponent"] },
-            { path: "companies/:id/:name/drivers/new", component: _add_new_drivers_add_new_drivers_component__WEBPACK_IMPORTED_MODULE_13__["AddNewDriversComponent"] },
-            { path: "companies/:companyId/:companyName/drivers/assignments/:id/:name", component: _manage_vehicle_assignment_manage_vehicle_assignment_component__WEBPACK_IMPORTED_MODULE_15__["ManageVehicleAssignmentComponent"] },
-            { path: "passenger", component: _passenger_list_passenger_list_component__WEBPACK_IMPORTED_MODULE_30__["PassengerListComponent"] },
-            { path: "passengerRideHistory/:id/:name", component: _passenger_ride_history_list_passenger_ride_history_list_component__WEBPACK_IMPORTED_MODULE_31__["PassengerRideHistoryListComponent"] }
+            { path: 'dashboard', component: _dashboard_dashboard_component__WEBPACK_IMPORTED_MODULE_19__["DashboardComponent"] },
+            { path: 'vehicletypecategory', component: _vehicle_type_category_list_vehicle_type_category_list_component__WEBPACK_IMPORTED_MODULE_18__["VehicleTypeCategoryListComponent"] },
+            { path: 'vehicletypecategory/new', component: _add_new_vehicle_type_category_add_new_vehicle_type_category_component__WEBPACK_IMPORTED_MODULE_16__["AddNewVehicleTypeCategoryComponent"] },
+            { path: 'vehicletypecategory/edit/:name/:id', component: _edit_vehicle_category_edit_vehicle_category_component__WEBPACK_IMPORTED_MODULE_24__["EditVehicleCategoryComponent"] },
+            { path: 'drivers/:id/:name/new', component: _add_new_drivers_add_new_drivers_component__WEBPACK_IMPORTED_MODULE_13__["AddNewDriversComponent"] },
+            { path: 'locations', component: _location_list_location_list_component__WEBPACK_IMPORTED_MODULE_3__["LocationListComponent"] },
+            { path: 'locations/fares/:id/:name/:currency', component: _fare_list_fare_list_component__WEBPACK_IMPORTED_MODULE_5__["FareListComponent"] },
+            { path: 'locations/new', component: _add_new_location_add_new_location_component__WEBPACK_IMPORTED_MODULE_12__["AddNewLocationComponent"] },
+            { path: 'vehicletypecategory/types/:id/:name', component: _vehicle_type_list_vehicle_type_list_component__WEBPACK_IMPORTED_MODULE_4__["VehicleTypeListComponent"] },
+            { path: 'locations/fares/:id/:name/:currency/new', component: _add_new_fare_add_new_fare_component__WEBPACK_IMPORTED_MODULE_9__["AddNewFareComponent"] },
+            { path: 'vehicletypecategory/types/:categoryId/:categoryName/edit/:name/:id', component: _edit_vehicle_type_edit_vehicle_type_component__WEBPACK_IMPORTED_MODULE_25__["EditVehicleTypeComponent"] },
+            { path: 'vehicletypecategory/types/:id/:name/new', component: _add_new_vehicle_type_add_new_vehicle_type_component__WEBPACK_IMPORTED_MODULE_8__["AddNewVehicleTypeComponent"] },
+            { path: 'dispatcher', component: _add_dispatcher_add_dispatcher_component__WEBPACK_IMPORTED_MODULE_29__["AddDispatcherComponent"] },
+            { path: 'rides', component: _rides_list_rides_list_component__WEBPACK_IMPORTED_MODULE_17__["RidesListComponent"] },
+            { path: 'rides/:id', component: _ride_detail_ride_detail_component__WEBPACK_IMPORTED_MODULE_28__["RideDetailComponent"] },
+            { path: 'locations/zones/:id/:name', component: _zone_list_zone_list_component__WEBPACK_IMPORTED_MODULE_20__["ZoneListComponent"] },
+            { path: 'locations/zones/:id/:name/fares', component: _zone_fare_list_zone_fare_list_component__WEBPACK_IMPORTED_MODULE_26__["ZoneFareListComponent"] },
+            { path: 'locations/zones/:id/:name/new', component: _add_new_zone_add_new_zone_component__WEBPACK_IMPORTED_MODULE_21__["AddNewZoneComponent"] },
+            { path: 'locations/zones/:id/:name/fares/new', component: _add_new_zone_fare_add_new_zone_fare_component__WEBPACK_IMPORTED_MODULE_27__["AddNewZoneFareComponent"] },
+            { path: 'companies', component: _company_list_company_list_component__WEBPACK_IMPORTED_MODULE_22__["CompanyListComponent"] },
+            { path: 'companies/new', component: _add_new_company_add_new_company_component__WEBPACK_IMPORTED_MODULE_23__["AddNewCompanyComponent"] },
+            { path: 'companies/:id/:name/vehicles', component: _vehicles_list_vehicles_list_component__WEBPACK_IMPORTED_MODULE_7__["VehiclesListComponent"] },
+            { path: 'companies/:id/:name/vehicles/new', component: _add_new_vehicles_add_new_vehicles_component__WEBPACK_IMPORTED_MODULE_14__["AddNewVehiclesComponent"] },
+            { path: 'drivers', component: _driver_list_driver_list_component__WEBPACK_IMPORTED_MODULE_6__["DriverListComponent"] },
+            { path: 'documents', component: _driver_document_driver_document_component__WEBPACK_IMPORTED_MODULE_33__["DriverDocumentComponent"] },
+            { path: 'drivers/:id', component: _driver_detail_driver_detail_component__WEBPACK_IMPORTED_MODULE_32__["DriverDetailComponent"] },
+            { path: 'companies/:id/:name/drivers/new', component: _add_new_drivers_add_new_drivers_component__WEBPACK_IMPORTED_MODULE_13__["AddNewDriversComponent"] },
+            { path: 'companies/:companyId/:companyName/drivers/assignments/:id/:name', component: _manage_vehicle_assignment_manage_vehicle_assignment_component__WEBPACK_IMPORTED_MODULE_15__["ManageVehicleAssignmentComponent"] },
+            { path: 'passenger', component: _passenger_list_passenger_list_component__WEBPACK_IMPORTED_MODULE_30__["PassengerListComponent"] },
+            { path: 'passengerRideHistory/:id/:name', component: _passenger_ride_history_list_passenger_ride_history_list_component__WEBPACK_IMPORTED_MODULE_31__["PassengerRideHistoryListComponent"] }
         ]
     },
     {
-        path: "login",
+        path: 'login',
         component: _login_login_component__WEBPACK_IMPORTED_MODULE_11__["LoginComponent"]
     }
 ];
@@ -2111,6 +2153,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _add_dispatcher_add_dispatcher_component__WEBPACK_IMPORTED_MODULE_51__ = __webpack_require__(/*! ./add-dispatcher/add-dispatcher.component */ "./src/app/add-dispatcher/add-dispatcher.component.ts");
 /* harmony import */ var _passenger_list_passenger_list_component__WEBPACK_IMPORTED_MODULE_52__ = __webpack_require__(/*! ./passenger-list/passenger-list.component */ "./src/app/passenger-list/passenger-list.component.ts");
 /* harmony import */ var _passenger_ride_history_list_passenger_ride_history_list_component__WEBPACK_IMPORTED_MODULE_53__ = __webpack_require__(/*! ./passenger-ride-history-list/passenger-ride-history-list.component */ "./src/app/passenger-ride-history-list/passenger-ride-history-list.component.ts");
+/* harmony import */ var _driver_detail_driver_detail_component__WEBPACK_IMPORTED_MODULE_54__ = __webpack_require__(/*! ./driver-detail/driver-detail.component */ "./src/app/driver-detail/driver-detail.component.ts");
+/* harmony import */ var _driver_document_driver_document_component__WEBPACK_IMPORTED_MODULE_55__ = __webpack_require__(/*! ./driver-document/driver-document.component */ "./src/app/driver-document/driver-document.component.ts");
 
 
 
@@ -2133,6 +2177,8 @@ __webpack_require__.r(__webpack_exports__);
 function HttpLoaderFactory(http) {
     return new _ngx_translate_http_loader__WEBPACK_IMPORTED_MODULE_17__["TranslateHttpLoader"](http);
 }
+
+
 
 
 
@@ -2222,6 +2268,8 @@ var AppModule = /** @class */ (function () {
                 _add_dispatcher_add_dispatcher_component__WEBPACK_IMPORTED_MODULE_51__["AddDispatcherComponent"],
                 _passenger_list_passenger_list_component__WEBPACK_IMPORTED_MODULE_52__["PassengerListComponent"],
                 _passenger_ride_history_list_passenger_ride_history_list_component__WEBPACK_IMPORTED_MODULE_53__["PassengerRideHistoryListComponent"],
+                _driver_detail_driver_detail_component__WEBPACK_IMPORTED_MODULE_54__["DriverDetailComponent"],
+                _driver_document_driver_document_component__WEBPACK_IMPORTED_MODULE_55__["DriverDocumentComponent"],
             ],
             imports: [
                 ngx_google_places_autocomplete__WEBPACK_IMPORTED_MODULE_33__["GooglePlaceModule"],
@@ -2622,191 +2670,227 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var baseURL = "http://35.197.237.60:4001/admin";
+var baseURL = 'http://35.197.237.60:4001/admin';
 var DataService = /** @class */ (function () {
     function DataService(http) {
         this.http = http;
     }
     DataService.prototype.getDataCount = function () {
-        return this.http.get(baseURL + "/getDataCount");
+        return this.http.get(baseURL + '/getDataCount');
     };
     DataService.prototype.getCompanies = function () {
-        return this.http.get(baseURL + "/getCompanies");
+        return this.http.get(baseURL + '/getCompanies');
     };
     DataService.prototype.getRideDetail = function (id) {
-        return this.http.get(baseURL + "/getRideDetail/" + id);
+        return this.http.get(baseURL + '/getRideDetail/' + id);
     };
     DataService.prototype.getRideLocations = function (id) {
-        return this.http.get(baseURL + "/getRideLocations/" + id);
+        return this.http.get(baseURL + '/getRideLocations/' + id);
     };
     DataService.prototype.disableCompany = function (id) {
-        return this.http.put(baseURL + "/disableCompany/" + id, {});
+        return this.http.put(baseURL + '/disableCompany/' + id, {});
     };
     DataService.prototype.enableCompany = function (id) {
-        return this.http.put(baseURL + "/enableCompany/" + id, {});
+        return this.http.put(baseURL + '/enableCompany/' + id, {});
     };
-    DataService.prototype.addNewZone = function (polygon, location_id, name) {
-        return this.http.post(baseURL + "/addNewZone", { "Name": name, "LocationID": Number(location_id), "Polygon": polygon });
+    DataService.prototype.addNewZone = function (polygon, location_id, name, pickupPoints) {
+        return this.http.post(baseURL + '/addNewZone', { PickupPoints: pickupPoints, Name: name, LocationID: Number(location_id), Polygon: polygon });
     };
     DataService.prototype.getLocations = function () {
-        return this.http.get(baseURL + "/getLocations");
+        return this.http.get(baseURL + '/getLocations');
+    };
+    DataService.prototype.getOperatorDocs = function () {
+        return this.http.post(baseURL + '/getOperatorDocs', {});
+    };
+    DataService.prototype.addOperatorDoc = function (name) {
+        return this.http.post(baseURL + '/addOperatorDoc', { Name: name });
     };
     DataService.prototype.getZones = function (id) {
-        return this.http.get(baseURL + "/getZones/" + id);
+        return this.http.get(baseURL + '/getZones/' + id);
     };
     DataService.prototype.getCoordinates = function (id) {
-        return this.http.get(baseURL + "/getCoordinates/" + id);
+        return this.http.get(baseURL + '/getCoordinates/' + id);
     };
     DataService.prototype.disableLocation = function (id) {
-        return this.http.put(baseURL + "/disableLocation/" + id, {});
+        return this.http.put(baseURL + '/disableLocation/' + id, {});
     };
     DataService.prototype.enableLocation = function (id) {
-        return this.http.put(baseURL + "/enableLocation/" + id, {});
+        return this.http.put(baseURL + '/enableLocation/' + id, {});
     };
     DataService.prototype.disableZone = function (id) {
-        return this.http.put(baseURL + "/disableZone/" + id, {});
+        return this.http.put(baseURL + '/disableZone/' + id, {});
     };
     DataService.prototype.enableZone = function (id) {
-        return this.http.put(baseURL + "/enableZone/" + id, {});
+        return this.http.put(baseURL + '/enableZone/' + id, {});
     };
     DataService.prototype.getVehicleTypes = function (id) {
-        return this.http.get(baseURL + "/getVehicleTypes/" + id);
+        return this.http.get(baseURL + '/getVehicleTypes/' + id);
     };
     DataService.prototype.getVehicleTypeWithID = function (id) {
-        return this.http.get(baseURL + "/getVehicleTypeWithID/" + id);
+        return this.http.get(baseURL + '/getVehicleTypeWithID/' + id);
     };
     DataService.prototype.disableVehicleTypes = function (id) {
-        return this.http.put(baseURL + "/disableVehicleType/" + id, {});
+        return this.http.put(baseURL + '/disableVehicleType/' + id, {});
     };
     DataService.prototype.enableVehicleTypes = function (id) {
-        return this.http.put(baseURL + "/enableVehicleType/" + id, {});
+        return this.http.put(baseURL + '/enableVehicleType/' + id, {});
     };
     DataService.prototype.disableVehicle = function (id) {
-        return this.http.put(baseURL + "/disableVehicle/" + id, {});
+        return this.http.put(baseURL + '/disableVehicle/' + id, {});
     };
     DataService.prototype.enableVehicle = function (id) {
-        return this.http.put(baseURL + "/enableVehicle/" + id, {});
+        return this.http.put(baseURL + '/enableVehicle/' + id, {});
     };
     DataService.prototype.disableDriverAssignment = function (id) {
-        return this.http.put(baseURL + "/disableDriverAssignment/" + id, {});
+        return this.http.put(baseURL + '/disableDriverAssignment/' + id, {});
     };
     DataService.prototype.enableDriverAssignment = function (id) {
-        return this.http.put(baseURL + "/enableDriverAssignment/" + id, {});
+        return this.http.put(baseURL + '/enableDriverAssignment/' + id, {});
     };
     DataService.prototype.disableDriver = function (id) {
-        return this.http.put(baseURL + "/disableDriver/" + id, {});
+        return this.http.put(baseURL + '/disableDriver/' + id, {});
+    };
+    DataService.prototype.getDriverDetails = function (id) {
+        return this.http.get(baseURL + '/getDriverDetailsWithDoc/' + id, {});
     };
     DataService.prototype.enableDriver = function (id) {
-        return this.http.put(baseURL + "/enableDriver/" + id, {});
+        return this.http.put(baseURL + '/enableDriver/' + id, {});
     };
     DataService.prototype.disableVehicleTypeCategory = function (id) {
-        return this.http.put(baseURL + "/disableVehicleCategory/" + id, {});
+        return this.http.put(baseURL + '/disableVehicleCategory/' + id, {});
     };
     DataService.prototype.enableVehicleTypeCategory = function (id) {
-        return this.http.put(baseURL + "/enableVehicleCategory/" + id, {});
+        return this.http.put(baseURL + '/enableVehicleCategory/' + id, {});
     };
     DataService.prototype.disableFare = function (FareId) {
         console.log(FareId);
-        var params = { "FareId": parseInt(FareId) };
-        return this.http.put(baseURL + "/disableFare", params);
+        var params = { FareId: parseInt(FareId) };
+        return this.http.put(baseURL + '/disableFare', params);
     };
     DataService.prototype.disableZoneFare = function (FareId) {
         console.log(FareId);
-        var params = { "FareId": parseInt(FareId) };
-        return this.http.put(baseURL + "/disableZoneFare", params);
+        var params = { FareId: parseInt(FareId) };
+        return this.http.put(baseURL + '/disableZoneFare', params);
     };
     DataService.prototype.getFares = function (id) {
-        return this.http.get(baseURL + "/getFares/" + id);
+        return this.http.get(baseURL + '/getFares/' + id);
     };
     DataService.prototype.getZoneFares = function (id) {
-        return this.http.get(baseURL + "/getZoneFares/" + id);
+        return this.http.get(baseURL + '/getZoneFares/' + id);
     };
-    DataService.prototype.GetDriversForCompany = function (companyId) {
-        //var parms={"companyId":companyId}
-        return this.http.get(baseURL + "/getDriversForCompany/" + companyId, {});
+    DataService.prototype.GetDrivers = function () {
+        // var parms={"companyId":companyId}
+        return this.http.get(baseURL + '/getDrivers', {});
     };
     DataService.prototype.getVehiclesOfCompany = function (id) {
-        return this.http.get(baseURL + "/getVehiclesOfCompany/" + id);
+        return this.http.get(baseURL + '/getVehiclesOfCompany/' + id);
     };
     DataService.prototype.getVehicles = function () {
-        return this.http.get(baseURL + "/getVehicles");
+        return this.http.get(baseURL + '/getVehicles');
     };
     DataService.prototype.OnVehicleTypeSubmit = function (formData, headers) {
-        return this.http.post(baseURL + "/addNewVehicleType", formData, headers);
+        return this.http.post(baseURL + '/addNewVehicleType', formData, headers);
     };
     DataService.prototype.editVehicleType = function (formData, headers) {
-        return this.http.post(baseURL + "/editVehicleType", formData, headers);
+        return this.http.post(baseURL + '/editVehicleType', formData, headers);
     };
     DataService.prototype.getActiveLocations = function () {
-        return this.http.get(baseURL + "/getActiveLocations");
+        return this.http.get(baseURL + '/getActiveLocations');
     };
     DataService.prototype.getActiveLocationsForCompany = function (id) {
-        return this.http.get(baseURL + "/getActiveLocationsForCompany/" + id);
+        return this.http.get(baseURL + '/getActiveLocationsForCompany/' + id);
     };
     DataService.prototype.getActiveVehicleType = function () {
-        return this.http.get(baseURL + "/getActiveVehicleType");
+        return this.http.get(baseURL + '/getActiveVehicleType');
     };
     DataService.prototype.LocationSelected = function (ref) {
-        return this.http.get(baseURL + "/getUnAssignedVehicleType/" + ref);
+        return this.http.get(baseURL + '/getUnAssignedVehicleType/' + ref);
     };
     DataService.prototype.getUnAssignedVehicleTypeForZone = function (ref) {
-        return this.http.get(baseURL + "/getUnAssignedVehicleTypeForZone/" + ref);
+        return this.http.get(baseURL + '/getUnAssignedVehicleTypeForZone/' + ref);
     };
     DataService.prototype.addNewVehicleTypeCategory = function (Name) {
-        return this.http.post(baseURL + "/addNewVehicleTypeCategory", { "Name": Name });
+        return this.http.post(baseURL + '/addNewVehicleTypeCategory', { Name: Name });
     };
     DataService.prototype.editVehicleTypeCategory = function (id, name) {
-        return this.http.post(baseURL + "/editVehicleTypeCategory", { "Name": name, "ID": id });
+        return this.http.post(baseURL + '/editVehicleTypeCategory', { Name: name, ID: id });
     };
     DataService.prototype.getVehicleTypeCategories = function () {
-        return this.http.get(baseURL + "/getVehicleTypeCategories");
+        return this.http.get(baseURL + '/getVehicleTypeCategories');
     };
     DataService.prototype.getActiveVehicleTypeCategories = function () {
-        return this.http.get(baseURL + "/getActiveVehicleTypeCategories");
+        return this.http.get(baseURL + '/getActiveVehicleTypeCategories');
     };
     DataService.prototype.addNewVehicleAssignment = function (vehicle_id, driver_id) {
-        var params = { "VehicleID": parseInt(vehicle_id), "DriverID": driver_id };
-        return this.http.post(baseURL + "/addNewVehicleAssignment", params);
+        var params = { VehicleID: parseInt(vehicle_id), DriverID: driver_id };
+        return this.http.post(baseURL + '/addNewVehicleAssignment', params);
     };
     DataService.prototype.getVehicleAssignments = function (driver_id) {
         console.log(driver_id);
-        return this.http.get(baseURL + "/getVehicleAssignments/" + driver_id);
+        return this.http.get(baseURL + '/getVehicleAssignments/' + driver_id);
     };
-    DataService.prototype.addNewFare = function (location_id, vehicle_type_id, base_fare, base_fare_distance, base_fare_duration, duration_fare, distance_fare, tax) {
-        var params = { "LocationID": parseInt(location_id), "VehicleTypeID": parseInt(vehicle_type_id), "BaseFare": base_fare, "BaseFareDistance": base_fare_distance, "BaseFareDuration": base_fare_duration, "DurationFare": duration_fare, "DistanceFare": distance_fare, "Tax": tax };
+    DataService.prototype.addNewFare = function (location_id, vehicle_type_id, base_fare, minimumFare, duration_fare, distance_fare, waitingTimeLimit, waitingFee, cancellationTimeLimit, cancellationFee, tax, trafficFactor) {
+        var params = {
+            OperatorID: parseInt(location_id),
+            VehicleTypeID: parseInt(vehicle_type_id),
+            BaseFare: base_fare,
+            MinimumFare: minimumFare,
+            DurationFare: duration_fare,
+            DistanceFare: distance_fare,
+            WaitingTimeLimit: (waitingTimeLimit),
+            WaitingFee: waitingFee,
+            CancellationTimeLimit: (cancellationTimeLimit),
+            CancellationFee: cancellationFee,
+            Tax: tax,
+            TrafficFactor: trafficFactor
+        };
         console.log(params);
-        return this.http.post(baseURL + "/addNewFare", params);
+        return this.http.post(baseURL + '/addNewFare', params);
     };
     DataService.prototype.addNewZoneFare = function (location_id, vehicle_type_id, base_fare, base_fare_distance, base_fare_duration, duration_fare, distance_fare, tax) {
-        var params = { "ZoneID": parseInt(location_id), "VehicleTypeID": parseInt(vehicle_type_id), "BaseFare": base_fare, "BaseFareDistance": base_fare_distance, "BaseFareDuration": base_fare_duration, "DurationFare": duration_fare, "DistanceFare": distance_fare, "Tax": tax };
+        var params = { ZoneID: parseInt(location_id), VehicleTypeID: parseInt(vehicle_type_id), BaseFare: base_fare, BaseFareDistance: base_fare_distance, BaseFareDuration: base_fare_duration, DurationFare: duration_fare, DistanceFare: distance_fare, Tax: tax };
         console.log(params);
-        return this.http.post(baseURL + "/addNewZoneFare", params);
+        return this.http.post(baseURL + '/addNewZoneFare', params);
     };
     DataService.prototype.getVehicleTypesWithFare = function (ref) {
-        return this.http.get(baseURL + "/getVehicleTypesWithFare/" + ref);
+        return this.http.get(baseURL + '/getVehicleTypesWithFare/' + ref);
     };
-    DataService.prototype.addNewLocation = function (polygon, currency, name) {
-        return this.http.post(baseURL + "/addNewLocation", { "Name": name, "Currency": currency, "Polygon": polygon });
+    DataService.prototype.addNewOperator = function (polygon, currency, name, email, locationName, platformCommission, operatorCommission, workTime, restTime, docs, password, confirmPassword) {
+        return this.http.post(baseURL + '/addNewOperator', {
+            Name: name,
+            Currency: currency,
+            Polygon: polygon,
+            Email: email,
+            LocationName: locationName,
+            PlatformCommission: platformCommission,
+            OperatorCommission: operatorCommission,
+            WorkTime: workTime,
+            RestTime: restTime,
+            Docs: docs,
+            Password: password,
+            ConfirmPassword: confirmPassword
+        });
     };
     DataService.prototype.addNewVehicle = function (formData, headers) {
-        return this.http.post(baseURL + "/addNewVehicle", formData, headers);
+        return this.http.post(baseURL + '/addNewVehicle', formData, headers);
     };
     DataService.prototype.addNewDriver = function (formData, headers) {
-        return this.http.post(baseURL + "/addNewDriver", formData, headers);
+        return this.http.post(baseURL + '/addNewDriver', formData, headers);
     };
     DataService.prototype.getRides = function (RideStatus) {
-        return this.http.post(baseURL + "/getRides", { "RideStatus": parseInt(RideStatus) });
+        return this.http.post(baseURL + '/getRides', { RideStatus: parseInt(RideStatus) });
     };
     DataService.prototype.addNewCompany = function (Commission, Name, Email, Password, ConfirmPassword, Locations) {
+        // tslint:disable-next-line:radix
         console.log(parseInt(Locations));
-        var parms = { "Commission": Commission, "Name": Name, "Email": Email, "Password": Password, "ConfirmPassword": ConfirmPassword, "Locations": Locations };
-        return this.http.post(baseURL + "/addNewCompany", parms);
+        var parms = { Commission: Commission, Name: Name, Email: Email, Password: Password, ConfirmPassword: ConfirmPassword, Locations: Locations };
+        return this.http.post(baseURL + '/addNewCompany', parms);
     };
     DataService.prototype.getPassenger = function () {
-        return this.http.get(baseURL + "/getAllPassengers");
+        return this.http.get(baseURL + '/getAllPassengers');
     };
     DataService.prototype.getRidesForPassenger = function (passengerId) {
-        return this.http.get(baseURL + "/getRidesForPassenger/" + passengerId);
+        return this.http.get(baseURL + '/getRidesForPassenger/' + passengerId);
     };
     DataService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
@@ -2815,6 +2899,294 @@ var DataService = /** @class */ (function () {
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"]])
     ], DataService);
     return DataService;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/driver-detail/driver-detail.component.css":
+/*!***********************************************************!*\
+  !*** ./src/app/driver-detail/driver-detail.component.css ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2RyaXZlci1kZXRhaWwvZHJpdmVyLWRldGFpbC5jb21wb25lbnQuY3NzIn0= */"
+
+/***/ }),
+
+/***/ "./src/app/driver-detail/driver-detail.component.html":
+/*!************************************************************!*\
+  !*** ./src/app/driver-detail/driver-detail.component.html ***!
+  \************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"content\">\n  <div class=\"card mb-4\">\n    <div class=\"card-header p-0\">\n      <ul class=\"nav nav-tabs active-thik nav-primary border-0\" id=\"myTab\" role=\"tablist\">\n        <li class=\"nav-item\">\n          <a class=\"nav-link px-4 py-3 active rounded-0\" id=\"home-tab\" data-toggle=\"tab\" href=\"#home\" role=\"tab\"\n             aria-controls=\"home\" aria-selected=\"true\" >Driver Details</a>\n        </li>\n        <li class=\"nav-item\">\n          <a class=\"nav-link px-4 py-3 rounded-0\" id=\"profile-tab\" data-toggle=\"tab\" href=\"#profile\" role=\"tab\"\n             aria-controls=\"profile\" aria-selected=\"false\" >Documents</a>\n        </li>\n      </ul>\n    </div>\n    <div class=\"card-body\">\n      <div class=\"row\">\n        <div class=\"col-md-6\">\n          <div class=\"tab-content\" id=\"myTabContent\">\n            <div class=\"tab-pane fade show active\" id=\"home\" role=\"tabpanel\" aria-labelledby=\"home-tab\">\n              <img src=\"{{'http://35.197.237.60:4001/'+details.DriverDetails.DriverImage}}\" height=\"160\" width=\"160\" style=\"margin-bottom: 30px;\"/>\n\n              <p><span class=\"weight-400\" >Driver ID : #</span><span class=\"text-muted\">{{ details.DriverDetails.ID }}</span></p>\n              <p><span class=\"weight-400\" >Driver Name : </span><span class=\"text-muted\">{{ details.DriverDetails.Name }}</span></p>\n              <p><span class=\"weight-400\" >Mobile Number : </span><span class=\"text-muted\">{{ \"+\"+details.DriverDetails.DialCode +\" \" + details.DriverDetails.MobileNumber }}</span></p>\n              <p><span class=\"weight-400\" >Vehicle Name : </span><span class=\"text-muted\">{{ details.DriverDetails.VehicleName}}</span></p>\n              <p><span class=\"weight-400\" >Vehicle Number : </span><span class=\"text-muted\">{{ details.DriverDetails.VehicleNumber }}</span></p>\n              <p><span class=\"weight-400\" >Documents Submitted : </span><span class=\"text-muted\">{{ getDocStatus(details.DriverDetails.IsProfileCompleted) }}</span></p>\n              <p>\n                <span class=\"weight-400\" >Approval Status : </span><span class=\"text-muted\">{{ getApprovalStatus(details.DriverDetails.IsActive) }}</span>\n                <button [hidden]=\"details.DriverDetails.IsActive\" (click)=\"enableDriver();\" type=\"button\" class=\"btn mb-2 flat btn-md btn-outline-success ml-2\"  >Approve</button>\n                <button [hidden]=\"!details.DriverDetails.IsActive\" (click)=\"disableDriver();\" type=\"button\" class=\"btn mb-2 flat btn-md btn-outline-danger ml-2\"  >Revert Approval</button>\n              </p>\n\n            </div>\n            <div class=\"tab-pane fade show\" id=\"profile\" role=\"tabpanel\" aria-labelledby=\"profile-tab\">\n              <div *ngFor=\"let item of docDetails\">\n                <p><span class=\"weight-400\" >{{ item.Document.Name }} : </span></p>\n                <img src=\"{{'http://35.197.237.60:4001/public/driver/'+item.UploadedDocument.Image}}\" height=\"160\" width=\"160\" style=\"margin-bottom: 30px;\"/>\n\n              </div>\n              <hr class=\"my-4 dashed\">\n\n            </div>\n          </div>\n        </div>\n      </div>\n\n\n    </div>\n  </div>\n\n</div>\n"
+
+/***/ }),
+
+/***/ "./src/app/driver-detail/driver-detail.component.ts":
+/*!**********************************************************!*\
+  !*** ./src/app/driver-detail/driver-detail.component.ts ***!
+  \**********************************************************/
+/*! exports provided: DriverDetailComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DriverDetailComponent", function() { return DriverDetailComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _data_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../data.service */ "./src/app/data.service.ts");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var angular_notifier__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! angular-notifier */ "./node_modules/angular-notifier/esm5/angular-notifier.js");
+
+
+
+
+
+var DriverDetailComponent = /** @class */ (function () {
+    function DriverDetailComponent(dataService, activatedRoute, notifier, router) {
+        this.dataService = dataService;
+        this.activatedRoute = activatedRoute;
+        this.notifier = notifier;
+        this.router = router;
+        this.docDetails = [];
+    }
+    DriverDetailComponent.prototype.getDocStatus = function (isProfileCompleted) {
+        var value = 'Submitted';
+        if (!isProfileCompleted) {
+            value = 'Not Submitted';
+        }
+        return value;
+    };
+    DriverDetailComponent.prototype.disableDriver = function () {
+        var _this = this;
+        this.dataService.disableDriver(this.details.DriverDetails.ID).subscribe(function (data) {
+            console.log(data);
+            _this.notifier.show({
+                type: 'warning',
+                message: _this.details.DriverDetails.Name + ' Driver disabled successfully',
+            });
+            _this.getDetails();
+        });
+    };
+    DriverDetailComponent.prototype.enableDriver = function () {
+        var _this = this;
+        this.dataService.enableDriver(this.details.DriverDetails.ID).subscribe(function (data) {
+            console.log(data);
+            _this.notifier.show({
+                type: 'success',
+                message: _this.details.DriverDetails.Name + ' Driver Approved successfully',
+            });
+            _this.getDetails();
+        });
+    };
+    DriverDetailComponent.prototype.getApprovalStatus = function (isActive) {
+        var value = 'Approved';
+        if (!isActive) {
+            value = 'Not Approved';
+        }
+        return value;
+    };
+    DriverDetailComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.activatedRoute.params.subscribe(function (params) {
+            _this.driverId = params.id;
+            _this.getDetails();
+        });
+    };
+    DriverDetailComponent.prototype.getDetails = function () {
+        var _this = this;
+        this.dataService.getDriverDetails(this.driverId).subscribe(function (data) {
+            _this.details = data;
+            data.DocsRequired.forEach(function (item) {
+                var docData = {
+                    Document: {},
+                    UploadedDocument: {},
+                };
+                docData.Document = item;
+                data.UploadedDocs.forEach(function (uploadedDoc) {
+                    if (uploadedDoc.DocID === item.ID) {
+                        docData.UploadedDocument = uploadedDoc;
+                    }
+                });
+                _this.docDetails.push(docData);
+            });
+            console.log(_this.details);
+        });
+    };
+    DriverDetailComponent.prototype.getStatusColor = function (id) {
+        var status = ['#e67e22', '#3498db', '#2980b9', '#2ecc71', '#1abc9c', '#d35400', '#e74c3c'];
+        return status[id];
+    };
+    DriverDetailComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+            selector: 'app-driver-detail',
+            template: __webpack_require__(/*! ./driver-detail.component.html */ "./src/app/driver-detail/driver-detail.component.html"),
+            styles: [__webpack_require__(/*! ./driver-detail.component.css */ "./src/app/driver-detail/driver-detail.component.css")]
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_data_service__WEBPACK_IMPORTED_MODULE_2__["DataService"], _angular_router__WEBPACK_IMPORTED_MODULE_3__["ActivatedRoute"], angular_notifier__WEBPACK_IMPORTED_MODULE_4__["NotifierService"], _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"]])
+    ], DriverDetailComponent);
+    return DriverDetailComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/driver-document/driver-document.component.css":
+/*!***************************************************************!*\
+  !*** ./src/app/driver-document/driver-document.component.css ***!
+  \***************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2RyaXZlci1kb2N1bWVudC9kcml2ZXItZG9jdW1lbnQuY29tcG9uZW50LmNzcyJ9 */"
+
+/***/ }),
+
+/***/ "./src/app/driver-document/driver-document.component.html":
+/*!****************************************************************!*\
+  !*** ./src/app/driver-document/driver-document.component.html ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"row page-tilte align-items-center\">\n\n  <div class=\"col-md-auto\">\n    <input type=\"text\"  name=\"name\" [(ngModel)]=\"name\" class=\"form-control mb-1\" placeholder=\"Enter Document Name\" autocomplete=\"off\">\n    <button (click)=\"createDoc()\" class=\"btn btn-primary mb-3\" >Add Document</button>\n    <a href=\"#\" class=\"mt-3 d-md-none float-right toggle-controls\"><span class=\"material-icons\">keyboard_arrow_down</span></a>\n    <h1 class=\"weight-300 h3 title\">Driver Documents</h1>\n    <p class=\"text-muted m-0 desc\"></p>\n  </div>\n\n  <!--div class=\"col controls-wrapper mt-3 mt-md-0 d-none d-md-block \">\n    <div class=\"controls d-flex justify-content-center justify-content-md-end\">\n      <button type=\"button\" routerLink=\"new\" routerLinkActive=\"active\" style=\"cursor:pointer;\" class=\"btn btn-primary\" style=\"float:right\" translate><span class=\"material-icons mr-2 align-top\">add</span>add_driver</button>\n    </div>\n  </div-->\n\n</div>\n\n<div class=\"content\">\n  <table datatable  [dtTrigger]=\"dtTrigger\" id=\"example\"  class=\"table table-striped mb-4 bg-white table-bordered\">\n    <thead>\n    <tr>\n      <th >Id</th>\n      <th >Name</th>\n\n    </tr>\n    </thead>\n    <tbody>\n    <tr *ngFor=\"let driver of docs\">\n      <td>{{driver.ID}}</td>\n      <td>{{driver.Name}}</td>\n      <!--td>\n        <span [hidden]=\"!driver.IsActive\" class=\"badge badge-pill badge-success\" style=\"padding-top:4px;padding-bottom:4px;padding-left:8px;padding-right:8px;color:#FFFFFF;font-size: 12px;\" translate>Enabled</span>\n        <span [hidden]=\"driver.IsActive\" class=\"badge badge-pill badge-danger\" style=\"padding-top:4px;padding-bottom:4px;padding-left:8px;padding-right:8px;color:#FFFFFF;font-size: 12px;\" translate>Disabled</span>\n      </td-->\n    </tr>\n    </tbody>\n  </table>\n\n\n\n  <div class=\"loader-wrapper incomponent\" id=\"demoCardLoader\" [style.display]=\"isLoading? 'block':'none'\">\n    <div class=\"spinner\">\n      <svg viewBox=\"0 0 66 66\" xmlns=\"http://www.w3.org/2000/svg\">\n        <circle class=\"length\" fill=\"none\" stroke-width=\"6\" stroke-linecap=\"round\" cx=\"33\" cy=\"33\" r=\"28\"></circle>\n      </svg>\n      <svg viewBox=\"0 0 66 66\" xmlns=\"http://www.w3.org/2000/svg\">\n        <circle fill=\"none\" stroke-width=\"6\" stroke-linecap=\"round\" cx=\"33\" cy=\"33\" r=\"28\"></circle>\n      </svg>\n      <svg viewBox=\"0 0 66 66\" xmlns=\"http://www.w3.org/2000/svg\">\n        <circle fill=\"none\" stroke-width=\"6\" stroke-linecap=\"round\" cx=\"33\" cy=\"33\" r=\"28\"></circle>\n      </svg>\n      <svg viewBox=\"0 0 66 66\" xmlns=\"http://www.w3.org/2000/svg\">\n        <circle fill=\"none\" stroke-width=\"6\" stroke-linecap=\"round\" cx=\"33\" cy=\"33\" r=\"28\"></circle>\n      </svg>\n    </div>\n  </div>\n\n</div>\n\n\n"
+
+/***/ }),
+
+/***/ "./src/app/driver-document/driver-document.component.ts":
+/*!**************************************************************!*\
+  !*** ./src/app/driver-document/driver-document.component.ts ***!
+  \**************************************************************/
+/*! exports provided: DriverDocumentComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DriverDocumentComponent", function() { return DriverDocumentComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var angular_datatables__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! angular-datatables */ "./node_modules/angular-datatables/index.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var ngx_bootstrap_modal__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ngx-bootstrap/modal */ "./node_modules/ngx-bootstrap/modal/fesm5/ngx-bootstrap-modal.js");
+/* harmony import */ var _data_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../data.service */ "./src/app/data.service.ts");
+/* harmony import */ var angular_notifier__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! angular-notifier */ "./node_modules/angular-notifier/esm5/angular-notifier.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+
+
+
+
+
+
+
+
+var DriverDocumentComponent = /** @class */ (function () {
+    function DriverDocumentComponent(dataService, notifier, activatedRoute, router, modalService) {
+        this.dataService = dataService;
+        this.notifier = notifier;
+        this.activatedRoute = activatedRoute;
+        this.router = router;
+        this.modalService = modalService;
+        this.dtTrigger = new rxjs__WEBPACK_IMPORTED_MODULE_3__["Subject"]();
+        this.isLoading = true;
+        this.name = "";
+    }
+    DriverDocumentComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.dataService.getOperatorDocs().subscribe(function (data) {
+            _this.docs = data;
+            _this.dtTrigger.next();
+            _this.isLoading = false;
+        });
+    };
+    DriverDocumentComponent.prototype.getDocStatus = function (isProfileCompleted) {
+        var value = 'Submitted';
+        if (!isProfileCompleted) {
+            value = 'Not Submitted';
+        }
+        return value;
+    };
+    DriverDocumentComponent.prototype.createDoc = function () {
+        var _this = this;
+        this.isLoading = true;
+        this.dataService.addOperatorDoc(this.name).subscribe(function (data) {
+            console.log(data);
+            _this.notifier.show({
+                type: 'warning',
+                message: name + ' Driver Doc Added successfully',
+            });
+            _this.getDrivers();
+        });
+    };
+    DriverDocumentComponent.prototype.getDrivers = function () {
+        var _this = this;
+        this.dataService.getOperatorDocs().subscribe(function (data) {
+            _this.docs = data;
+            _this.rerender();
+            _this.isLoading = false;
+        });
+    };
+    DriverDocumentComponent.prototype.disableDriver = function (id, name) {
+        var _this = this;
+        this.isLoading = true;
+        this.dataService.disableDriver(id).subscribe(function (data) {
+            console.log(data);
+            _this.notifier.show({
+                type: 'warning',
+                message: name + ' Driver disabled successfully',
+            });
+            _this.getDrivers();
+        });
+    };
+    DriverDocumentComponent.prototype.enableDriver = function (id, name) {
+        var _this = this;
+        this.isLoading = true;
+        this.dataService.enableDriver(id).subscribe(function (data) {
+            console.log(data);
+            _this.notifier.show({
+                type: 'success',
+                message: name + ' Driver enabled successfully',
+            });
+            _this.getDrivers();
+        });
+    };
+    DriverDocumentComponent.prototype.navigateToVehicleAssignments = function (id, name) {
+    };
+    DriverDocumentComponent.prototype.rerender = function () {
+        var _this = this;
+        this.dtElement.dtInstance.then(function (dtInstance) {
+            // Destroy the table first
+            dtInstance.destroy();
+            // Call the dtTrigger to rerender again
+            _this.dtTrigger.next();
+        });
+    };
+    DriverDocumentComponent.prototype.openModal = function (driver_disable_modal) {
+        this.modalRef = this.modalService.show(driver_disable_modal);
+    };
+    DriverDocumentComponent.prototype.ngOnDestroy = function () {
+        // Do not forget to unsubscribe the event
+        this.dtTrigger.unsubscribe();
+    };
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewChild"])(angular_datatables__WEBPACK_IMPORTED_MODULE_2__["DataTableDirective"]),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", angular_datatables__WEBPACK_IMPORTED_MODULE_2__["DataTableDirective"])
+    ], DriverDocumentComponent.prototype, "dtElement", void 0);
+    DriverDocumentComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+            selector: 'app-driver-document',
+            template: __webpack_require__(/*! ./driver-document.component.html */ "./src/app/driver-document/driver-document.component.html"),
+            styles: [__webpack_require__(/*! ./driver-document.component.css */ "./src/app/driver-document/driver-document.component.css")]
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_data_service__WEBPACK_IMPORTED_MODULE_5__["DataService"], angular_notifier__WEBPACK_IMPORTED_MODULE_6__["NotifierService"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_7__["ActivatedRoute"], _angular_router__WEBPACK_IMPORTED_MODULE_7__["Router"], ngx_bootstrap_modal__WEBPACK_IMPORTED_MODULE_4__["BsModalService"]])
+    ], DriverDocumentComponent);
+    return DriverDocumentComponent;
 }());
 
 
@@ -2839,7 +3211,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row page-tilte align-items-center\">\n  \n  <div class=\"col-md-auto\">\n    <a href=\"#\" class=\"mt-3 d-md-none float-right toggle-controls\"><span class=\"material-icons\">keyboard_arrow_down</span></a>\n    <h1 class=\"weight-300 h3 title\">{{company_name}} -  <h1 class=\"weight-300 h3 title\" translate>driver_list</h1></h1>\n    <p class=\"text-muted m-0 desc\"></p>\n  </div>\n\n  <div class=\"col controls-wrapper mt-3 mt-md-0 d-none d-md-block \">\n    <div class=\"controls d-flex justify-content-center justify-content-md-end\">\n      <button type=\"button\" routerLink=\"new\" routerLinkActive=\"active\" style=\"cursor:pointer;\" class=\"btn btn-primary\" style=\"float:right\" translate><span class=\"material-icons mr-2 align-top\">add</span>add_driver</button>\n    </div>\n  </div>\n\n</div>\n\n<div class=\"content\">\n  <table datatable  [dtTrigger]=\"dtTrigger\" id=\"example\"  class=\"table table-striped mb-4 bg-white table-bordered\">\n    <thead>\n      <tr>\n        <th translate>driver_id</th>\n        <th translate>driver_name</th>\n        <th translate>driver_location</th>\n        <th translate>driver_dialcode</th>\n        <th translate>driver_mobile</th>\n        <th translate>driver_license</th>\n        <th data-orderable=\"false\" translate>driver_image</th>\n        <th data-orderable=\"false\" translate>driver_status</th>\n        <th data-orderable=\"false\" translate>driver_action</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let driver of drivers\">\n        <td>{{driver.driver_id}}</td>\n        <td>{{driver.driver_name}}</td>\n        <td>{{driver.location_name}}</td>\n        <td>{{driver.dial_code }}</td>\n        <td>{{driver.mobile_number}}</td>\n        <td>{{driver.license_number}}</td>\n        <td><img src=\"{{'http://35.197.237.60:4001/'+driver.image}}\" height=\"40\" width=\"40\"/></td>\n        <td>\n            <span [hidden]=\"!driver.is_active\" class=\"badge badge-pill badge-success\" style=\"padding-top:4px;padding-bottom:4px;padding-left:8px;padding-right:8px;color:#FFFFFF;font-size: 12px;\" translate>driver_enabled</span>\n            <span [hidden]=\"driver.is_active\" class=\"badge badge-pill badge-danger\" style=\"padding-top:4px;padding-bottom:4px;padding-left:8px;padding-right:8px;color:#FFFFFF;font-size: 12px;\" translate>driver_disabled</span>\n        </td>\n        <td>\n          <button [hidden]=\"driver.is_active\" type=\"button\" class=\"btn mb-2 flat btn-sm btn-outline-success\" (click)=\"enableDriver(driver.driver_id,driver.driver_name)\" translate>driver_enable</button>\n          <button [hidden]=\"!driver.is_active\" type=\"button\" class=\"btn mb-2 flat btn-sm btn-outline-danger\" (click)=\"openModal(driver_disable_modal)\" translate>driver_disable</button> \n          <ng-template #driver_disable_modal>\n            <div class=\"modal-header\">\n              <h4 class=\"modal-title pull-left\">Driver</h4>\n              <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">\n                <span aria-hidden=\"true\">&times;</span>\n              </button>\n            </div>\n            <div class=\"modal-body\">\n             Do you want to disable this Driver<br>\n            </div>\n            <div class=\"modal-footer\">\n              <button type=\"button\" class=\"btn mb-2 flat btn-sm btn-outline-warning\" (click)=\"modalRef.hide()\">Cancel</button>\n              <button [hidden]=\"!driver.is_active\" type=\"button\" class=\"btn mb-2 flat btn-sm btn-outline-danger\" (click)=\"disableDriver(driver.driver_id,driver.driver_name); modalRef.hide()\">Confirm</button>\n            </div>\n          </ng-template>\n          \n          <button type=\"button\" [hidden]=\"!driver.is_active\" (click)=\"navigateToVehicleAssignments(driver.driver_id,driver.driver_name)\"style=\"cursor:pointer;\" class=\"btn mb-2 flat btn-sm btn-outline-success\" style=\"margin-left:5px;\" translate>driver_manageVehicle</button>\n        </td>\n      </tr>\n    </tbody>\n  </table>\n\n  \n\n  <div class=\"loader-wrapper incomponent\" id=\"demoCardLoader\" [style.display]=\"isLoading? 'block':'none'\">\n    <div class=\"spinner\">\n      <svg viewBox=\"0 0 66 66\" xmlns=\"http://www.w3.org/2000/svg\">\n        <circle class=\"length\" fill=\"none\" stroke-width=\"6\" stroke-linecap=\"round\" cx=\"33\" cy=\"33\" r=\"28\"></circle>\n      </svg>\n      <svg viewBox=\"0 0 66 66\" xmlns=\"http://www.w3.org/2000/svg\">\n        <circle fill=\"none\" stroke-width=\"6\" stroke-linecap=\"round\" cx=\"33\" cy=\"33\" r=\"28\"></circle>\n      </svg>\n      <svg viewBox=\"0 0 66 66\" xmlns=\"http://www.w3.org/2000/svg\">\n        <circle fill=\"none\" stroke-width=\"6\" stroke-linecap=\"round\" cx=\"33\" cy=\"33\" r=\"28\"></circle>\n      </svg>\n      <svg viewBox=\"0 0 66 66\" xmlns=\"http://www.w3.org/2000/svg\">\n        <circle fill=\"none\" stroke-width=\"6\" stroke-linecap=\"round\" cx=\"33\" cy=\"33\" r=\"28\"></circle>\n      </svg>\n    </div>\n  </div>\n  \n</div>\n          \n\n"
+module.exports = "<div class=\"row page-tilte align-items-center\">\n  \n  <div class=\"col-md-auto\">\n    <a href=\"#\" class=\"mt-3 d-md-none float-right toggle-controls\"><span class=\"material-icons\">keyboard_arrow_down</span></a>\n    <h1 class=\"weight-300 h3 title\">Driver List</h1>\n    <p class=\"text-muted m-0 desc\"></p>\n  </div>\n\n  <!--div class=\"col controls-wrapper mt-3 mt-md-0 d-none d-md-block \">\n    <div class=\"controls d-flex justify-content-center justify-content-md-end\">\n      <button type=\"button\" routerLink=\"new\" routerLinkActive=\"active\" style=\"cursor:pointer;\" class=\"btn btn-primary\" style=\"float:right\" translate><span class=\"material-icons mr-2 align-top\">add</span>add_driver</button>\n    </div>\n  </div-->\n\n</div>\n\n<div class=\"content\">\n  <table datatable  [dtTrigger]=\"dtTrigger\" id=\"example\"  class=\"table table-striped mb-4 bg-white table-bordered\">\n    <thead>\n      <tr>\n        <th >Id</th>\n        <th >Name</th>\n        <th >Mobile</th>\n        <th >Vehicle</th>\n        <th>Operator</th>\n        <th >Location</th>\n        <th >Documents</th>\n        <th >Status</th>\n        <th  >Action</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let driver of drivers\">\n        <td>{{driver.driver_id}}</td>\n        <td> <img src=\"{{'http://35.197.237.60:4001/'+driver.driver_image}}\" height=\"40\" width=\"40\"/> {{driver.driver_name}}</td>\n        <td>{{\"+\"+driver.dial_code+\" \"+driver.mobile_number}}</td>\n        <td>{{driver.vehicle_name+\" - \" + driver.vehicle_number}}</td>\n        <td>{{driver.operator_name}}</td>\n        <td>{{driver.location_name}}</td>\n        <td>{{ getDocStatus(driver.is_profile_completed)}}</td>\n        <td>\n            <span [hidden]=\"!driver.is_active\" class=\"badge badge-pill badge-success\" style=\"padding-top:4px;padding-bottom:4px;padding-left:8px;padding-right:8px;color:#FFFFFF;font-size: 12px;\" translate>driver_enabled</span>\n            <span [hidden]=\"driver.is_active\" class=\"badge badge-pill badge-danger\" style=\"padding-top:4px;padding-bottom:4px;padding-left:8px;padding-right:8px;color:#FFFFFF;font-size: 12px;\" translate>driver_disabled</span>\n        </td>\n        <td>\n          <button :routerLink=\"{{driver.driver_id}}\" type=\"button\" class=\"btn mb-2 flat btn-sm btn-outline-success\"  >View Details</button>\n          <ng-template #driver_disable_modal>\n            <div class=\"modal-header\">\n              <h4 class=\"modal-title pull-left\">Driver</h4>\n              <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">\n                <span aria-hidden=\"true\">&times;</span>\n              </button>\n            </div>\n            <div class=\"modal-body\">\n             Do you want to disable this Driver<br>\n            </div>\n            <div class=\"modal-footer\">\n              <button type=\"button\" class=\"btn mb-2 flat btn-sm btn-outline-warning\" (click)=\"modalRef.hide()\">Cancel</button>\n              <button [hidden]=\"!driver.is_active\" type=\"button\" class=\"btn mb-2 flat btn-sm btn-outline-danger\" (click)=\"disableDriver(driver.driver_id,driver.driver_name); modalRef.hide()\">Confirm</button>\n            </div>\n          </ng-template>\n        </td>\n      </tr>\n    </tbody>\n  </table>\n\n  \n\n  <div class=\"loader-wrapper incomponent\" id=\"demoCardLoader\" [style.display]=\"isLoading? 'block':'none'\">\n    <div class=\"spinner\">\n      <svg viewBox=\"0 0 66 66\" xmlns=\"http://www.w3.org/2000/svg\">\n        <circle class=\"length\" fill=\"none\" stroke-width=\"6\" stroke-linecap=\"round\" cx=\"33\" cy=\"33\" r=\"28\"></circle>\n      </svg>\n      <svg viewBox=\"0 0 66 66\" xmlns=\"http://www.w3.org/2000/svg\">\n        <circle fill=\"none\" stroke-width=\"6\" stroke-linecap=\"round\" cx=\"33\" cy=\"33\" r=\"28\"></circle>\n      </svg>\n      <svg viewBox=\"0 0 66 66\" xmlns=\"http://www.w3.org/2000/svg\">\n        <circle fill=\"none\" stroke-width=\"6\" stroke-linecap=\"round\" cx=\"33\" cy=\"33\" r=\"28\"></circle>\n      </svg>\n      <svg viewBox=\"0 0 66 66\" xmlns=\"http://www.w3.org/2000/svg\">\n        <circle fill=\"none\" stroke-width=\"6\" stroke-linecap=\"round\" cx=\"33\" cy=\"33\" r=\"28\"></circle>\n      </svg>\n    </div>\n  </div>\n  \n</div>\n          \n\n"
 
 /***/ }),
 
@@ -2881,24 +3253,22 @@ var DriverListComponent = /** @class */ (function () {
     }
     DriverListComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.activatedRoute.params.subscribe(function (params) {
-            _this.company_id = +params['id'];
-            _this.company_name = params['name'];
-            console.log(_this.company_id, _this.company_name);
-            _this.dataService.GetDriversForCompany(_this.company_id).subscribe(function (data) {
-                _this.drivers = data;
-                _this.dtTrigger.next();
-                _this.isLoading = false;
-            });
+        this.dataService.GetDrivers().subscribe(function (data) {
+            _this.drivers = data;
+            _this.dtTrigger.next();
+            _this.isLoading = false;
         });
     };
-    DriverListComponent.prototype.ngOnDestroy = function () {
-        // Do not forget to unsubscribe the event
-        this.dtTrigger.unsubscribe();
+    DriverListComponent.prototype.getDocStatus = function (isProfileCompleted) {
+        var value = 'Submitted';
+        if (!isProfileCompleted) {
+            value = 'Not Submitted';
+        }
+        return value;
     };
     DriverListComponent.prototype.getDrivers = function () {
         var _this = this;
-        this.dataService.GetDriversForCompany(this.company_id).subscribe(function (data) {
+        this.dataService.GetDrivers().subscribe(function (data) {
             _this.drivers = data;
             _this.rerender();
             _this.isLoading = false;
@@ -2929,7 +3299,6 @@ var DriverListComponent = /** @class */ (function () {
         });
     };
     DriverListComponent.prototype.navigateToVehicleAssignments = function (id, name) {
-        this.router.navigate(["admin/companies/" + this.company_id + "/" + this.company_name + "/drivers/assignments/" + id + "/" + name]);
     };
     DriverListComponent.prototype.rerender = function () {
         var _this = this;
@@ -2943,6 +3312,10 @@ var DriverListComponent = /** @class */ (function () {
     DriverListComponent.prototype.openModal = function (driver_disable_modal) {
         this.modalRef = this.modalService.show(driver_disable_modal);
     };
+    DriverListComponent.prototype.ngOnDestroy = function () {
+        // Do not forget to unsubscribe the event
+        this.dtTrigger.unsubscribe();
+    };
     tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewChild"])(angular_datatables__WEBPACK_IMPORTED_MODULE_4__["DataTableDirective"]),
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", angular_datatables__WEBPACK_IMPORTED_MODULE_4__["DataTableDirective"])
@@ -2953,7 +3326,8 @@ var DriverListComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./driver-list.component.html */ "./src/app/driver-list/driver-list.component.html"),
             styles: [__webpack_require__(/*! ./driver-list.component.css */ "./src/app/driver-list/driver-list.component.css")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_data_service__WEBPACK_IMPORTED_MODULE_2__["DataService"], angular_notifier__WEBPACK_IMPORTED_MODULE_5__["NotifierService"], _angular_router__WEBPACK_IMPORTED_MODULE_6__["ActivatedRoute"], _angular_router__WEBPACK_IMPORTED_MODULE_6__["Router"], ngx_bootstrap_modal__WEBPACK_IMPORTED_MODULE_7__["BsModalService"]])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_data_service__WEBPACK_IMPORTED_MODULE_2__["DataService"], angular_notifier__WEBPACK_IMPORTED_MODULE_5__["NotifierService"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_6__["ActivatedRoute"], _angular_router__WEBPACK_IMPORTED_MODULE_6__["Router"], ngx_bootstrap_modal__WEBPACK_IMPORTED_MODULE_7__["BsModalService"]])
     ], DriverListComponent);
     return DriverListComponent;
 }());
@@ -3371,7 +3745,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row page-tilte align-items-center\">\n  \n  <div class=\"col-md-auto\">\n    <a href=\"#\" class=\"mt-3 d-md-none float-right toggle-controls\"><span class=\"material-icons\">keyboard_arrow_down</span></a>\n    <h1 class=\"weight-300 h3 title\" translate>location_title</h1>\n    <p class=\"text-muted m-0 desc\"></p>\n  </div>\n\n  <div class=\"col controls-wrapper mt-3 mt-md-0 d-none d-md-block \">\n    <div class=\"controls d-flex justify-content-center justify-content-md-end\">\n      <button type=\"button\" routerLink=\"new\" routerLinkActive=\"active\" style=\"cursor:pointer;\" class=\"btn btn-primary\" style=\"float:right\" translate><span class=\"material-icons mr-2 align-top\">add</span>location_add</button>\n\n    </div>\n  </div>\n\n</div>\n<div class=\"content\">\n  <table datatable [dtOptions]=\"dtOptions\"  [dtTrigger]=\"dtTrigger\" id=\"example\"  class=\"table table-striped mb-4 bg-white table-bordered\">\n    <thead>\n      <tr>\n        <th translate>location_id</th>\n        <th translate>location_name</th>\n        <th translate>location_active_vehicle_type</th>\n        <th translate>location_currency</th>\n        <th data-orderable=\"false\" translate>location_status</th>\n        <th data-orderable=\"false\" translate>location_action</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let location of locations\">\n        <td>{{location.ID}}</td>\n        <td>{{location.Name}}</td>\n        <td class=\"th_width\">{{location.TotalFareCount}}</td>\n        <td>{{location.Currency}}</td>\n        <td>\n          <span [hidden]=\"!location.IsActive\" class=\"badge badge-pill badge-success\" style=\"padding-top:4px;padding-bottom:4px;padding-left:8px;padding-right:8px;color:#FFFFFF;font-size: 12px;\" translate>location_enabled</span>\n          <span [hidden]=\"location.IsActive\" class=\"badge badge-pill badge-danger\" style=\"padding-top:4px;padding-bottom:4px;padding-left:8px;padding-right:8px;color:#FFFFFF;font-size: 12px;\" translate>location_disabled</span>\n        </td>\n        <td>\n          <button [hidden]=\"!location.IsActive\" type=\"button\" class=\"btn btn-purple btn-sm\" style=\"margin-right:10px;\"\n                      (click)=\"navigateToZoneList(location.ID,location.Name)\" translate>location_manage_zone</button>\n          \n          <button [hidden]=\"!location.IsActive\" type=\"button\" class=\"btn btn-primary btn-sm\" style=\"margin-right:10px;\" (click) = \"navigateToFareList(location.ID,location.Name,location.Currency)\" translate>location_vehicle_fare</button>\n          <!--button [hidden]=\"!location.IsActive\" type=\"button\" class=\"btn btn-warning btn-sm\" style=\"margin-right:10px;\"\n            (click)=\"navigateToEdit(location.ID,location.Name)\">Edit\n          </button-->\n          <button [hidden]=\"location.IsActive\" type=\"button\" class=\"btn btn-outline-success btn-sm\" (click)=\"enableLocation(location.ID,location.Name)\" translate>vehicle_type_enable</button>\n          <button [hidden]=\"!location.IsActive\" type=\"button\" class=\"btn btn-outline-danger btn-sm\" (click)=\"openModal(location_disable_modal)\" translate>vehicle_type_disable</button> \n          <ng-template #location_disable_modal>\n            <div class=\"modal-header\">\n              <h4 class=\"modal-title pull-left\">Location</h4>\n              <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">\n                <span aria-hidden=\"true\">&times;</span>\n              </button>\n            </div>\n            <div class=\"modal-body\">\n             Do you want to disable this location <br>\n            </div>\n            <div class=\"modal-footer\">\n              <button type=\"button\" class=\"btn mb-2 flat btn-sm btn-outline-warning\" (click)=\"modalRef.hide()\">Cancel</button>\n              <button [hidden]=\"!location.IsActive\" type=\"button\" class=\"btn mb-2 flat btn-sm btn-outline-danger\" (click)=\"disableLocation(location.ID,location.Name); modalRef.hide()\">Confirm</button>\n            </div>\n          </ng-template>\n        </td>\n      </tr>\n    </tbody>\n  </table>\n\n  <div class=\"loader-wrapper incomponent\" id=\"demoCardLoader\" [style.display]=\"isLoading? 'block':'none'\">\n    <div class=\"spinner\">\n      <svg viewBox=\"0 0 66 66\" xmlns=\"http://www.w3.org/2000/svg\">\n        <circle class=\"length\" fill=\"none\" stroke-width=\"6\" stroke-linecap=\"round\" cx=\"33\" cy=\"33\" r=\"28\"></circle>\n      </svg>\n      <svg viewBox=\"0 0 66 66\" xmlns=\"http://www.w3.org/2000/svg\">\n        <circle fill=\"none\" stroke-width=\"6\" stroke-linecap=\"round\" cx=\"33\" cy=\"33\" r=\"28\"></circle>\n      </svg>\n      <svg viewBox=\"0 0 66 66\" xmlns=\"http://www.w3.org/2000/svg\">\n        <circle fill=\"none\" stroke-width=\"6\" stroke-linecap=\"round\" cx=\"33\" cy=\"33\" r=\"28\"></circle>\n      </svg>\n      <svg viewBox=\"0 0 66 66\" xmlns=\"http://www.w3.org/2000/svg\">\n        <circle fill=\"none\" stroke-width=\"6\" stroke-linecap=\"round\" cx=\"33\" cy=\"33\" r=\"28\"></circle>\n      </svg>\n    </div>\n  </div>\n  \n</div>\n          \n\n"
+module.exports = "<div class=\"row page-tilte align-items-center\">\n  \n  <div class=\"col-md-auto\">\n    <a href=\"#\" class=\"mt-3 d-md-none float-right toggle-controls\"><span class=\"material-icons\">keyboard_arrow_down</span></a>\n    <h1 [hidden]=\"!isAdmin\" class=\"weight-300 h3 title\" >Operator List</h1>\n    <p class=\"text-muted m-0 desc\"></p>\n  </div>\n\n  <div class=\"col controls-wrapper mt-3 mt-md-0 d-none d-md-block \">\n    <div class=\"controls d-flex justify-content-center justify-content-md-end\">\n      <button [hidden]=\"!isAdmin\" type=\"button\" routerLink=\"new\" routerLinkActive=\"active\" style=\"cursor:pointer;\" class=\"btn btn-primary\" style=\"float:right\" ><span class=\"material-icons mr-2 align-top\">add</span>Add New Operator</button>\n\n    </div>\n  </div>\n\n</div>\n<div class=\"content\">\n  <table datatable [dtOptions]=\"dtOptions\"  [dtTrigger]=\"dtTrigger\" id=\"example\"  class=\"table table-striped mb-4 bg-white table-bordered\">\n    <thead>\n      <tr>\n        <th >ID</th>\n        <th >Operator Name</th>\n        <th >Location Name</th>\n        <th >Driver Work Time</th>\n        <th >Driver Rest Time</th>\n        <th >ActiveVehicle Types</th>\n        <th data-orderable=\"false\" >Status</th>\n        <th data-orderable=\"false\" >Action</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let location of locations\">\n        <td>{{location.ID}}</td>\n        <td>{{location.Name}}</td>\n        <td>{{location.LocationName}}</td>\n        <td>{{location.DriverWorkTime}} hours</td>\n        <td>{{location.DriverRestTime}} hours</td>\n        <td class=\"th_width\">{{location.TotalFareCount}}</td>\n        <td>\n          <span [hidden]=\"!location.IsActive\" class=\"badge badge-pill badge-success\" style=\"padding-top:4px;padding-bottom:4px;padding-left:8px;padding-right:8px;color:#FFFFFF;font-size: 12px;\" translate>location_enabled</span>\n          <span [hidden]=\"location.IsActive\" class=\"badge badge-pill badge-danger\" style=\"padding-top:4px;padding-bottom:4px;padding-left:8px;padding-right:8px;color:#FFFFFF;font-size: 12px;\" translate>location_disabled</span>\n        </td>\n        <td>\n          <button [hidden]=\"!location.IsActive\" type=\"button\" class=\"btn btn-purple btn-sm\" style=\"margin-right:10px;\"\n                      (click)=\"navigateToZoneList(location.ID,location.Name)\" translate>location_manage_zone</button>\n          \n          <button [hidden]=\"!location.IsActive\" type=\"button\" class=\"btn btn-primary btn-sm\" style=\"margin-right:10px;\" (click) = \"navigateToFareList(location.ID,location.Name,location.Currency)\" translate>location_vehicle_fare</button>\n          <!--button [hidden]=\"!location.IsActive\" type=\"button\" class=\"btn btn-warning btn-sm\" style=\"margin-right:10px;\"\n            (click)=\"navigateToEdit(location.ID,location.Name)\">Edit\n          </button-->\n          <button [hidden]=\"location.IsActive\" type=\"button\" class=\"btn btn-outline-success btn-sm\" (click)=\"enableLocation(location.ID,location.Name)\" translate>vehicle_type_enable</button>\n          <button [hidden]=\"!location.IsActive\" type=\"button\" class=\"btn btn-outline-danger btn-sm\" (click)=\"openModal(location_disable_modal)\" translate>vehicle_type_disable</button> \n          <ng-template #location_disable_modal>\n            <div class=\"modal-header\">\n              <h4 class=\"modal-title pull-left\">Location</h4>\n              <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">\n                <span aria-hidden=\"true\">&times;</span>\n              </button>\n            </div>\n            <div class=\"modal-body\">\n             Do you want to disable this location <br>\n            </div>\n            <div class=\"modal-footer\">\n              <button type=\"button\" class=\"btn mb-2 flat btn-sm btn-outline-warning\" (click)=\"modalRef.hide()\">Cancel</button>\n              <button [hidden]=\"!location.IsActive\" type=\"button\" class=\"btn mb-2 flat btn-sm btn-outline-danger\" (click)=\"disableLocation(location.ID,location.Name); modalRef.hide()\">Confirm</button>\n            </div>\n          </ng-template>\n        </td>\n      </tr>\n    </tbody>\n  </table>\n\n  <div class=\"loader-wrapper incomponent\" id=\"demoCardLoader\" [style.display]=\"isLoading? 'block':'none'\">\n    <div class=\"spinner\">\n      <svg viewBox=\"0 0 66 66\" xmlns=\"http://www.w3.org/2000/svg\">\n        <circle class=\"length\" fill=\"none\" stroke-width=\"6\" stroke-linecap=\"round\" cx=\"33\" cy=\"33\" r=\"28\"></circle>\n      </svg>\n      <svg viewBox=\"0 0 66 66\" xmlns=\"http://www.w3.org/2000/svg\">\n        <circle fill=\"none\" stroke-width=\"6\" stroke-linecap=\"round\" cx=\"33\" cy=\"33\" r=\"28\"></circle>\n      </svg>\n      <svg viewBox=\"0 0 66 66\" xmlns=\"http://www.w3.org/2000/svg\">\n        <circle fill=\"none\" stroke-width=\"6\" stroke-linecap=\"round\" cx=\"33\" cy=\"33\" r=\"28\"></circle>\n      </svg>\n      <svg viewBox=\"0 0 66 66\" xmlns=\"http://www.w3.org/2000/svg\">\n        <circle fill=\"none\" stroke-width=\"6\" stroke-linecap=\"round\" cx=\"33\" cy=\"33\" r=\"28\"></circle>\n      </svg>\n    </div>\n  </div>\n  \n</div>\n          \n\n"
 
 /***/ }),
 
@@ -3393,6 +3767,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var angular_notifier__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! angular-notifier */ "./node_modules/angular-notifier/esm5/angular-notifier.js");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 /* harmony import */ var ngx_bootstrap_modal__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ngx-bootstrap/modal */ "./node_modules/ngx-bootstrap/modal/fesm5/ngx-bootstrap-modal.js");
+/* harmony import */ var _auth_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../auth.service */ "./src/app/auth.service.ts");
+
 
 
 
@@ -3402,14 +3778,18 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var LocationListComponent = /** @class */ (function () {
-    function LocationListComponent(router, dataService, notifier, modalService) {
+    function LocationListComponent(router, authenticationService, dataService, notifier, modalService) {
         this.router = router;
+        this.authenticationService = authenticationService;
         this.dataService = dataService;
         this.notifier = notifier;
         this.modalService = modalService;
         this.dtTrigger = new rxjs__WEBPACK_IMPORTED_MODULE_3__["Subject"]();
         this.dtOptions = {};
+        this.isAdmin = false;
         this.isLoading = true;
+        var currentUser = this.authenticationService.currentUserValue;
+        this.isAdmin = currentUser.IsAdmin;
     }
     LocationListComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -3493,7 +3873,7 @@ var LocationListComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./location-list.component.html */ "./src/app/location-list/location-list.component.html"),
             styles: [__webpack_require__(/*! ./location-list.component.css */ "./src/app/location-list/location-list.component.css")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_6__["Router"], _data_service__WEBPACK_IMPORTED_MODULE_2__["DataService"], angular_notifier__WEBPACK_IMPORTED_MODULE_5__["NotifierService"], ngx_bootstrap_modal__WEBPACK_IMPORTED_MODULE_7__["BsModalService"]])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_6__["Router"], _auth_service__WEBPACK_IMPORTED_MODULE_8__["AuthService"], _data_service__WEBPACK_IMPORTED_MODULE_2__["DataService"], angular_notifier__WEBPACK_IMPORTED_MODULE_5__["NotifierService"], ngx_bootstrap_modal__WEBPACK_IMPORTED_MODULE_7__["BsModalService"]])
     ], LocationListComponent);
     return LocationListComponent;
 }());
@@ -3554,7 +3934,12 @@ var LoginComponent = /** @class */ (function () {
         this.auth.login(this.email, this.password).subscribe(function (data) {
             if (data.Status) {
                 alert(data.Message);
-                _this.router.navigate(["admin/dashboard"]);
+                if (data.IsAdmin) {
+                    _this.router.navigate(["admin/dashboard"]);
+                }
+                else {
+                    _this.router.navigate(["admin/locations"]);
+                }
             }
             else {
                 alert(data.Message);
@@ -3594,7 +3979,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"wrapper\">\n\n\n  <!-- SIDEBAR -->\n  <aside class=\"sidebar\">\n    <nav class=\"navbar navbar-dark bg-primary\" >\n      <a class=\"navbar-brand m-0 py-2 brand-title\" href=\"#\">Onride Taxi Admin</a>\n      <span></span>\n      <a class=\"navbar-brand py-2 material-icons toggle-sidebar\" href=\"#\">menu</a>\n    </nav>\n\n    <nav class=\"navigation\">\n      <ul>\n        <li routerLink=\"dashboard\" [routerLinkActiveOptions]=\"{exact:true}\"  routerLinkActive=\"active\" class=\"\" style=\"cursor:pointer;\"><a title=\"Dashboard\" translate><span class=\"nav-icon material-icons\">web</span>\n            _dashboard<span class=\"toogle-sub-nav material-icons\">keyboard_arrow_right</span></a> </li>\n            <hr>\n        <li routerLink=\"vehicletypecategory\" routerLinkActive=\"active\" class=\"\" style=\"cursor:pointer;\"><a\n            title=\"Dashboard\"><span class=\"nav-icon material-icons\">local_car_wash</span>\n            Vehicle Categories<span class=\"toogle-sub-nav material-icons\">keyboard_arrow_right</span></a></li>\n\n        <li routerLink=\"locations\" routerLinkActive=\"active\" class=\"\" style=\"cursor:pointer;\"><a  title=\"Dashboard\"><span class=\"nav-icon material-icons\">location_on</span>\n            Locations<span class=\"toogle-sub-nav material-icons\">keyboard_arrow_right</span></a></li>\n        <li routerLink=\"companies\" routerLinkActive=\"active\" class=\"\" style=\"cursor:pointer;\"><a title=\"Dashboard\"><span class=\"nav-icon material-icons\">account_box</span>\n            Companies<span class=\"toogle-sub-nav material-icons\">keyboard_arrow_right</span></a></li>\n        \n        <li routerLink=\"rides\" [routerLinkActiveOptions]=\"{exact:true}\" routerLinkActive=\"active\" class=\"\" style=\"cursor:pointer;\"><a title=\"Dashboard\"><span class=\"nav-icon material-icons\">swap_calls</span>\n            Rides<span class=\"toogle-sub-nav material-icons\">keyboard_arrow_right</span></a></li>\n        <li routerLink=\"passenger\" routerLinkActive=\"active\" class=\"\" style=\"cursor:pointer;\"><a title=\"Dashboard\"><span\n              class=\"nav-icon material-icons\">contacts</span> Passengers<span class=\"toogle-sub-nav material-icons\">keyboard_arrow_right</span></a></li>\n            <hr>\n        <!--li routerLink=\"promocode\" routerLinkActive=\"active\" class=\"\" style=\"cursor:pointer;\"><a title=\"Dashboard\"><span\n                  class=\"nav-icon material-icons\">stars</span>\n            Ratings & Reviews<span class=\"toogle-sub-nav material-icons\">keyboard_arrow_right</span></a></li>\n        <li routerLink=\"promocode\" routerLinkActive=\"active\" class=\"\" style=\"cursor:pointer;\"><a title=\"Dashboard\"><span\n              class=\"nav-icon material-icons\">card_giftcard</span>\n            PromoCodes<span class=\"toogle-sub-nav material-icons\">keyboard_arrow_right</span></a></li>\n        <li routerLink=\"company\" routerLinkActive=\"active\" class=\"\" style=\"cursor:pointer;\"><a title=\"Dashboard\"><span\n              class=\"nav-icon material-icons\">chat_bubble</span>\n            Push Notifications<span class=\"toogle-sub-nav material-icons\">keyboard_arrow_right</span></a></li>\n            <hr>\n        <li routerLink=\"dispatcher\" routerLinkActive=\"active\" class=\"\" style=\"cursor:pointer;\"><a title=\"Dashboard\"><span class=\"nav-icon material-icons\">phone_callback</span>\n            Dispatcher<span class=\"toogle-sub-nav material-icons\">keyboard_arrow_right</span></a></li-->\n      </ul>\n\n    </nav>\n\n  </aside>\n\n\n\n  <!--RIGHT CONTENT AREA-->\n  <div class=\"content-area\">\n\n    <header class=\"header sticky-top\">\n      <nav class=\"navbar navbar-light bg-white px-sm-4 \" style=\"padding-bottom:14px;\">\n        <a class=\"navbar-brand py-2 d-md-none  m-0 material-icons toggle-sidebar\" href=\"#\">menu</a>\n        <ul class=\"navbar-nav flex-row ml-auto\">\n          <li class=\"nav-item ml-sm-3 user-logedin dropdown\">\n            <a style=\"cursor:pointer;\" class=\"dropdown-item\" (click)=onLogout()>Logout</a>\n          </li>\n          <li class=\"nav-item ml-sm-3 user-logedin dropdown\">\n            <form>\n            <label>Select Language</label>\n            <select id=\"lan_id\" (change)=\"switchLanguage($event.target.value)\">\n              <option value=\"en\">English</option>\n              <option value=\"ta-IN\">Tamil</option>\n              <option value=\"es-MX\">Spanish(mexico)</option>\n            </select>   \n            </form>         \n          </li>\n        </ul>\n      </nav>\n    </header>\n\n\n    <div class=\"content-wrapper\">\n      <router-outlet></router-outlet>\n\n      <footer class=\"footer\">\n        <p class=\"text-muted m-0\"><small class=\"float-right\">Made with <span class=\"material-icons md-16 text-danger align-middle\">favorite</span>\n            by Guruprasath.dev </small><small>Onride Taxi Solutions © 2019 - www.onridetaxi.com</small></p>\n      </footer>\n\n    </div>\n  </div>\n  <notifier-container></notifier-container>\n</section>\n\n\n"
+module.exports = "<section class=\"wrapper\">\n\n\n  <!-- SIDEBAR -->\n  <aside class=\"sidebar\">\n    <nav class=\"navbar navbar-dark bg-success\" >\n      <a [hidden]=\"!isAdmin\"  class=\"navbar-brand m-0 py-2 brand-title\" href=\"#\">Taasai Admin</a>\n      <a [hidden]=\"isAdmin\"  class=\"navbar-brand m-0 py-2 brand-title\" href=\"#\">Taasai Operator</a>\n      <span></span>\n      <a class=\"navbar-brand py-2 material-icons toggle-sidebar\" href=\"#\">menu</a>\n    </nav>\n\n    <nav class=\"navigation\">\n      <ul>\n        <li [hidden]=\"!isAdmin\"  routerLink=\"dashboard\" [routerLinkActiveOptions]=\"{exact:true}\"  routerLinkActive=\"active\" class=\"\" style=\"cursor:pointer;\"><a title=\"Dashboard\" translate><span class=\"nav-icon material-icons\">web</span>\n            _dashboard<span class=\"toogle-sub-nav material-icons\">keyboard_arrow_right</span></a> </li>\n            <hr>\n        <li [hidden]=\"!isAdmin\" routerLink=\"vehicletypecategory\" routerLinkActive=\"active\" class=\"\" style=\"cursor:pointer;\"><a\n            title=\"Dashboard\"><span class=\"nav-icon material-icons\">local_car_wash</span>\n            Vehicle Categories<span class=\"toogle-sub-nav material-icons\">keyboard_arrow_right</span></a></li>\n\n        <li [hidden]=\"!isAdmin\" routerLink=\"locations\" routerLinkActive=\"active\" class=\"\" style=\"cursor:pointer;\"><a  title=\"Dashboard\"><span class=\"nav-icon material-icons\">location_on</span>\n            Operators<span class=\"toogle-sub-nav material-icons\">keyboard_arrow_right</span></a></li>\n\n        <li [hidden]=\"isAdmin\" routerLink=\"locations\" routerLinkActive=\"active\" class=\"\" style=\"cursor:pointer;\"><a  title=\"Dashboard\"><span class=\"nav-icon material-icons\">location_on</span>\n            Operator <span class=\"toogle-sub-nav material-icons\">keyboard_arrow_right</span></a></li>\n        <li [hidden]=\"isAdmin\" routerLink=\"documents\" routerLinkActive=\"active\" class=\"\" style=\"cursor:pointer;\"><a title=\"Dashboard\"><span\n                class=\"nav-icon material-icons\">contacts</span> Driver Documents<span class=\"toogle-sub-nav material-icons\">keyboard_arrow_right</span></a></li>\n        <li routerLink=\"drivers\" routerLinkActive=\"active\" class=\"\" style=\"cursor:pointer;\"><a title=\"Dashboard\"><span\n                class=\"nav-icon material-icons\">contacts</span> Drivers<span class=\"toogle-sub-nav material-icons\">keyboard_arrow_right</span></a></li>\n\n        <li routerLink=\"rides\" [routerLinkActiveOptions]=\"{exact:true}\" routerLinkActive=\"active\" class=\"\" style=\"cursor:pointer;\"><a title=\"Dashboard\"><span class=\"nav-icon material-icons\">swap_calls</span>\n            Rides<span class=\"toogle-sub-nav material-icons\">keyboard_arrow_right</span></a></li>\n        <li routerLink=\"passenger\" routerLinkActive=\"active\" class=\"\" style=\"cursor:pointer;\"><a title=\"Dashboard\"><span\n              class=\"nav-icon material-icons\">contacts</span> Passengers<span class=\"toogle-sub-nav material-icons\">keyboard_arrow_right</span></a></li>\n                    <hr>\n        <!--li routerLink=\"promocode\" routerLinkActive=\"active\" class=\"\" style=\"cursor:pointer;\"><a title=\"Dashboard\"><span\n                  class=\"nav-icon material-icons\">stars</span>\n            Ratings & Reviews<span class=\"toogle-sub-nav material-icons\">keyboard_arrow_right</span></a></li>\n        <li routerLink=\"promocode\" routerLinkActive=\"active\" class=\"\" style=\"cursor:pointer;\"><a title=\"Dashboard\"><span\n              class=\"nav-icon material-icons\">card_giftcard</span>\n            PromoCodes<span class=\"toogle-sub-nav material-icons\">keyboard_arrow_right</span></a></li>\n        <li routerLink=\"company\" routerLinkActive=\"active\" class=\"\" style=\"cursor:pointer;\"><a title=\"Dashboard\"><span\n              class=\"nav-icon material-icons\">chat_bubble</span>\n            Push Notifications<span class=\"toogle-sub-nav material-icons\">keyboard_arrow_right</span></a></li>\n            <hr>\n        <li routerLink=\"dispatcher\" routerLinkActive=\"active\" class=\"\" style=\"cursor:pointer;\"><a title=\"Dashboard\"><span class=\"nav-icon material-icons\">phone_callback</span>\n            Dispatcher<span class=\"toogle-sub-nav material-icons\">keyboard_arrow_right</span></a></li-->\n      </ul>\n\n    </nav>\n\n  </aside>\n\n\n\n  <!--RIGHT CONTENT AREA-->\n  <div class=\"content-area\">\n\n    <header class=\"header sticky-top\">\n      <nav class=\"navbar navbar-light bg-white px-sm-4 \" style=\"padding-bottom:14px;\">\n        <a class=\"navbar-brand py-2 d-md-none  m-0 material-icons toggle-sidebar\" href=\"#\">menu</a>\n        <ul class=\"navbar-nav flex-row ml-auto\">\n          <li class=\"nav-item ml-sm-3 user-logedin dropdown\">\n            <a style=\"cursor:pointer;\" class=\"dropdown-item\" (click)=onLogout()>Logout</a>\n          </li>\n\n        </ul>\n      </nav>\n    </header>\n\n\n    <div class=\"content-wrapper\">\n      <router-outlet></router-outlet>\n\n      <footer class=\"footer\">\n        <p class=\"text-muted m-0\"><small>Taasai © 2020 - www.taasai.com</small></p>\n      </footer>\n\n    </div>\n  </div>\n  <notifier-container></notifier-container>\n</section>\n\n\n"
 
 /***/ }),
 
@@ -3619,11 +4004,15 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var MainComponent = /** @class */ (function () {
-    function MainComponent(auth, router, translate) {
+    function MainComponent(auth, authenticationService, router, translate) {
         this.auth = auth;
+        this.authenticationService = authenticationService;
         this.router = router;
         this.translate = translate;
+        this.isAdmin = false;
         translate.setDefaultLang('en');
+        var currentUser = this.authenticationService.currentUserValue;
+        this.isAdmin = currentUser.IsAdmin;
     }
     MainComponent.prototype.ngOnInit = function () {
     };
@@ -3640,7 +4029,7 @@ var MainComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./main.component.html */ "./src/app/main/main.component.html"),
             styles: [__webpack_require__(/*! ./main.component.css */ "./src/app/main/main.component.css")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_auth_service__WEBPACK_IMPORTED_MODULE_2__["AuthService"], _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"], _ngx_translate_core__WEBPACK_IMPORTED_MODULE_4__["TranslateService"]])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_auth_service__WEBPACK_IMPORTED_MODULE_2__["AuthService"], _auth_service__WEBPACK_IMPORTED_MODULE_2__["AuthService"], _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"], _ngx_translate_core__WEBPACK_IMPORTED_MODULE_4__["TranslateService"]])
     ], MainComponent);
     return MainComponent;
 }());
@@ -4094,7 +4483,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content\">\n  <div class=\"card mb-4\">\n    <div class=\"card-header p-0\">\n      <ul class=\"nav nav-tabs active-thik nav-primary border-0\" id=\"myTab\" role=\"tablist\">\n        <li class=\"nav-item\">\n          <a class=\"nav-link px-4 py-3 active rounded-0\" id=\"home-tab\" data-toggle=\"tab\" href=\"#home\" role=\"tab\"\n            aria-controls=\"home\" aria-selected=\"true\" translate>ride_details_basic</a>\n        </li>\n        <li class=\"nav-item\">\n          <a class=\"nav-link px-4 py-3 rounded-0\" id=\"profile-tab\" data-toggle=\"tab\" href=\"#profile\" role=\"tab\"\n            aria-controls=\"profile\" aria-selected=\"false\" translate>ride_details_fare</a>\n        </li>\n        <li class=\"nav-item\">\n          <a class=\"nav-link px-4 py-3 rounded-0\" id=\"review-tab\" data-toggle=\"tab\" href=\"#review\" role=\"tab\"\n            aria-controls=\"review\" aria-selected=\"false\" translate>ride_details_review</a>\n        </li>\n      </ul>\n    </div>\n    <div class=\"card-body\">\n      <div class=\"row\">\n        <div class=\"col-md-6\">\n          <div class=\"tab-content\" id=\"myTabContent\">\n            <div class=\"tab-pane fade show active\" id=\"home\" role=\"tabpanel\" aria-labelledby=\"home-tab\">\n                  <p><span class=\"weight-400\" translate>ride_details_basic_id</span><span class=\"text-muted\">{{ ride.ID }}</span></p>\n                  <p><span class=\"weight-400\" translate>ride_details_basic_pickup</span><span class=\"text-muted\">{{ ride.PickupLocation }}</span>\n                  </p>\n                  <p><span class=\"weight-400\" translate>ride_details_basic_drop</span><span class=\"text-muted\">{{ ride.DropLocation }}</span></p>\n                  <hr class=\"my-4 dashed\">\n                  <p><span class=\"weight-400\" translate>ride_details_basic_bookingDate</span><span class=\"text-muted\">{{ getFormattedDateTime(ride.RideDateTime) }}</span></p>\n                  <p><span class=\"weight-400\" translate>ride_details_basic_startedDate</span><span\n                                        class=\"text-muted\">{{ getFormattedDateTime(ride.RideStartTime) }}</span></p>\n                  <p><span class=\"weight-400\" translate>ride_details_basic_completedDate</span><span\n                      class=\"text-muted\">{{ getFormattedDateTime(ride.RideEndTime) }}</span></p>\n                  <p><span class=\"weight-400\" translate>ride_details_basic_status</span><span class=\"text-muted\" [style.color]=\"getStatusColor(ride.RideStatus)\">{{ getRideStatusText(ride.RideStatus) }}</span>\n                  </p>\n                  \n                  <p><span class=\"weight-400\" translate>ride_details_basic_passengerName</span><span class=\"text-muted\">{{ ride.PassengerName }}</span></p>\n                  <p><span class=\"weight-400\" translate>ride_details_basic_passengerMobile</span><span\n                      class=\"text-muted\">+{{ ride.PassengerDialCode+\"-\"+ride.PassengerMobile }}</span></p>\n                  <p><span class=\"weight-400\" translate>ride_details_basic_DriverName</span><span class=\"text-muted\">{{ ride.DriverName }}</span></p>\n                  <p><span class=\"weight-400\" translate>ride_details_basic_driverMobile</span><span\n                      class=\"text-muted\">+{{ ride.DriverDialCode+\"-\"+ride.DriverMobile }}</span></p>\n                  <p><span class=\"weight-400\" translate>ride_details_basic_vehicleName</span><span class=\"text-muted\">{{ ride.VehicleName }}</span></p>\n                  <p><span class=\"weight-400\" translate>ride_details_basic_vehicleNumber</span><span class=\"text-muted\">{{ ride.VehicleNumber }}</span></p>\n            </div>\n            <div class=\"tab-pane fade show\" id=\"profile\" role=\"tabpanel\" aria-labelledby=\"profile-tab\">\n              <p><span class=\"weight-400\" translate>ride_details_fare_area</span><span class=\"text-muted\">{{ ride.ServiceArea }}</span></p>\n              <p><span class=\"weight-400\" translate>ride_details_fare_baseFare</span><span class=\"text-muted\">{{ ride.Currency+ride.BaseFare }}</span></p>\n              <p><span class=\"weight-400\" translate>ride_details_fare_kmBaseFare</span><span\n                  class=\"text-muted\">{{ ride.KmInBaseFare }} Km</span></p>\n              <p><span class=\"weight-400\" translate>ride_details_fare_minBaseFare</span><span\n                  class=\"text-muted\">{{ ride.DurationInBaseFare }} Minutes</span></p>\n              <p><span class=\"weight-400\" translate>ride_details_fare_distance</span><span\n                  class=\"text-muted\">{{ ride.Currency+ride.BaseDistanceFare }}/Km</span></p>\n              <p><span class=\"weight-400\" translate>ride_details_fare_duration</span><span\n                  class=\"text-muted\">{{ ride.Currency+ride.BaseDurationFare }}/Minute</span></p>\n              <p><span class=\"weight-400\" translate>ride_details_fare_tax</span><span class=\"text-muted\">{{ ride.TaxPercentage }}</span></p>\n              <hr class=\"my-4 dashed\">\n          \n              <p><span class=\"weight-400\" translate>ride_details_fare_totalDistance</span><span class=\"text-muted\">{{ ride.Distance }} Km</span></p>\n              <p><span class=\"weight-400\" translate>ride_details_fare_totalDuration</span><span class=\"text-muted\">{{ ride.Duration }} Minutes</span>\n              </p>\n              <p><span class=\"weight-400\" translate>ride_details_fare_rideDistance</span><span\n                  class=\"text-muted\">{{ ride.Currency + ride.DistanceFare }}</span></p>\n              <p><span class=\"weight-400\" translate>ride_details_fare_rideDuration</span><span\n                  class=\"text-muted\">{{ ride.Currency+ ride.DurationFare }}</span></p>\n              <p><span class=\"weight-400\" translate>ride_details_fare_totalTax</span><span class=\"text-muted\">{{ ride.Currency+ride.Tax }}</span></p>\n              <p><span class=\"weight-400\" translate>ride_details_fare_totalRideFare</span><span\n                  class=\"text-muted\">{{ ride.Currency+ride.TotalFare }}</span>\n              </p>\n            </div>\n            <div class=\"tab-pane fade show\" id=\"review\" role=\"tabpanel\" aria-labelledby=\"profile-tab\">\n              <h2 class=\"weight-300 h3 title\" translate>ride_details_review_passenger</h2>\n              <p><span class=\"weight-400\" translate>ride_details_review_passengerRating</span><span class=\"text-muted\">{{ ride.PassengerRating }}</span></p>\n              <p><span class=\"weight-400\" translate>ride_details_review_passenger</span><span class=\"text-muted\">{{ ride.PassengerReview }}</span></p>\n              <hr class=\"my-4 dashed\">\n          \n              <h2 class=\"weight-300 h3 title\" translate>ride_details_review_driver</h2>\n              <p><span class=\"weight-400\" translate>ride_details_review_driverRating</span><span class=\"text-muted\">{{ ride.DriverRating }}</span></p>\n              <p><span class=\"weight-400\" translate>ride_details_review_driver</span><span class=\"text-muted\">{{ ride.DriverReview }}</span></p>\n              <hr class=\"my-4 dashed\">\n              <hr class=\"my-4 dashed\">\n        \n            </div>\n          </div>\n        </div>\n        <div class=\"col-md-6\">\n          <agm-map [latitude]=\"latitude\" [fullscreenControl]=\"true\" [longitude]=\"longitude\" [zoom]=\"14\">\n            <agm-polyline>\n              <agm-polyline-point *ngFor=\"let point of ride_locations\" [latitude]=\"point.lat\" [longitude]=\"point.lng\">\n              </agm-polyline-point>\n            </agm-polyline>\n          </agm-map>\n        </div>\n      </div>\n      \n  \n    </div>\n  </div>\n  \n</div>"
+module.exports = "<div class=\"content\">\n  <div class=\"card mb-4\">\n    <div class=\"card-header p-0\">\n      <ul class=\"nav nav-tabs active-thik nav-primary border-0\" id=\"myTab\" role=\"tablist\">\n        <li class=\"nav-item\">\n          <a class=\"nav-link px-4 py-3 active rounded-0\" id=\"home-tab\" data-toggle=\"tab\" href=\"#home\" role=\"tab\"\n            aria-controls=\"home\" aria-selected=\"true\" translate>ride_details_basic</a>\n        </li>\n        <li class=\"nav-item\">\n          <a class=\"nav-link px-4 py-3 rounded-0\" id=\"profile-tab\" data-toggle=\"tab\" href=\"#profile\" role=\"tab\"\n            aria-controls=\"profile\" aria-selected=\"false\" translate>ride_details_fare</a>\n        </li>\n        <li class=\"nav-item\">\n          <a class=\"nav-link px-4 py-3 rounded-0\" id=\"review-tab\" data-toggle=\"tab\" href=\"#review\" role=\"tab\"\n            aria-controls=\"review\" aria-selected=\"false\" translate>ride_details_review</a>\n        </li>\n        <li class=\"nav-item\">\n          <a class=\"nav-link px-4 py-3 rounded-0\" id=\"timeline-tab\" data-toggle=\"tab\" href=\"#timeline\" role=\"tab\"\n            aria-controls=\"timeline\" aria-selected=\"false\" >Timeline</a>\n        </li>\n      </ul>\n    </div>\n    <div class=\"card-body\">\n      <div class=\"row\">\n        <div class=\"col-md-6\">\n          <div class=\"tab-content\" id=\"myTabContent\">\n            <div class=\"tab-pane fade show active\" id=\"home\" role=\"tabpanel\" aria-labelledby=\"home-tab\">\n                  <p><span class=\"weight-400\" translate>ride_details_basic_id</span><span class=\"text-muted\">{{ ride.ID }}</span></p>\n                  <p><span class=\"weight-400\" translate>ride_details_basic_pickup</span><span class=\"text-muted\">{{ ride.PickupLocation }}</span>\n                  </p>\n                  <p><span class=\"weight-400\" translate>ride_details_basic_drop</span><span class=\"text-muted\">{{ ride.DropLocation }}</span></p>\n                  <hr class=\"my-4 dashed\">\n                  <p><span class=\"weight-400\" translate>ride_details_basic_bookingDate</span><span class=\"text-muted\">{{ getFormattedDateTime(ride.RideDateTime) }}</span></p>\n                  <p><span class=\"weight-400\" translate>ride_details_basic_startedDate</span><span\n                                        class=\"text-muted\">{{ getFormattedDateTime(ride.RideStartTime) }}</span></p>\n                  <p><span class=\"weight-400\" translate>ride_details_basic_completedDate</span><span\n                      class=\"text-muted\">{{ getFormattedDateTime(ride.RideEndTime) }}</span></p>\n                  <p><span class=\"weight-400\" translate>ride_details_basic_status</span><span class=\"text-muted\" [style.color]=\"getStatusColor(ride.RideStatus)\">{{ getRideStatusText(ride.RideStatus) }}</span>\n                  </p>\n                  \n                  <p><span class=\"weight-400\" translate>ride_details_basic_passengerName</span><span class=\"text-muted\">{{ ride.PassengerName }}</span></p>\n                  <p><span class=\"weight-400\" translate>ride_details_basic_passengerMobile</span><span\n                      class=\"text-muted\">+{{ ride.PassengerDialCode+\"-\"+ride.PassengerMobile }}</span></p>\n                  <p><span class=\"weight-400\" translate>ride_details_basic_DriverName</span><span class=\"text-muted\">{{ ride.DriverName }}</span></p>\n                  <p><span class=\"weight-400\" translate>ride_details_basic_driverMobile</span><span\n                      class=\"text-muted\">+{{ ride.DriverDialCode+\"-\"+ride.DriverMobile }}</span></p>\n                  <p><span class=\"weight-400\" translate>ride_details_basic_vehicleName</span><span class=\"text-muted\">{{ ride.VehicleName }}</span></p>\n                  <p><span class=\"weight-400\" translate>ride_details_basic_vehicleNumber</span><span class=\"text-muted\">{{ ride.VehicleNumber }}</span></p>\n            </div>\n            <div class=\"tab-pane fade show\" id=\"profile\" role=\"tabpanel\" aria-labelledby=\"profile-tab\">\n              <p><span class=\"weight-400\" translate>ride_details_fare_area</span><span class=\"text-muted\">{{ ride.ServiceArea }}</span></p>\n              <p><span class=\"weight-400\" translate>ride_details_fare_baseFare</span><span class=\"text-muted\">{{ ride.Currency+ride.BaseFare }}</span></p>\n              <p><span class=\"weight-400\" translate>ride_details_fare_kmBaseFare</span><span\n                  class=\"text-muted\">{{ ride.KmInBaseFare }} Km</span></p>\n              <p><span class=\"weight-400\" translate>ride_details_fare_minBaseFare</span><span\n                  class=\"text-muted\">{{ ride.DurationInBaseFare }} Minutes</span></p>\n              <p><span class=\"weight-400\" translate>ride_details_fare_distance</span><span\n                  class=\"text-muted\">{{ ride.Currency+ride.BaseDistanceFare }}/Km</span></p>\n              <p><span class=\"weight-400\" translate>ride_details_fare_duration</span><span\n                  class=\"text-muted\">{{ ride.Currency+ride.BaseDurationFare }}/Minute</span></p>\n              <p><span class=\"weight-400\" translate>ride_details_fare_tax</span><span class=\"text-muted\">{{ ride.TaxPercentage }}</span></p>\n              <hr class=\"my-4 dashed\">\n          \n              <p><span class=\"weight-400\" translate>ride_details_fare_totalDistance</span><span class=\"text-muted\">{{ ride.Distance }} Km</span></p>\n              <p><span class=\"weight-400\" translate>ride_details_fare_totalDuration</span><span class=\"text-muted\">{{ ride.Duration }} Minutes</span>\n              </p>\n              <p><span class=\"weight-400\" translate>ride_details_fare_rideDistance</span><span\n                  class=\"text-muted\">{{ ride.Currency + ride.DistanceFare }}</span></p>\n              <p><span class=\"weight-400\" translate>ride_details_fare_rideDuration</span><span\n                  class=\"text-muted\">{{ ride.Currency+ ride.DurationFare }}</span></p>\n              <p><span class=\"weight-400\" translate>ride_details_fare_totalTax</span><span class=\"text-muted\">{{ ride.Currency+ride.Tax }}</span></p>\n              <p><span class=\"weight-400\" translate>ride_details_fare_totalRideFare</span><span\n                  class=\"text-muted\">{{ ride.Currency+ride.TotalFare }}</span>\n              </p>\n            </div>\n            <div class=\"tab-pane fade show\" id=\"review\" role=\"tabpanel\" aria-labelledby=\"profile-tab\">\n              <h2 class=\"weight-300 h3 title\" translate>ride_details_review_passenger</h2>\n              <p><span class=\"weight-400\" translate>ride_details_review_passengerRating</span><span class=\"text-muted\">{{ ride.PassengerRating }}</span></p>\n              <p><span class=\"weight-400\" translate>ride_details_review_passenger</span><span class=\"text-muted\">{{ ride.PassengerReview }}</span></p>\n              <hr class=\"my-4 dashed\">\n          \n              <h2 class=\"weight-300 h3 title\" translate>ride_details_review_driver</h2>\n              <p><span class=\"weight-400\" translate>ride_details_review_driverRating</span><span class=\"text-muted\">{{ ride.DriverRating }}</span></p>\n              <p><span class=\"weight-400\" translate>ride_details_review_driver</span><span class=\"text-muted\">{{ ride.DriverReview }}</span></p>\n              <hr class=\"my-4 dashed\">\n              <hr class=\"my-4 dashed\">\n        \n            </div>\n              <div class=\"tab-pane fade show\" id=\"timeline\" role=\"tabpanel\" aria-labelledby=\"timeline-tab\">\n                  <div *ngFor=\"let item of ride.TimeLine\" >\n                    <h2 class=\"weight-300 h6 title\" >{{item.Message}}</h2>\n                    <p><span class=\"weight-400 text-muted\" >{{ getFormattedDateTime(item.CreatedAt)  }}</span></p>\n                    <hr class=\"my-4 dashed\">\n\n                  </div>\n              </div>\n        </div>\n        </div>\n        <div class=\"col-md-6\">\n          <agm-map [latitude]=\"latitude\" [fullscreenControl]=\"true\" [longitude]=\"longitude\" [zoom]=\"14\">\n            <agm-polyline>\n              <agm-polyline-point *ngFor=\"let point of ride_locations\" [latitude]=\"point.lat\" [longitude]=\"point.lng\">\n              </agm-polyline-point>\n            </agm-polyline>\n          </agm-map>\n        </div>\n      </div>\n      \n  \n    </div>\n  </div>\n  \n</div>\n"
 
 /***/ }),
 
@@ -4206,7 +4595,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row page-tilte align-items-center\">\n  \n  <div class=\"col-md-auto\">\n    <a href=\"#\" class=\"mt-3 d-md-none float-right toggle-controls\"><span class=\"material-icons\">keyboard_arrow_down</span></a>\n    <h1 class=\"weight-300 h3 title\" translate>ride_list_title</h1>\n    <p class=\"text-muted m-0 desc\"></p>\n  </div>\n\n  <div class=\"col controls-wrapper mt-3 mt-md-0 d-none d-md-block \">\n    <div class=\"controls d-flex justify-content-center justify-content-md-end\">\n        <form>\n            <div class=\"form-group\">\n              <label for=\"name\" translate>select_ride_type</label>\n              <select name=\"ride_status\" [(ngModel)]=\"ride_status\" (change)=\"onRideChange($event.target.value)\" class=\"form-control\">\n                <option value=\"-1\">All rides</option>\n                <option value=\"0\">Waiting rides</option>\n                <option value=\"1\">Driver Assigned rides</option>\n                <option value=\"3\">Ongoing rides</option>\n                <option value=\"4\">Completed rides</option>\n                <option value=\"5\">Driver UnAvailable rides</option>\n                <option value=\"6\">Cancelled rides</option>\n              </select>    \n            </div> \n        </form>\n    </div>\n  </div>\n\n</div>\n\n<div class=\"content\">\n  <table datatable [dtOptions]=\"dtOptions\"  [dtTrigger]=\"dtTrigger\" id=\"example\"  class=\"table table-striped mb-4 bg-white table-bordered\">\n    <thead>\n      <tr>\n        <th translate>ride_list_id</th>\n        <th translate>ride_list_passenger</th>\n        <th translate>ride_list_service_area</th>\n        <th translate>ride_list_pickup_location</th>\n        <th translate>ride_list_drop_location</th>\n        <th translate>ride_list_booking_time</th>\n        <th translate>ride_list_status</th>\n        <th translate>ride_list_action</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let ride of rides\">\n        <td>{{ride.ID}}</td>\n        <td>{{ride.PassengerName}}</td>\n        <td>{{ride.ServiceArea}}</td>\n        <td>{{ride.PickupLocation}}</td>\n        <td>{{ride.DropLocation}}</td>\n        <td>{{ getFormattedDateTime(ride.RideDateTime) }}</td>\n        <td><span [style.color]=\"getStatusColor(ride.RideStatus)\">{{ getRideStatusText(ride.RideStatus) }}</span></td>\n        <td>\n            <button type=\"button\" style=\"cursor:pointer;\" class=\"btn mb-2 flat btn-sm btn-outline-success\" (click)=\"navigateToRideDetail(ride.ID)\" routerLinkActive=\"router-link-active\" translate>ride_list_view</button>\n        </td>\n        \n      </tr>\n    </tbody>\n  </table>\n\n  \n\n  <div class=\"loader-wrapper incomponent\" id=\"demoCardLoader\" [style.display]=\"isLoading? 'block':'none'\">\n    <div class=\"spinner\">\n      <svg viewBox=\"0 0 66 66\" xmlns=\"http://www.w3.org/2000/svg\">\n        <circle class=\"length\" fill=\"none\" stroke-width=\"6\" stroke-linecap=\"round\" cx=\"33\" cy=\"33\" r=\"28\"></circle>\n      </svg>\n      <svg viewBox=\"0 0 66 66\" xmlns=\"http://www.w3.org/2000/svg\">\n        <circle fill=\"none\" stroke-width=\"6\" stroke-linecap=\"round\" cx=\"33\" cy=\"33\" r=\"28\"></circle>\n      </svg>\n      <svg viewBox=\"0 0 66 66\" xmlns=\"http://www.w3.org/2000/svg\">\n        <circle fill=\"none\" stroke-width=\"6\" stroke-linecap=\"round\" cx=\"33\" cy=\"33\" r=\"28\"></circle>\n      </svg>\n      <svg viewBox=\"0 0 66 66\" xmlns=\"http://www.w3.org/2000/svg\">\n        <circle fill=\"none\" stroke-width=\"6\" stroke-linecap=\"round\" cx=\"33\" cy=\"33\" r=\"28\"></circle>\n      </svg>\n    </div>\n  </div>\n  \n</div>"
+module.exports = "<div class=\"row page-tilte align-items-center\">\n  \n  <div class=\"col-md-auto\">\n    <a href=\"#\" class=\"mt-3 d-md-none float-right toggle-controls\"><span class=\"material-icons\">keyboard_arrow_down</span></a>\n    <h1 class=\"weight-300 h3 title\" translate>ride_list_title</h1>\n    <p class=\"text-muted m-0 desc\"></p>\n  </div>\n\n  <div class=\"col controls-wrapper mt-3 mt-md-0 d-none d-md-block \">\n    <div class=\"controls d-flex justify-content-center justify-content-md-end\">\n        <form>\n            <div class=\"form-group\">\n              <label for=\"name\" translate>select_ride_type</label>\n              <select name=\"ride_status\" [(ngModel)]=\"ride_status\" (change)=\"onRideChange($event.target.value)\" class=\"form-control\">\n                <option value=\"-1\">All rides</option>\n                <option value=\"0\">Waiting rides</option>\n                <option value=\"1\">Driver Assigned rides</option>\n                <option value=\"3\">Ongoing rides</option>\n                <option value=\"4\">Completed rides</option>\n                <option value=\"5\">Driver UnAvailable rides</option>\n                <option value=\"6\">Cancelled rides</option>\n              </select>    \n            </div> \n        </form>\n    </div>\n  </div>\n\n</div>\n\n<div class=\"content\">\n  <table datatable [dtOptions]=\"dtOptions\"  [dtTrigger]=\"dtTrigger\" id=\"example\"  class=\"table table-striped mb-4 bg-white table-bordered\">\n    <thead>\n      <tr>\n        <th translate>ride_list_id</th>\n        <th translate>ride_list_passenger</th>\n        <th >Operator Name</th>\n        <th translate>ride_list_pickup_location</th>\n        <th translate>ride_list_drop_location</th>\n        <th translate>ride_list_booking_time</th>\n        <th translate>ride_list_status</th>\n        <th translate>ride_list_action</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let ride of rides\">\n        <td>{{ride.ID}}</td>\n        <td>{{ride.PassengerName}}</td>\n        <td>{{ride.ServiceArea}}</td>\n        <td>{{ride.PickupLocation}}</td>\n        <td>{{ride.DropLocation}}</td>\n        <td>{{ getFormattedDateTime(ride.RideDateTime) }}</td>\n        <td><span [style.color]=\"getStatusColor(ride.RideStatus)\">{{ getRideStatusText(ride.RideStatus) }}</span></td>\n        <td>\n            <button type=\"button\" style=\"cursor:pointer;\" class=\"btn mb-2 flat btn-sm btn-outline-success\" (click)=\"navigateToRideDetail(ride.ID)\" routerLinkActive=\"router-link-active\" translate>ride_list_view</button>\n        </td>\n        \n      </tr>\n    </tbody>\n  </table>\n\n  \n\n  <div class=\"loader-wrapper incomponent\" id=\"demoCardLoader\" [style.display]=\"isLoading? 'block':'none'\">\n    <div class=\"spinner\">\n      <svg viewBox=\"0 0 66 66\" xmlns=\"http://www.w3.org/2000/svg\">\n        <circle class=\"length\" fill=\"none\" stroke-width=\"6\" stroke-linecap=\"round\" cx=\"33\" cy=\"33\" r=\"28\"></circle>\n      </svg>\n      <svg viewBox=\"0 0 66 66\" xmlns=\"http://www.w3.org/2000/svg\">\n        <circle fill=\"none\" stroke-width=\"6\" stroke-linecap=\"round\" cx=\"33\" cy=\"33\" r=\"28\"></circle>\n      </svg>\n      <svg viewBox=\"0 0 66 66\" xmlns=\"http://www.w3.org/2000/svg\">\n        <circle fill=\"none\" stroke-width=\"6\" stroke-linecap=\"round\" cx=\"33\" cy=\"33\" r=\"28\"></circle>\n      </svg>\n      <svg viewBox=\"0 0 66 66\" xmlns=\"http://www.w3.org/2000/svg\">\n        <circle fill=\"none\" stroke-width=\"6\" stroke-linecap=\"round\" cx=\"33\" cy=\"33\" r=\"28\"></circle>\n      </svg>\n    </div>\n  </div>\n  \n</div>\n"
 
 /***/ }),
 
