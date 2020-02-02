@@ -276,6 +276,7 @@ func (a *DriverController) CreateDriverAccount(c *gin.Context) {
 	vehicleModel := c.PostForm("VehicleModel")
 	vehicleColor := c.PostForm("VehicleColor")
 	vehicleNumber := c.PostForm("VehicleNumber")
+	licenseNumber := c.PostForm("LicenseNumber")
 	vehicleTypeID, vehicleTypeIdError := strconv.Atoi(c.PostForm("VehicleTypeID"))
 	dialCode, dialCodeError := strconv.Atoi(c.PostForm("DialCode"))
 	operatorID, operatorIDError := strconv.Atoi(c.PostForm("OperatorID"))
@@ -329,6 +330,7 @@ func (a *DriverController) CreateDriverAccount(c *gin.Context) {
 						VehicleModel:       vehicleModel,
 						VehicleColor:       vehicleColor,
 						VehicleNumber:      vehicleNumber,
+						LicenseNumber: licenseNumber,
 						VehicleImage:       "public/vehicle/"+vehicleImageFileName,
 						DriverImage:        "public/driver/"+driverImageFileName,
 						IsProfileCompleted: false,
