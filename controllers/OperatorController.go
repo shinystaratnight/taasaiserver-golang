@@ -62,7 +62,14 @@ func (a *OperatorController) GetOperators(c *gin.Context) {
 		TotalFareCount int64
 	}
 	var list []locationWithFareCount
-	database.Db.Raw("SELECT (SELECT COUNT(*) as total_fare_count FROM fares  WHERE fares.operator_id = operators.id AND fares.is_active = true),* FROM operators").Scan(&list)
+	var userData = c.MustGet("jwt_data").(*config.JwtClaims)
+
+	if userData.UserType == "admin" {
+		database.Db.Raw("SELECT (SELECT COUNT(*) as total_fare_count FROM fares  WHERE fares.operator_id = operators.id AND fares.is_active = true),* FROM operators").Scan(&list)
+	}else {
+		database.Db.Raw("SELECT (SELECT COUNT(*) as total_fare_count FROM fares  WHERE fares.operator_id = operators.id AND fares.is_active = true),* FROM operators WHERE operators.id = "+strconv.Itoa(int(userData.UserID))).Scan(&list)
+
+	}
 	c.JSON(http.StatusOK, list)
 }
 
