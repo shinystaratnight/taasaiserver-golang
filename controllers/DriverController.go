@@ -297,81 +297,70 @@ func (a *DriverController) CreateDriverAccount(c *gin.Context) {
 		if err != nil {
 			fmt.Println(err)
 			response.Message = "Driver Image is required"
-			c.JSON(http.StatusOK, response)
-			fmt.Println(response)
-			return
-		}
+		} else{
+			vehicleImage, err1 := c.FormFile("vehicle_image")
+			if err1 != nil {
+				response.Message = "Vehicle Image is required"
+			} else{
+				driverImageFileName := strconv.FormatInt(time.Now().UTC().UnixNano(), 10) + "_" + driverImage.Filename
+				vehicleImageFileName := strconv.FormatInt(time.Now().UTC().UnixNano(), 10) + "_" + vehicleImage.Filename
 
-		vehicleImage, err1 := c.FormFile("vehicle_image")
-		if err1 != nil {
-			response.Message = "Vehicle Image is required"
-			c.JSON(http.StatusOK, response)
-			return
-		}
+				if err := c.SaveUploadedFile(driverImage, "public/driver/"+driverImageFileName); err != nil {
+					response.Message = fmt.Sprintf("upload file err: %s", err.Error())
+				} else {
+					if err := c.SaveUploadedFile(vehicleImage, "public/vehicle/"+vehicleImageFileName); err != nil {
+						response.Message = fmt.Sprintf("upload file err: %s", err.Error())
+					}else{
+						var otpDetails models.Otp
+						database.Db.Where("dial_code = ? AND country_code = ? AND mobile_number = ? AND is_used = ?", dialCode, countryCode, mobile, false).First(&otpDetails)
+						if otp == otpDetails.Otp {
+							database.Db.Model(&otpDetails).UpdateColumn("is_used", true)
+							var driver = models.Driver{
+								Name:               name,
+								DialCode:           int64(dialCode),
+								MobileNumber:       mobile,
+								OperatorID:         operatorID,
+								VehicleName:        vehicleName,
+								VehicleTypeID:       uint(vehicleTypeID),
+								VehicleBrand:       vehicleBrand,
+								VehicleModel:       vehicleModel,
+								VehicleColor:       vehicleColor,
+								VehicleNumber:      vehicleNumber,
+								LicenseNumber: licenseNumber,
+								VehicleImage:       "public/vehicle/"+vehicleImageFileName,
+								DriverImage:        "public/driver/"+driverImageFileName,
+								IsProfileCompleted: false,
+								IsActive:           false,
+							}
 
-		driverImageFileName := strconv.FormatInt(time.Now().UTC().UnixNano(), 10) + "_" + driverImage.Filename
-		vehicleImageFileName := strconv.FormatInt(time.Now().UTC().UnixNano(), 10) + "_" + vehicleImage.Filename
+							database.Db.Create(&driver)
+							token := jwt.NewWithClaims(jwt.SigningMethodHS256, config.JwtClaims{
+								driver.ID,
+								"driver",
+								jwt.StandardClaims{
+									ExpiresAt: time.Now().Add(time.Hour * 24 * 30).Unix(),
+									Issuer:    "taasai",
+								},
+							})
+							tokenString, err := token.SignedString(config.JwtSecretKey)
+							if err != nil {
+								response.Message = err.Error()
+								response.Status = false
+							} else {
+								database.Db.Model(&driver).UpdateColumn("auth_token", tokenString)
+								response.DriverDetails = driver
+								response.Status = true
+								response.Message = "Driver Account Created And Submitted For Approval"
+							}
 
-		if err := c.SaveUploadedFile(driverImage, "public/driver/"+driverImageFileName); err != nil {
-			response.Message = fmt.Sprintf("upload file err: %s", err.Error())
-			c.JSON(http.StatusOK, response)
-			return
-		} else {
-			if err := c.SaveUploadedFile(vehicleImage, "public/vehicle/"+vehicleImageFileName); err != nil {
-				response.Message = fmt.Sprintf("upload file err: %s", err.Error())
-				c.JSON(http.StatusOK, response)
-				return
-			}else{
-				var otpDetails models.Otp
-				database.Db.Where("dial_code = ? AND country_code = ? AND mobile_number = ? AND is_used = ?", dialCode, countryCode, mobile, false).First(&otpDetails)
-				if otp == otpDetails.Otp {
-					database.Db.Model(&otpDetails).UpdateColumn("is_used", true)
-					var driver = models.Driver{
-						Name:               name,
-						DialCode:           int64(dialCode),
-						MobileNumber:       mobile,
-						OperatorID:         operatorID,
-						VehicleName:        vehicleName,
-						VehicleTypeID:       uint(vehicleTypeID),
-						VehicleBrand:       vehicleBrand,
-						VehicleModel:       vehicleModel,
-						VehicleColor:       vehicleColor,
-						VehicleNumber:      vehicleNumber,
-						LicenseNumber: licenseNumber,
-						VehicleImage:       "public/vehicle/"+vehicleImageFileName,
-						DriverImage:        "public/driver/"+driverImageFileName,
-						IsProfileCompleted: false,
-						IsActive:           false,
+						}else{
+							response.Message = "Invalid Otp"
+						}
+
 					}
-
-					database.Db.Create(&driver)
-					token := jwt.NewWithClaims(jwt.SigningMethodHS256, config.JwtClaims{
-						driver.ID,
-						"driver",
-						jwt.StandardClaims{
-							ExpiresAt: time.Now().Add(time.Hour * 24 * 30).Unix(),
-							Issuer:    "taasai",
-						},
-					})
-					tokenString, err := token.SignedString(config.JwtSecretKey)
-					if err != nil {
-						response.Message = err.Error()
-						response.Status = false
-					} else {
-						database.Db.Model(&driver).UpdateColumn("auth_token", tokenString)
-						response.DriverDetails = driver
-						response.Status = true
-						response.Message = "Driver Account Created And Submitted For Approval"
-					}
-
-				}else{
-					response.Message = "Invalid Otp"
 				}
-
 			}
 		}
-
-
 	}else{
 		if vehicleTypeIdError!=nil{
 			response.Message = ""+vehicleTypeIdError.Error()
