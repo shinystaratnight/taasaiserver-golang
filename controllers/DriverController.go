@@ -284,9 +284,14 @@ func (a *DriverController) CreateDriverAccount(c *gin.Context) {
 	vehicleColor := c.PostForm("VehicleColor")
 	vehicleNumber := c.PostForm("VehicleNumber")
 	licenseNumber := c.PostForm("LicenseNumber")
+
+
 	vehicleTypeID, vehicleTypeIdError := strconv.Atoi(c.PostForm("VehicleTypeID"))
 	dialCode, dialCodeError := strconv.Atoi(c.PostForm("DialCode"))
 	operatorID, operatorIDError := strconv.Atoi(c.PostForm("OperatorID"))
+	fmt.Println("VehicleTypeID = "+c.PostForm("VehicleTypeID"))
+	fmt.Println("DialCode = "+c.PostForm("DialCode"))
+	fmt.Println("OperatorID = "+c.PostForm("OperatorID"))
 
 	if vehicleTypeIdError==nil && dialCodeError==nil && operatorIDError==nil {
 
