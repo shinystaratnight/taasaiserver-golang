@@ -304,7 +304,7 @@ func (a *DriverController) CreateDriverAccount(c *gin.Context) {
 
 		form, _ := c.MultipartForm()
 		fmt.Println("file count = %d", len(form.File))
-		fmt.Printf("file count = %+v", (form.File))
+		fmt.Printf("file count = %+v", (form.File["files[]"]))
 		// Source
 		driverImage, err := c.FormFile("driver_image")
 		if err != nil {
