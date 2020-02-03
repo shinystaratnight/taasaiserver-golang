@@ -285,6 +285,10 @@ func (a *DriverController) CreateDriverAccount(c *gin.Context) {
 	vehicleNumber := c.PostForm("VehicleNumber")
 	licenseNumber := c.PostForm("LicenseNumber")
 
+	fmt.Println("Name = "+c.PostForm("Name"))
+	fmt.Println("MobileNumber "+c.PostForm("MobileNumber"))
+	fmt.Println("VehicleNumber "+c.PostForm("VehicleNumber"))
+	fmt.Println("LicenseNumber "+c.PostForm("LicenseNumber"))
 	fmt.Println("VehicleTypeID = "+c.PostForm("VehicleTypeID"))
 	fmt.Println("DialCode = "+c.PostForm("DialCode"))
 	fmt.Println("OperatorID = "+c.PostForm("OperatorID"))
