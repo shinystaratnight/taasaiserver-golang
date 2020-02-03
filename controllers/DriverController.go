@@ -303,9 +303,9 @@ func (a *DriverController) CreateDriverAccount(c *gin.Context) {
 	if vehicleTypeIdError==nil && dialCodeError==nil && operatorIDError==nil {
 
 		form, _ := c.MultipartForm()
-		fmt.Println("file count = %d", len(form.File))
+		fmt.Println("file count = %d", len(form.File[""]))
 		// Source
-		driverImage, err := c.FormFile("driver_image")
+		driverImage, err := c.FormFile("0")
 		if err != nil {
 			fmt.Println(err)
 			response.Message = "Driver Image is required"
