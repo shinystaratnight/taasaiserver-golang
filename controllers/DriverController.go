@@ -372,6 +372,14 @@ func (a *DriverController) CreateDriverAccount(c *gin.Context) {
 		}
 
 
+	}else{
+		if vehicleTypeIdError!=nil{
+			response.Message = ""+vehicleTypeIdError.Error()
+		} else if dialCodeError!=nil{
+			response.Message = ""+dialCodeError.Error()
+		} else if operatorIDError!=nil{
+			response.Message = ""+operatorIDError.Error()
+		}
 	}
 	c.JSON(http.StatusOK, response)
 
