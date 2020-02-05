@@ -39,14 +39,31 @@ func (a *FareController) GetActiveFare(c *gin.Context) {
 	database.Db.Raw("SELECT fares.* ,operators.currency,operators.name as location_name,vehicle_types.name as vehicle_type_name,vehicle_types.image_active as vehicle_type_image FROM fares INNER JOIN operators ON fares.operator_id = operators.id INNER JOIN vehicle_types ON fares.vehicle_type_id = vehicle_types.id WHERE fares.is_active=true AND fares.deleted_at IS NULL ").Find(&list)
 	c.JSON(http.StatusOK, list)
 }
+
+type GetFareByIDResponse struct{
+	ID uint
+	VehicleTypeID    uint
+	OperatorID       uint
+	BaseFare         float64
+	MinimumFare float64
+	WaitingTimeLimit float64
+	WaitingFee float64
+	CancellationTimeLimit float64
+	CancellationFee float64
+	DurationFare     float64
+	DistanceFare     float64
+	Tax              float64
+	TrafficFactor              float64
+	VehicleTypeName string
+}
 func (a *FareController) GetFareByID(c *gin.Context) {
-	var list []getFareResponse
-	database.Db.Raw("SELECT fares.* ,operators.currency,operators.name as location_name,vehicle_types.name as vehicle_type_name,vehicle_types.image_active as vehicle_type_image FROM fares INNER JOIN operators ON fares.operator_id = operators.id INNER JOIN vehicle_types ON fares.vehicle_type_id = vehicle_types.id WHERE fares.deleted_at IS NULL AND fares.id = " + c.Param("id")).Find(&list)
+	var list GetFareByIDResponse
+	database.Db.Raw("SELECT fares.* ,operators.currency,operators.name as location_name,vehicle_types.name as vehicle_type_name,vehicle_types.image_active as vehicle_type_image FROM fares INNER JOIN operators ON fares.operator_id = operators.id INNER JOIN vehicle_types ON fares.vehicle_type_id = vehicle_types.id WHERE fares.deleted_at IS NULL AND fares.id = " + c.Param("id")+" LIMIT 1").Find(&list)
 	c.JSON(http.StatusOK, list)
 }
 
 func (a *FareController) GetActiveFareForLocation(c *gin.Context) {
-	var list []getFareResponse
+	var list getFareResponse
 	database.Db.Raw("SELECT fares.* ,operators.currency,operators.location_name as location_name,vehicle_types.name as vehicle_type_name,vehicle_types.image_active as vehicle_type_image FROM fares INNER JOIN operators ON fares.operator_id = operators.id INNER JOIN vehicle_types ON fares.vehicle_type_id = vehicle_types.id WHERE fares.is_active=true AND fares.deleted_at IS NULL  AND fares.operator_id = ?", c.Param("operatorId")).Find(&list)
 	c.JSON(http.StatusOK, list)
 }
