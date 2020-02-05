@@ -829,7 +829,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row page-tilte align-items-center\">\n\n    <div class=\"col-md-auto\">\n        <a href=\"#\" class=\"mt-3 d-md-none float-right toggle-controls\"><span\n                class=\"material-icons\">keyboard_arrow_down</span></a>\n        <h1 class=\"weight-300 h3 title\">{{location_name}}</h1>\n       \n        <p class=\"text-muted m-0 desc\"></p>\n    </div>\n</div>\n<div class=\"content\">\n\n        <div class=\"row\">\n            <div class=\"col-lg-12 \">\n                <div class=\"card mb-4\">\n                <div class=\"card-header\" translate>add_fare_title</div>,\n                    <div class=\"card-body\">\n    \n                    <form [formGroup]=\"fareForm\">\n\n                        <div class=\"form-group\">\n                            <label for=\"sel1\" translate>add_fare_vehicle_type</label>\n                            <select class=\"form-control\" formControlName=\"vehicle_type_id\" name=\"vehicle_type_id\" [(ngModel)]=\"vehicle_type_id\" [ngClass]=\"{'is-invalid': submitted && f.vehicle_type_id.errors}\">\n                                    <option [ngValue]=\"undefined\" disabled  selected>Select Vehicle Type</option>\n                                <option *ngFor=\"let vehicletype of vehicletypes\" value=\"{{vehicletype.ID}}\">{{vehicletype.VehicleCategoryName+\" - \"+vehicletype.Name}}</option>\n                            </select>\n                            <div *ngIf=\"submitted && f.vehicle_type_id.errors\" class=\"invalid-feedback\">\n                                <div *ngIf=\"f.vehicle_type_id.errors.required\" translate>add_fare_vehicle_type_name</div>\n                            </div>\n                        </div>    \n          \n                        <div class=\"form-group\">\n                            <label translate>add_basefare</label>\n                            <div class=\"input-group\">\n                                <input  type=\"number\" min=\"0\" class=\"form-control\" formControlName=\"base_fare\" name=\"base_fare\" [(ngModel)]=\"base_fare\"  placeholder=\"Enter Base Fare\" [ngClass]=\"{'is-invalid': submitted && f.base_fare.errors}\">\n                            <div *ngIf=\"submitted && f.base_fare.errors\" class=\"invalid-feedback\">\n                                <div *ngIf=\"f.base_fare.errors.required\" translate>add_basefare_required</div>\n                            </div>\n                            </div>\n                        </div>\n\n                        <div>\n                            <label >Minimum Fare</label>\n                            <div class=\"form-group input-group mb-3\">\n                                <input type=\"number\" min=\"0\" class=\"form-control\" formControlName=\"minimum_fare\" [ngClass]=\"{'is-invalid': submitted && f.base_fare_distance.errors}\" name=\"minimum_fare\" [(ngModel)]=\"minimum_fare\" placeholder=\"Enter Minimum Fare\" aria-label=\"Recipient's username\" aria-describedby=\"basic-addon2\">\n\n                                <div *ngIf=\"submitted && f.base_fare_distance.errors\" class=\"invalid-feedback\">\n                                    <div *ngIf=\"f.base_fare_distance.errors.required\" translate>add_fare_km_basefare_required</div>\n                                </div>\n                            </div>\n                        </div>\n\n                        <div>\n                            <label translate>add_distancefare</label>\n                            <div class=\"form-group input-group mb-3\">\n                                <input type=\"number\" min=\"0\" class=\"form-control\" formControlName=\"distance_fare\" [ngClass]=\"{'is-invalid': submitted && f.distance_fare.errors}\" name=\"distance_fare\" [(ngModel)]=\"distance_fare\" placeholder=\"Enter Distance Fare\" aria-label=\"Recipient's username\" aria-describedby=\"basic-addon2\">\n                                <div class=\"input-group-append\">\n                                    <span class=\"input-group-text\" id=\"basic-addon2\">Per Km</span>\n                                </div>\n                                <div *ngIf=\"submitted && f.distance_fare.errors\" class=\"invalid-feedback\">\n                                    <div *ngIf=\"f.distance_fare.errors.required\" translate>add_distancefare_required</div>\n                                </div>\n                            </div>\n                        </div>\n\n                        <div>\n                            <label translate>add_durationfare</label>\n                            <div class=\"form-group input-group mb-3\">\n                                <input type=\"number\" min=\"0\" class=\"form-control\" formControlName=\"duration_fare\" [ngClass]=\"{'is-invalid': submitted && f.duration_fare.errors}\" name=\"duration_fare\" [(ngModel)]=\"duration_fare\" placeholder=\"Enter Duration Fare\" aria-label=\"Recipient's username\" aria-describedby=\"basic-addon2\">\n                                <div class=\"input-group-append\">\n                                    <span class=\"input-group-text\" id=\"basic-addon2\">Per Minute</span>\n                                </div>\n                                <div *ngIf=\"submitted && f.duration_fare.errors\" class=\"invalid-feedback\">\n                                    <div *ngIf=\"f.duration_fare.errors.required\" translate>add_durationfare_required</div>\n                                </div>\n                            </div>\n                        </div>\n\n                        <div>\n                            <label >Ride Cancellation Time Limit</label>\n                            <div class=\"form-group input-group mb-3\">\n                                <input type=\"number\" min=\"0\" class=\"form-control\" formControlName=\"cancellationTimeLimit\" [ngClass]=\"{'is-invalid': submitted && f.duration_fare.errors}\" name=\"cancellationTimeLimit\" [(ngModel)]=\"cancellationTimeLimit\" placeholder=\"Enter Ride Cancellation Time Limit\" aria-label=\"Recipient's username\" aria-describedby=\"basic-addon2\">\n                                <div class=\"input-group-append\">\n                                    <span class=\"input-group-text\" id=\"basic-addon2\"> Minutes</span>\n                                </div>\n                                <div *ngIf=\"submitted && f.duration_fare.errors\" class=\"invalid-feedback\">\n                                    <div *ngIf=\"f.duration_fare.errors.required\" translate>add_durationfare_required</div>\n                                </div>\n                            </div>\n                        </div>\n\n\n                        <div>\n                            <label >Ride Cancellation Charges</label>\n                            <div class=\"form-group input-group mb-3\">\n                                <input type=\"number\" min=\"0\" class=\"form-control\" formControlName=\"cancellationFee\" [ngClass]=\"{'is-invalid': submitted && f.base_fare_distance.errors}\" name=\"cancellationFee\" [(ngModel)]=\"cancellationFee\" placeholder=\"Enter Ride Cancellation Fee\" aria-label=\"Recipient's username\" aria-describedby=\"basic-addon2\">\n\n                                <div *ngIf=\"submitted && f.base_fare_distance.errors\" class=\"invalid-feedback\">\n                                    <div *ngIf=\"f.base_fare_distance.errors.required\" translate>add_fare_km_basefare_required</div>\n                                </div>\n                            </div>\n                        </div>\n\n                        <div>\n                            <label >Waiting Time Limit</label>\n                            <div class=\"form-group input-group mb-3\">\n                                <input type=\"number\" min=\"0\" class=\"form-control\" formControlName=\"waitingTimeLimit\" [ngClass]=\"{'is-invalid': submitted && f.duration_fare.errors}\" name=\"waitingTimeLimit\" [(ngModel)]=\"waitingTimeLimit\" placeholder=\"Enter Waiting Time Limit\" aria-label=\"Recipient's username\" aria-describedby=\"basic-addon2\">\n                                <div class=\"input-group-append\">\n                                    <span class=\"input-group-text\" id=\"basic-addon2\"> Minutes</span>\n                                </div>\n                                <div *ngIf=\"submitted && f.duration_fare.errors\" class=\"invalid-feedback\">\n                                    <div *ngIf=\"f.duration_fare.errors.required\" translate>add_durationfare_required</div>\n                                </div>\n                            </div>\n                        </div>\n\n\n                        <div>\n                            <label >Waiting Charges</label>\n                            <div class=\"form-group input-group mb-3\">\n                                <input type=\"number\" min=\"0\" class=\"form-control\" formControlName=\"waitingFee\" [ngClass]=\"{'is-invalid': submitted && f.base_fare_distance.errors}\" name=\"waitingFee\" [(ngModel)]=\"waitingFee\" placeholder=\"Enter Waiting Fee\" aria-label=\"Recipient's username\" aria-describedby=\"basic-addon2\">\n                                <div class=\"input-group-append\">\n                                    <span class=\"input-group-text\" id=\"basic-addon2\">Per Minute</span>\n                                </div>\n                                <div *ngIf=\"submitted && f.base_fare_distance.errors\" class=\"invalid-feedback\">\n                                    <div *ngIf=\"f.base_fare_distance.errors.required\" translate>add_fare_km_basefare_required</div>\n                                </div>\n                            </div>\n                        </div>\n\n                        <div>\n                            <label translate>add_tax</label>\n                            <div class=\"form-group input-group mb-3\">\n                                <input type=\"number\" step=\"0.01\" min=\"0\" class=\"form-control\" formControlName=\"Tax\" [ngClass]=\"{'is-invalid': submitted && f.Tax.errors}\" name=\"tax\" [(ngModel)]=\"tax\" placeholder=\"Enter Tax %\" aria-label=\"Recipient's username\" aria-describedby=\"basic-addon2\">\n                                <div class=\"input-group-append\">\n                                    <span class=\"input-group-text\" id=\"basic-addon2\">%</span>\n                                </div>\n                                <div *ngIf=\"submitted && f.Tax.errors\" class=\"invalid-feedback\">\n                                    <div *ngIf=\"f.Tax.errors.required\">add_tax_required </div>\n                                </div>\n                            </div>\n                        </div>\n                        <div>\n                            <label >Traffic Factor(%)</label>\n                            <div class=\"form-group input-group mb-3\">\n                                <input type=\"number\" step=\"0.01\" min=\"0\" class=\"form-control\" formControlName=\"trafficFactor\" [ngClass]=\"{'is-invalid': submitted && f.Tax.errors}\" name=\"trafficFactor\" [(ngModel)]=\"trafficFactor\" placeholder=\"Enter Traffic Factor %\" aria-label=\"Recipient's username\" aria-describedby=\"basic-addon2\">\n                                <div class=\"input-group-append\">\n                                    <span class=\"input-group-text\" id=\"basic-addon2\">%</span>\n                                </div>\n                                <div *ngIf=\"submitted && f.Tax.errors\" class=\"invalid-feedback\">\n                                    <div *ngIf=\"f.Tax.errors.required\">add_tax_required </div>\n                                </div>\n                            </div>\n                        </div>\n            \n                        <div class=\"form-group\">\n                                <span><button (click)=onSubmit() class=\"btn btn-primary\" translate>add_fare_submit</button></span>\n                                <span style=\"margin-left: 20px;\"><button (click)=\"onCancel()\" class=\"btn btn-danger\" translate>add_fare_cancel</button></span>\n                        </div>\n                     </form>\n                     </div>\n                </div>\n            </div>\n</div>\n"
+module.exports = "<div class=\"row page-tilte align-items-center\">\n\n    <div class=\"col-md-auto\">\n        <a href=\"#\" class=\"mt-3 d-md-none float-right toggle-controls\"><span\n                class=\"material-icons\">keyboard_arrow_down</span></a>\n        <h1 class=\"weight-300 h3 title\">{{location_name}}</h1>\n       \n        <p class=\"text-muted m-0 desc\"></p>\n    </div>\n</div>\n<div class=\"content\">\n\n        <div class=\"row\">\n            <div class=\"col-lg-12 \">\n                <div class=\"card mb-4\">\n                <div class=\"card-header\" translate>add_fare_title</div>,\n                    <div class=\"card-body\">\n    \n                    <form [formGroup]=\"fareForm\">\n\n                        <div class=\"form-group\">\n                            <label for=\"sel1\" translate>add_fare_vehicle_type</label>\n                            <select class=\"form-control\" formControlName=\"vehicle_type_id\" name=\"vehicle_type_id\" [(ngModel)]=\"vehicle_type_id\" [ngClass]=\"{'is-invalid': submitted && f.vehicle_type_id.errors}\">\n                                    <option [ngValue]=\"undefined\" disabled  selected>Select Vehicle Type</option>\n                                <option *ngFor=\"let vehicletype of vehicletypes\" value=\"{{vehicletype.ID}}\">{{vehicletype.VehicleCategoryName+\" - \"+vehicletype.Name}}</option>\n                            </select>\n                            <div *ngIf=\"submitted && f.vehicle_type_id.errors\" class=\"invalid-feedback\">\n                                <div *ngIf=\"f.vehicle_type_id.errors.required\" translate>add_fare_vehicle_type_name</div>\n                            </div>\n                        </div>    \n          \n                        <div class=\"form-group\">\n                            <label translate>add_basefare</label>\n                            <div class=\"input-group\">\n                                <input  type=\"number\" min=\"0\" class=\"form-control\" formControlName=\"base_fare\" name=\"base_fare\" [(ngModel)]=\"base_fare\"  placeholder=\"Enter Base Fare\" [ngClass]=\"{'is-invalid': submitted && f.base_fare.errors}\">\n                            <div *ngIf=\"submitted && f.base_fare.errors\" class=\"invalid-feedback\">\n                                <div *ngIf=\"f.base_fare.errors.required\" translate>add_basefare_required</div>\n                            </div>\n                            </div>\n                        </div>\n\n                        <div>\n                            <label >Minimum Fare</label>\n                            <div class=\"form-group input-group mb-3\">\n                                <input type=\"number\" min=\"0\" class=\"form-control\" formControlName=\"minimum_fare\" [ngClass]=\"{'is-invalid': submitted && f.base_fare_distance.errors}\" name=\"minimum_fare\" [(ngModel)]=\"minimum_fare\" placeholder=\"Enter Minimum Fare\" aria-label=\"Recipient's username\" aria-describedby=\"basic-addon2\">\n\n                                <div *ngIf=\"submitted && f.base_fare_distance.errors\" class=\"invalid-feedback\">\n                                    <div *ngIf=\"f.base_fare_distance.errors.required\" translate>add_fare_km_basefare_required</div>\n                                </div>\n                            </div>\n                        </div>\n\n                        <div>\n                            <label translate>add_distancefare</label>\n                            <div class=\"form-group input-group mb-3\">\n                                <input type=\"number\" min=\"0\" class=\"form-control\" formControlName=\"distance_fare\" [ngClass]=\"{'is-invalid': submitted && f.distance_fare.errors}\" name=\"distance_fare\" [(ngModel)]=\"distance_fare\" placeholder=\"Enter Distance Fare\" aria-label=\"Recipient's username\" aria-describedby=\"basic-addon2\">\n                                <div class=\"input-group-append\">\n                                    <span class=\"input-group-text\" id=\"basic-addon2\">Per Km</span>\n                                </div>\n                                <div *ngIf=\"submitted && f.distance_fare.errors\" class=\"invalid-feedback\">\n                                    <div *ngIf=\"f.distance_fare.errors.required\" translate>add_distancefare_required</div>\n                                </div>\n                            </div>\n                        </div>\n\n                        <div>\n                            <label translate>add_durationfare</label>\n                            <div class=\"form-group input-group mb-3\">\n                                <input type=\"number\" min=\"0\" class=\"form-control\" formControlName=\"duration_fare\" [ngClass]=\"{'is-invalid': submitted && f.duration_fare.errors}\" name=\"duration_fare\" [(ngModel)]=\"duration_fare\" placeholder=\"Enter Duration Fare\" aria-label=\"Recipient's username\" aria-describedby=\"basic-addon2\">\n                                <div class=\"input-group-append\">\n                                    <span class=\"input-group-text\" id=\"basic-addon2\">Per Minute</span>\n                                </div>\n                                <div *ngIf=\"submitted && f.duration_fare.errors\" class=\"invalid-feedback\">\n                                    <div *ngIf=\"f.duration_fare.errors.required\" translate>add_durationfare_required</div>\n                                </div>\n                            </div>\n                        </div>\n\n                        <div>\n                            <label >Ride Cancellation Time Limit</label>\n                            <div class=\"form-group input-group mb-3\">\n                                <input type=\"number\" min=\"0\" class=\"form-control\" formControlName=\"cancellationTimeLimit\" [ngClass]=\"{'is-invalid': submitted && f.duration_fare.errors}\" name=\"cancellationTimeLimit\" [(ngModel)]=\"cancellationTimeLimit\" placeholder=\"Enter Ride Cancellation Time Limit\" aria-label=\"Recipient's username\" aria-describedby=\"basic-addon2\">\n                                <div class=\"input-group-append\">\n                                    <span class=\"input-group-text\" id=\"basic-addon2\"> Minutes</span>\n                                </div>\n                                <div *ngIf=\"submitted && f.duration_fare.errors\" class=\"invalid-feedback\">\n                                    <div *ngIf=\"f.duration_fare.errors.required\" translate>add_durationfare_required</div>\n                                </div>\n                            </div>\n                        </div>\n\n\n                        <div>\n                            <label >Ride Cancellation Charges</label>\n                            <div class=\"form-group input-group mb-3\">\n                                <input type=\"number\" min=\"0\" class=\"form-control\" formControlName=\"cancellationFee\" [ngClass]=\"{'is-invalid': submitted && f.base_fare_distance.errors}\" name=\"cancellationFee\" [(ngModel)]=\"cancellationFee\" placeholder=\"Enter Ride Cancellation Fee\" aria-label=\"Recipient's username\" aria-describedby=\"basic-addon2\">\n\n                                <div *ngIf=\"submitted && f.base_fare_distance.errors\" class=\"invalid-feedback\">\n                                    <div *ngIf=\"f.base_fare_distance.errors.required\" translate>add_fare_km_basefare_required</div>\n                                </div>\n                            </div>\n                        </div>\n\n                        <div>\n                            <label >Waiting Time Limit</label>\n                            <div class=\"form-group input-group mb-3\">\n                                <input type=\"number\" min=\"0\" class=\"form-control\" formControlName=\"waitingTimeLimit\" [ngClass]=\"{'is-invalid': submitted && f.duration_fare.errors}\" name=\"waitingTimeLimit\" [(ngModel)]=\"waitingTimeLimit\" placeholder=\"Enter Waiting Time Limit\" aria-label=\"Recipient's username\" aria-describedby=\"basic-addon2\">\n                                <div class=\"input-group-append\">\n                                    <span class=\"input-group-text\" id=\"basic-addon2\"> Minutes</span>\n                                </div>\n                                <div *ngIf=\"submitted && f.duration_fare.errors\" class=\"invalid-feedback\">\n                                    <div *ngIf=\"f.duration_fare.errors.required\" translate>add_durationfare_required</div>\n                                </div>\n                            </div>\n                        </div>\n\n\n                        <div>\n                            <label >Waiting Charges</label>\n                            <div class=\"form-group input-group mb-3\">\n                                <input type=\"number\" min=\"0\" class=\"form-control\" formControlName=\"waitingFee\" [ngClass]=\"{'is-invalid': submitted && f.base_fare_distance.errors}\" name=\"waitingFee\" [(ngModel)]=\"waitingFee\" placeholder=\"Enter Waiting Fee\" aria-label=\"Recipient's username\" aria-describedby=\"basic-addon2\">\n                                <div class=\"input-group-append\">\n                                    <span class=\"input-group-text\" id=\"basic-addon2\">Per Minute</span>\n                                </div>\n                                <div *ngIf=\"submitted && f.base_fare_distance.errors\" class=\"invalid-feedback\">\n                                    <div *ngIf=\"f.base_fare_distance.errors.required\" translate>add_fare_km_basefare_required</div>\n                                </div>\n                            </div>\n                        </div>\n\n                        <div>\n                            <label translate>add_tax</label>\n                            <div class=\"form-group input-group mb-3\">\n                                <input type=\"number\" step=\"0.01\" min=\"0\" class=\"form-control\" formControlName=\"Tax\" [ngClass]=\"{'is-invalid': submitted && f.Tax.errors}\" name=\"tax\" [(ngModel)]=\"Tax\" placeholder=\"Enter Tax %\" aria-label=\"Recipient's username\" aria-describedby=\"basic-addon2\">\n                                <div class=\"input-group-append\">\n                                    <span class=\"input-group-text\" id=\"basic-addon2\">%</span>\n                                </div>\n                                <div *ngIf=\"submitted && f.Tax.errors\" class=\"invalid-feedback\">\n                                    <div *ngIf=\"f.Tax.errors.required\">add_tax_required </div>\n                                </div>\n                            </div>\n                        </div>\n                        <div>\n                            <label >Traffic Factor(%)</label>\n                            <div class=\"form-group input-group mb-3\">\n                                <input type=\"number\" step=\"0.01\" min=\"0\" class=\"form-control\" formControlName=\"trafficFactor\" [ngClass]=\"{'is-invalid': submitted && f.Tax.errors}\" name=\"trafficFactor\" [(ngModel)]=\"trafficFactor\" placeholder=\"Enter Traffic Factor %\" aria-label=\"Recipient's username\" aria-describedby=\"basic-addon2\">\n                                <div class=\"input-group-append\">\n                                    <span class=\"input-group-text\" id=\"basic-addon2\">%</span>\n                                </div>\n                                <div *ngIf=\"submitted && f.Tax.errors\" class=\"invalid-feedback\">\n                                    <div *ngIf=\"f.Tax.errors.required\">add_tax_required </div>\n                                </div>\n                            </div>\n                        </div>\n            \n                        <div class=\"form-group\">\n                                <span><button (click)=onSubmit() class=\"btn btn-primary\" translate>add_fare_submit</button></span>\n                                <span style=\"margin-left: 20px;\"><button (click)=\"onCancel()\" class=\"btn btn-danger\" translate>add_fare_cancel</button></span>\n                        </div>\n                     </form>\n                     </div>\n                </div>\n            </div>\n</div>\n"
 
 /***/ }),
 
@@ -909,7 +909,7 @@ var AddNewFareComponent = /** @class */ (function () {
         if (this.fareForm.invalid) {
             return;
         }
-        this.dataService.addNewFare(this.location_id, this.vehicle_type_id, this.base_fare, this.minimum_fare, this.duration_fare, this.distance_fare, this.waitingTimeLimit, this.waitingFee, this.cancellationTimeLimit, this.cancellationFee, this.tax, this.trafficFactor).subscribe(function (data) {
+        this.dataService.addNewFare(this.location_id, this.vehicle_type_id, this.base_fare, this.minimum_fare, this.duration_fare, this.distance_fare, this.waitingTimeLimit, this.waitingFee, this.cancellationTimeLimit, this.cancellationFee, this.Tax, this.trafficFactor).subscribe(function (data) {
             console.log(data.Message);
             if (data.Status) {
                 _this.notifier.show({
@@ -1933,6 +1933,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _passenger_ride_history_list_passenger_ride_history_list_component__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./passenger-ride-history-list/passenger-ride-history-list.component */ "./src/app/passenger-ride-history-list/passenger-ride-history-list.component.ts");
 /* harmony import */ var _driver_detail_driver_detail_component__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./driver-detail/driver-detail.component */ "./src/app/driver-detail/driver-detail.component.ts");
 /* harmony import */ var _driver_document_driver_document_component__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./driver-document/driver-document.component */ "./src/app/driver-document/driver-document.component.ts");
+/* harmony import */ var _edit_fare_edit_fare_component__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./edit-fare/edit-fare.component */ "./src/app/edit-fare/edit-fare.component.ts");
+/* harmony import */ var _edit_operator_edit_operator_component__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./edit-operator/edit-operator.component */ "./src/app/edit-operator/edit-operator.component.ts");
+
+
 
 
 
@@ -1988,6 +1992,8 @@ var routes = [
             { path: 'vehicletypecategory/edit/:name/:id', component: _edit_vehicle_category_edit_vehicle_category_component__WEBPACK_IMPORTED_MODULE_24__["EditVehicleCategoryComponent"] },
             { path: 'drivers/:id/:name/new', component: _add_new_drivers_add_new_drivers_component__WEBPACK_IMPORTED_MODULE_13__["AddNewDriversComponent"] },
             { path: 'locations', component: _location_list_location_list_component__WEBPACK_IMPORTED_MODULE_3__["LocationListComponent"] },
+            { path: 'editOperator/:id/:name', component: _edit_operator_edit_operator_component__WEBPACK_IMPORTED_MODULE_35__["EditOperatorComponent"] },
+            { path: 'locations/editfares/:id/:name', component: _edit_fare_edit_fare_component__WEBPACK_IMPORTED_MODULE_34__["EditFareComponent"] },
             { path: 'locations/fares/:id/:name/:currency', component: _fare_list_fare_list_component__WEBPACK_IMPORTED_MODULE_5__["FareListComponent"] },
             { path: 'locations/new', component: _add_new_location_add_new_location_component__WEBPACK_IMPORTED_MODULE_12__["AddNewLocationComponent"] },
             { path: 'vehicletypecategory/types/:id/:name', component: _vehicle_type_list_vehicle_type_list_component__WEBPACK_IMPORTED_MODULE_4__["VehicleTypeListComponent"] },
@@ -2158,6 +2164,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _passenger_ride_history_list_passenger_ride_history_list_component__WEBPACK_IMPORTED_MODULE_53__ = __webpack_require__(/*! ./passenger-ride-history-list/passenger-ride-history-list.component */ "./src/app/passenger-ride-history-list/passenger-ride-history-list.component.ts");
 /* harmony import */ var _driver_detail_driver_detail_component__WEBPACK_IMPORTED_MODULE_54__ = __webpack_require__(/*! ./driver-detail/driver-detail.component */ "./src/app/driver-detail/driver-detail.component.ts");
 /* harmony import */ var _driver_document_driver_document_component__WEBPACK_IMPORTED_MODULE_55__ = __webpack_require__(/*! ./driver-document/driver-document.component */ "./src/app/driver-document/driver-document.component.ts");
+/* harmony import */ var _edit_fare_edit_fare_component__WEBPACK_IMPORTED_MODULE_56__ = __webpack_require__(/*! ./edit-fare/edit-fare.component */ "./src/app/edit-fare/edit-fare.component.ts");
+/* harmony import */ var _edit_operator_edit_operator_component__WEBPACK_IMPORTED_MODULE_57__ = __webpack_require__(/*! ./edit-operator/edit-operator.component */ "./src/app/edit-operator/edit-operator.component.ts");
 
 
 
@@ -2180,6 +2188,8 @@ __webpack_require__.r(__webpack_exports__);
 function HttpLoaderFactory(http) {
     return new _ngx_translate_http_loader__WEBPACK_IMPORTED_MODULE_17__["TranslateHttpLoader"](http);
 }
+
+
 
 
 
@@ -2273,6 +2283,8 @@ var AppModule = /** @class */ (function () {
                 _passenger_ride_history_list_passenger_ride_history_list_component__WEBPACK_IMPORTED_MODULE_53__["PassengerRideHistoryListComponent"],
                 _driver_detail_driver_detail_component__WEBPACK_IMPORTED_MODULE_54__["DriverDetailComponent"],
                 _driver_document_driver_document_component__WEBPACK_IMPORTED_MODULE_55__["DriverDocumentComponent"],
+                _edit_fare_edit_fare_component__WEBPACK_IMPORTED_MODULE_56__["EditFareComponent"],
+                _edit_operator_edit_operator_component__WEBPACK_IMPORTED_MODULE_57__["EditOperatorComponent"],
             ],
             imports: [
                 ngx_google_places_autocomplete__WEBPACK_IMPORTED_MODULE_33__["GooglePlaceModule"],
@@ -2850,6 +2862,23 @@ var DataService = /** @class */ (function () {
         console.log(params);
         return this.http.post(baseURL + '/addNewFare', params);
     };
+    DataService.prototype.editFare = function (fare_id, base_fare, minimumFare, duration_fare, distance_fare, waitingTimeLimit, waitingFee, cancellationTimeLimit, cancellationFee, tax, trafficFactor) {
+        var params = {
+            ID: fare_id,
+            BaseFare: base_fare,
+            MinimumFare: minimumFare,
+            DurationFare: duration_fare,
+            DistanceFare: distance_fare,
+            WaitingTimeLimit: (waitingTimeLimit),
+            WaitingFee: waitingFee,
+            CancellationTimeLimit: (cancellationTimeLimit),
+            CancellationFee: cancellationFee,
+            Tax: tax,
+            TrafficFactor: trafficFactor
+        };
+        console.log(params);
+        return this.http.put(baseURL + '/editFare', params);
+    };
     DataService.prototype.addNewZoneFare = function (location_id, vehicle_type_id, base_fare, minimumFare, duration_fare, distance_fare, waitingTimeLimit, waitingFee, cancellationTimeLimit, cancellationFee, tax, trafficFactor) {
         var params = {
             ZoneID: parseInt(location_id),
@@ -2871,6 +2900,12 @@ var DataService = /** @class */ (function () {
     DataService.prototype.getVehicleTypesWithFare = function (ref) {
         return this.http.get(baseURL + '/getVehicleTypesWithFare/' + ref);
     };
+    DataService.prototype.getFareByID = function (id) {
+        return this.http.get(baseURL + '/getFareByID/' + id);
+    };
+    DataService.prototype.getOperatorByID = function (id) {
+        return this.http.get(baseURL + '/GetOperatorByID/' + id);
+    };
     DataService.prototype.addNewOperator = function (polygon, currency, name, email, locationName, platformCommission, operatorCommission, workTime, restTime, docs, password, confirmPassword) {
         return this.http.post(baseURL + '/addNewOperator', {
             Name: name,
@@ -2885,6 +2920,19 @@ var DataService = /** @class */ (function () {
             Docs: docs,
             Password: password,
             ConfirmPassword: confirmPassword
+        });
+    };
+    DataService.prototype.editOperator = function (operatorID, polygon, currency, name, email, locationName, platformCommission, operatorCommission, workTime, restTime) {
+        return this.http.put(baseURL + '/editOperator/' + operatorID, {
+            Name: name,
+            Currency: currency,
+            Polygon: polygon,
+            Email: email,
+            LocationName: locationName,
+            PlatformCommission: platformCommission,
+            OperatorCommission: operatorCommission,
+            WorkTime: workTime,
+            RestTime: restTime,
         });
     };
     DataService.prototype.addNewVehicle = function (formData, headers) {
@@ -3352,6 +3400,380 @@ var DriverListComponent = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/edit-fare/edit-fare.component.css":
+/*!***************************************************!*\
+  !*** ./src/app/edit-fare/edit-fare.component.css ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2VkaXQtZmFyZS9lZGl0LWZhcmUuY29tcG9uZW50LmNzcyJ9 */"
+
+/***/ }),
+
+/***/ "./src/app/edit-fare/edit-fare.component.html":
+/*!****************************************************!*\
+  !*** ./src/app/edit-fare/edit-fare.component.html ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"row page-tilte align-items-center\">\n\n  <div class=\"col-md-auto\">\n    <a href=\"#\" class=\"mt-3 d-md-none float-right toggle-controls\"><span\n            class=\"material-icons\">keyboard_arrow_down</span></a>\n    <h1 class=\"weight-300 h3 title\">{{location_name}}</h1>\n\n    <p class=\"text-muted m-0 desc\"></p>\n  </div>\n</div>\n<div class=\"content\">\n\n  <div class=\"row\">\n    <div class=\"col-lg-12 \">\n      <div class=\"card mb-4\">\n        <div class=\"card-header\" >Edit Fare</div>,\n        <div class=\"card-body\">\n\n          <form [formGroup]=\"fareForm\">\n\n            <div class=\"form-group\">\n              <label for=\"sel1\">VehicleType</label>\n              <input  disabled class=\"form-control\" formControlName=\"vehicle_type\" name=\"vehicle_type\" [(ngModel)]=\"vehicle_type\" >\n\n              <div *ngIf=\"submitted && f.vehicle_type_id.errors\" class=\"invalid-feedback\">\n                <div *ngIf=\"f.vehicle_type_id.errors.required\" translate>add_fare_vehicle_type_name</div>\n              </div>\n            </div>\n\n            <div class=\"form-group\">\n              <label translate>add_basefare</label>\n              <div class=\"input-group\">\n                <input  type=\"number\" min=\"0\" class=\"form-control\" formControlName=\"base_fare\" name=\"base_fare\" [(ngModel)]=\"base_fare\"  placeholder=\"Enter Base Fare\" [ngClass]=\"{'is-invalid': submitted && f.base_fare.errors}\">\n                <div *ngIf=\"submitted && f.base_fare.errors\" class=\"invalid-feedback\">\n                  <div *ngIf=\"f.base_fare.errors.required\" translate>add_basefare_required</div>\n                </div>\n              </div>\n            </div>\n\n            <div>\n              <label >Minimum Fare</label>\n              <div class=\"form-group input-group mb-3\">\n                <input type=\"number\" min=\"0\" class=\"form-control\" formControlName=\"minimum_fare\" [ngClass]=\"{'is-invalid': submitted && f.base_fare_distance.errors}\" name=\"minimum_fare\" [(ngModel)]=\"minimum_fare\" placeholder=\"Enter Minimum Fare\" aria-label=\"Recipient's username\" aria-describedby=\"basic-addon2\">\n\n                <div *ngIf=\"submitted && f.base_fare_distance.errors\" class=\"invalid-feedback\">\n                  <div *ngIf=\"f.base_fare_distance.errors.required\" translate>add_fare_km_basefare_required</div>\n                </div>\n              </div>\n            </div>\n\n            <div>\n              <label translate>add_distancefare</label>\n              <div class=\"form-group input-group mb-3\">\n                <input type=\"number\" min=\"0\" class=\"form-control\" formControlName=\"distance_fare\" [ngClass]=\"{'is-invalid': submitted && f.distance_fare.errors}\" name=\"distance_fare\" [(ngModel)]=\"distance_fare\" placeholder=\"Enter Distance Fare\" aria-label=\"Recipient's username\" aria-describedby=\"basic-addon2\">\n                <div class=\"input-group-append\">\n                  <span class=\"input-group-text\" id=\"basic-addon2\">Per Km</span>\n                </div>\n                <div *ngIf=\"submitted && f.distance_fare.errors\" class=\"invalid-feedback\">\n                  <div *ngIf=\"f.distance_fare.errors.required\" translate>add_distancefare_required</div>\n                </div>\n              </div>\n            </div>\n\n            <div>\n              <label translate>add_durationfare</label>\n              <div class=\"form-group input-group mb-3\">\n                <input type=\"number\" min=\"0\" class=\"form-control\" formControlName=\"duration_fare\" [ngClass]=\"{'is-invalid': submitted && f.duration_fare.errors}\" name=\"duration_fare\" [(ngModel)]=\"duration_fare\" placeholder=\"Enter Duration Fare\" aria-label=\"Recipient's username\" aria-describedby=\"basic-addon2\">\n                <div class=\"input-group-append\">\n                  <span class=\"input-group-text\" id=\"basic-addon2\">Per Minute</span>\n                </div>\n                <div *ngIf=\"submitted && f.duration_fare.errors\" class=\"invalid-feedback\">\n                  <div *ngIf=\"f.duration_fare.errors.required\" translate>add_durationfare_required</div>\n                </div>\n              </div>\n            </div>\n\n            <div>\n              <label >Ride Cancellation Time Limit</label>\n              <div class=\"form-group input-group mb-3\">\n                <input type=\"number\" min=\"0\" class=\"form-control\" formControlName=\"cancellationTimeLimit\" [ngClass]=\"{'is-invalid': submitted && f.duration_fare.errors}\" name=\"cancellationTimeLimit\" [(ngModel)]=\"cancellationTimeLimit\" placeholder=\"Enter Ride Cancellation Time Limit\" aria-label=\"Recipient's username\" aria-describedby=\"basic-addon2\">\n                <div class=\"input-group-append\">\n                  <span class=\"input-group-text\" id=\"basic-addon2\"> Minutes</span>\n                </div>\n                <div *ngIf=\"submitted && f.duration_fare.errors\" class=\"invalid-feedback\">\n                  <div *ngIf=\"f.duration_fare.errors.required\" translate>add_durationfare_required</div>\n                </div>\n              </div>\n            </div>\n\n\n            <div>\n              <label >Ride Cancellation Charges</label>\n              <div class=\"form-group input-group mb-3\">\n                <input type=\"number\" min=\"0\" class=\"form-control\" formControlName=\"cancellationFee\" [ngClass]=\"{'is-invalid': submitted && f.base_fare_distance.errors}\" name=\"cancellationFee\" [(ngModel)]=\"cancellationFee\" placeholder=\"Enter Ride Cancellation Fee\" aria-label=\"Recipient's username\" aria-describedby=\"basic-addon2\">\n\n                <div *ngIf=\"submitted && f.base_fare_distance.errors\" class=\"invalid-feedback\">\n                  <div *ngIf=\"f.base_fare_distance.errors.required\" translate>add_fare_km_basefare_required</div>\n                </div>\n              </div>\n            </div>\n\n            <div>\n              <label >Waiting Time Limit</label>\n              <div class=\"form-group input-group mb-3\">\n                <input type=\"number\" min=\"0\" class=\"form-control\" formControlName=\"waitingTimeLimit\" [ngClass]=\"{'is-invalid': submitted && f.duration_fare.errors}\" name=\"waitingTimeLimit\" [(ngModel)]=\"waitingTimeLimit\" placeholder=\"Enter Waiting Time Limit\" aria-label=\"Recipient's username\" aria-describedby=\"basic-addon2\">\n                <div class=\"input-group-append\">\n                  <span class=\"input-group-text\" id=\"basic-addon2\"> Minutes</span>\n                </div>\n                <div *ngIf=\"submitted && f.duration_fare.errors\" class=\"invalid-feedback\">\n                  <div *ngIf=\"f.duration_fare.errors.required\" translate>add_durationfare_required</div>\n                </div>\n              </div>\n            </div>\n\n\n            <div>\n              <label >Waiting Charges</label>\n              <div class=\"form-group input-group mb-3\">\n                <input type=\"number\" min=\"0\" class=\"form-control\" formControlName=\"waitingFee\" [ngClass]=\"{'is-invalid': submitted && f.base_fare_distance.errors}\" name=\"waitingFee\" [(ngModel)]=\"waitingFee\" placeholder=\"Enter Waiting Fee\" aria-label=\"Recipient's username\" aria-describedby=\"basic-addon2\">\n                <div class=\"input-group-append\">\n                  <span class=\"input-group-text\" id=\"basic-addon2\">Per Minute</span>\n                </div>\n                <div *ngIf=\"submitted && f.base_fare_distance.errors\" class=\"invalid-feedback\">\n                  <div *ngIf=\"f.base_fare_distance.errors.required\" translate>add_fare_km_basefare_required</div>\n                </div>\n              </div>\n            </div>\n\n            <div>\n              <label translate>add_tax</label>\n              <div class=\"form-group input-group mb-3\">\n                <input type=\"number\" step=\"0.01\" min=\"0\" class=\"form-control\" formControlName=\"Tax\" [ngClass]=\"{'is-invalid': submitted && f.Tax.errors}\" name=\"Tax\" [(ngModel)]=\"Tax\" placeholder=\"Enter Tax %\" aria-label=\"Recipient's username\" aria-describedby=\"basic-addon2\">\n                <div class=\"input-group-append\">\n                  <span class=\"input-group-text\" id=\"basic-addon2\">%</span>\n                </div>\n                <div *ngIf=\"submitted && f.Tax.errors\" class=\"invalid-feedback\">\n                  <div *ngIf=\"f.Tax.errors.required\">add_tax_required </div>\n                </div>\n              </div>\n            </div>\n            <div>\n              <label >Traffic Factor(%)</label>\n              <div class=\"form-group input-group mb-3\">\n                <input type=\"number\" step=\"0.01\" min=\"0\" class=\"form-control\" formControlName=\"trafficFactor\" [ngClass]=\"{'is-invalid': submitted && f.Tax.errors}\" name=\"trafficFactor\" [(ngModel)]=\"trafficFactor\" placeholder=\"Enter Traffic Factor %\" aria-label=\"Recipient's username\" aria-describedby=\"basic-addon2\">\n                <div class=\"input-group-append\">\n                  <span class=\"input-group-text\" id=\"basic-addon2\">%</span>\n                </div>\n                <div *ngIf=\"submitted && f.Tax.errors\" class=\"invalid-feedback\">\n                  <div *ngIf=\"f.Tax.errors.required\">add_tax_required </div>\n                </div>\n              </div>\n            </div>\n\n            <div class=\"form-group\">\n              <span><button (click)=onSubmit() class=\"btn btn-primary\" translate>add_fare_submit</button></span>\n              <span style=\"margin-left: 20px;\"><button (click)=\"onCancel()\" class=\"btn btn-danger\" translate>add_fare_cancel</button></span>\n            </div>\n          </form>\n        </div>\n      </div>\n    </div>\n  </div>\n"
+
+/***/ }),
+
+/***/ "./src/app/edit-fare/edit-fare.component.ts":
+/*!**************************************************!*\
+  !*** ./src/app/edit-fare/edit-fare.component.ts ***!
+  \**************************************************/
+/*! exports provided: EditFareComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EditFareComponent", function() { return EditFareComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var _data_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../data.service */ "./src/app/data.service.ts");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var angular_notifier__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! angular-notifier */ "./node_modules/angular-notifier/esm5/angular-notifier.js");
+
+
+
+
+
+
+var EditFareComponent = /** @class */ (function () {
+    function EditFareComponent(dataService, router, activetedRoute, formBuilder, notifier) {
+        this.dataService = dataService;
+        this.router = router;
+        this.activetedRoute = activetedRoute;
+        this.formBuilder = formBuilder;
+        this.notifier = notifier;
+        this.isLoading = true;
+        this.submitted = false;
+    }
+    EditFareComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.fareForm = this.formBuilder.group({
+            vehicle_type: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required],
+            base_fare: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required],
+            minimum_fare: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required],
+            cancellationTimeLimit: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required],
+            waitingTimeLimit: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required],
+            cancellationFee: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required],
+            waitingFee: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required],
+            distance_fare: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required],
+            duration_fare: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required],
+            Tax: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required],
+            trafficFactor: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required],
+        });
+        this.activetedRoute.params.subscribe(function (params) {
+            _this.location_id = params.id;
+            _this.location_name = params.name;
+            _this.onLocationSelected(_this.location_id);
+            _this.dataService.getFareByID(_this.location_id).subscribe(function (data) {
+                console.log(data);
+                _this.fare_id = data.ID;
+                _this.vehicle_type = data.VehicleTypeName;
+                _this.base_fare = data.BaseFare;
+                _this.minimum_fare = data.MinimumFare;
+                _this.cancellationTimeLimit = data.CancellationTimeLimit;
+                _this.waitingTimeLimit = data.WaitingTimeLimit;
+                _this.cancellationFee = data.CancellationFee;
+                _this.waitingFee = data.WaitingFee;
+                _this.distance_fare = data.DistanceFare;
+                _this.duration_fare = data.DurationFare;
+                _this.Tax = data.Tax;
+                _this.trafficFactor = data.TrafficFactor;
+            });
+        });
+    };
+    EditFareComponent.prototype.onLocationSelected = function (location_id) {
+        var _this = this;
+        this.isLoading = true;
+        this.dataService.LocationSelected(Number(location_id)).subscribe(function (data) {
+            console.log(data);
+            _this.vehicletypes = data;
+            console.log(_this.vehicletypes);
+        });
+    };
+    Object.defineProperty(EditFareComponent.prototype, "f", {
+        get: function () {
+            return this.fareForm.controls;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    EditFareComponent.prototype.onSubmit = function () {
+        var _this = this;
+        this.submitted = true;
+        if (this.fareForm.invalid) {
+            return;
+        }
+        this.dataService.editFare(this.fare_id, this.base_fare, this.minimum_fare, this.duration_fare, this.distance_fare, this.waitingTimeLimit, this.waitingFee, this.cancellationTimeLimit, this.cancellationFee, this.Tax, this.trafficFactor).subscribe(function (data) {
+            console.log(data.Message);
+            if (data.Status) {
+                _this.notifier.show({
+                    type: 'success',
+                    message: data.Message,
+                });
+                _this.router.navigate(['admin/locations/fares/' + _this.location_id + '/' + _this.location_name + '/$']);
+            }
+            else {
+                _this.notifier.show({
+                    type: 'error',
+                    message: data.Message,
+                });
+            }
+        });
+    };
+    EditFareComponent.prototype.onCancel = function () {
+        this.router.navigate(['admin/locations/fares/' + this.location_id + '/' + this.location_name + '/$']);
+    };
+    EditFareComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+            selector: 'app-edit-fare',
+            template: __webpack_require__(/*! ./edit-fare.component.html */ "./src/app/edit-fare/edit-fare.component.html"),
+            styles: [__webpack_require__(/*! ./edit-fare.component.css */ "./src/app/edit-fare/edit-fare.component.css")]
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_data_service__WEBPACK_IMPORTED_MODULE_3__["DataService"], _angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"], _angular_router__WEBPACK_IMPORTED_MODULE_4__["ActivatedRoute"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormBuilder"], angular_notifier__WEBPACK_IMPORTED_MODULE_5__["NotifierService"]])
+    ], EditFareComponent);
+    return EditFareComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/edit-operator/edit-operator.component.css":
+/*!***********************************************************!*\
+  !*** ./src/app/edit-operator/edit-operator.component.css ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2VkaXQtb3BlcmF0b3IvZWRpdC1vcGVyYXRvci5jb21wb25lbnQuY3NzIn0= */"
+
+/***/ }),
+
+/***/ "./src/app/edit-operator/edit-operator.component.html":
+/*!************************************************************!*\
+  !*** ./src/app/edit-operator/edit-operator.component.html ***!
+  \************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\n<div class=\"content\">\n  <div class=\"card mb-4\">\n    <div class=\"card-header\">Edit Operator</div>\n    <div class=\"card-body\">\n      <div class=\"row\">\n        <div class=\"col-lg-6 \">\n          <form [formGroup]=\"locationForm\" >\n            <div class=\"form-group\">\n              <label for=\"name\" >Operator Name</label>\n              <input type=\"text\" formControlName=\"name\" placeholder=\"Enter Company Name\" name=\"name\" [(ngModel)]=\"name\"\n                     class=\"form-control\" [ngClass]=\"{'is-invalid': submitted && f.name.errors}\" autocomplete=\"off\">\n              <div *ngIf=\"submitted && f.name.errors\" class=\"invalid-feedback\">\n                <div *ngIf=\"f.name.errors.required\" translate>add_company_name_required</div>\n              </div>\n            </div>\n\n\n            <div class=\"form-group\">\n              <label for=\"name\" translate>add_company_email</label>\n              <input type=\"email\" formControlName=\"email\" placeholder=\"Enter email address\"\n                     name=\"email\" [(ngModel)]=\"email\" class=\"form-control\"\n                     [ngClass]=\"{'is-invalid': submitted && f.email.errors}\" autocomplete=\"off\">\n              <div *ngIf=\"submitted && f.email.errors\" class=\"invalid-feedback\">\n                <div *ngIf=\"f.email.errors.required\" translate>add_company_email_required</div>\n              </div>\n            </div>\n\n            <div class=\"form-group\">\n              <label for=\"exampleFormControlInput1\" >Operator Location (Select from the dropdown)</label>\n              <input class=\"form-control is-invalid\" formControlName=\"address\" [(ngModel)]=\"address\" name=\"address\"  placeholder=\"Choose a location\" ngx-google-places-autocomplete #placesRef=\"ngx-places\" (onAddressChange)=\"handleAddressChange($event)\" [ngClass]=\"{'is-invalid': submitted && f.address.errors}\"/>\n              <div *ngIf=\"submitted && f.address.errors\" class=\"invalid-feedback\">\n                <div *ngIf=\"f.address.errors.required\" >Location is required</div>\n              </div>\n            </div>\n\n\n            <div class=\"form-group\">\n              <label for=\"inputPassword4\" >Location Name</label>\n              <input  class=\"form-control danger is-invalid\" formControlName=\"locationName\" [(ngModel)]=\"locationName\" name=\"name\" id=\"inputPassword4\" placeholder=\"Enter location name\" [ngClass]=\"{'is-invalid': submitted && f.name.errors}\" autocomplete=\"off\">\n              <div *ngIf=\"submitted && f.name.errors\" class=\"invalid-feedback\">\n                <div *ngIf=\"f.locationName.errors.required\" >Location name is required</div>\n              </div>\n            </div>\n\n            <div class=\"form-group\">\n              <label for=\"inputAddress\" >Currency Symbol</label>\n              <input type=\"text\" formControlName=\"currency\" [(ngModel)]=\"currency\" name=\"currency\" class=\"form-control is-invalid\" id=\"inputAddress\" placeholder=\"Enter a currency symbol\" [ngClass]=\"{'is-invalid': submitted && f.currency.errors}\">\n              <div *ngIf=\"submitted && f.currency.errors\" class=\"invalid-feedback\">\n                <div *ngIf=\"f.currency.errors.required\" >Currency symbol is required</div>\n              </div>\n            </div>\n\n            <div class=\"form-group\">\n              <label for=\"name\">Taasai Commission</label>\n              <input type=\"number\" formControlName=\"platformCommission\" placeholder=\"Enter your commisson\" name=\"commission\" [(ngModel)]=\"platformCommission\"\n                     class=\"form-control\" [ngClass]=\"{'is-invalid': submitted && f.platformCommission.errors}\" autocomplete=\"off\">\n              <div *ngIf=\"submitted && f.platformCommission.errors\" class=\"invalid-feedback\">\n                <div *ngIf=\"f.platformCommission.errors.required\" translate>Taasai commission is required</div>\n              </div>\n            </div>\n            <div class=\"form-group\">\n              <label for=\"name\">Operator Commission</label>\n              <input type=\"number\" formControlName=\"operatorCommission\" placeholder=\"Enter your commisson\" name=\"commission\" [(ngModel)]=\"operatorCommission\"\n                     class=\"form-control\" [ngClass]=\"{'is-invalid': submitted && f.operatorCommission.errors}\" autocomplete=\"off\">\n              <div *ngIf=\"submitted && f.operatorCommission.errors\" class=\"invalid-feedback\">\n                <div *ngIf=\"f.operatorCommission.errors.required\" translate>Operator commission is required</div>\n              </div>\n            </div>\n\n\n            <div class=\"form-group\">\n              <label for=\"name\">Driver Maximum Work Time (hours per day)</label>\n              <input type=\"number\" formControlName=\"driverWorkTime\" placeholder=\"Enter driver work time\" name=\"driverWorkTime\" [(ngModel)]=\"driverWorkTime\"\n                     class=\"form-control\" [ngClass]=\"{'is-invalid': submitted && f.driverWorkTime.errors}\" autocomplete=\"off\">\n              <div *ngIf=\"submitted && f.driverWorkTime.errors\" class=\"invalid-feedback\">\n                <div *ngIf=\"f.driverWorkTime.errors.required\" translate>DriverWorkTime is required</div>\n              </div>\n            </div>\n\n            <div class=\"form-group\">\n              <label for=\"name\">Driver Rest Time After Reaching Maximum Work Time (in hours)</label>\n              <input type=\"number\" formControlName=\"driverRestTime\" placeholder=\"Enter driver rest time\" name=\"driverRestTime\" [(ngModel)]=\"driverRestTime\"\n                     class=\"form-control\" [ngClass]=\"{'is-invalid': submitted && f.driverRestTime.errors}\" autocomplete=\"off\">\n              <div *ngIf=\"submitted && f.driverRestTime.errors\" class=\"invalid-feedback\">\n                <div *ngIf=\"f.driverRestTime.errors.required\" translate>DriverRestTime is required</div>\n              </div>\n            </div>\n\n            <span><button (click)=onSubmit() class=\"btn btn-primary\" translate>add_location_submit</button></span>\n            <span style=\"margin-left: 20px;\"><button (click)=onCancel() class=\"btn btn-danger\" translate>add_location_cancel</button></span>\n          </form>\n          <br>\n          <!--div class=\"alert alert-info mb-0\" role=\"alert\">\n            <h4 class=\"alert-heading weight-400\" translate>howto_add_location</h4>\n            <p translate>add_location_desc</p>\n          </div-->\n        </div>\n        <div class=\"col-md-6\">\n          <agm-map [latitude]=\"latitude\" [longitude]=\"longitude\" [zoom]=\"10\">\n          </agm-map>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n"
+
+/***/ }),
+
+/***/ "./src/app/edit-operator/edit-operator.component.ts":
+/*!**********************************************************!*\
+  !*** ./src/app/edit-operator/edit-operator.component.ts ***!
+  \**********************************************************/
+/*! exports provided: EditOperatorComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EditOperatorComponent", function() { return EditOperatorComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var ngx_google_places_autocomplete__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ngx-google-places-autocomplete */ "./node_modules/ngx-google-places-autocomplete/bundles/ngx-google-places-autocomplete.umd.js");
+/* harmony import */ var ngx_google_places_autocomplete__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(ngx_google_places_autocomplete__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _agm_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @agm/core */ "./node_modules/@agm/core/index.js");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var _data_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../data.service */ "./src/app/data.service.ts");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var angular_notifier__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! angular-notifier */ "./node_modules/angular-notifier/esm5/angular-notifier.js");
+
+
+
+
+
+
+
+
+var EditOperatorComponent = /** @class */ (function () {
+    function EditOperatorComponent(dataService, activetedRoute, router, formBuilder, notifier) {
+        this.dataService = dataService;
+        this.activetedRoute = activetedRoute;
+        this.router = router;
+        this.formBuilder = formBuilder;
+        this.notifier = notifier;
+        this.submitted = false;
+        this.distance = 10 * 1000;
+        this.paths = [];
+        this.docsCount = 0;
+        this.operatorId = 0;
+        this.operatorName = "";
+        this.getLatLonCenterFromGeom = function (coords) {
+            var arrAvg = function (arr) { return arr.reduce(function (a, b) { return a + b; }, 0) / arr.length; };
+            var centerLat = arrAvg(coords.map(function (c) { return c.lat; }));
+            var centerLon = arrAvg(coords.map(function (c) { return c.lng; }));
+            if (isNaN(centerLat) || isNaN(centerLon))
+                return null;
+            else
+                return { lat: centerLat, lng: centerLon };
+        };
+    }
+    EditOperatorComponent.prototype.handleAddressChange = function (address) {
+        var _this = this;
+        this.latitude = address.geometry.location.lat();
+        this.longitude = address.geometry.location.lng();
+        this.paths = [];
+        for (var i = 0; i < 360; i = i + 45) {
+            this.paths.push(this.createCoordinate(i));
+        }
+        if (this.polygon == null) {
+            this.map._mapsWrapper.createPolygon({
+                paths: this.paths,
+                strokeColor: '#FF0000',
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: '#FF0000',
+                fillOpacity: 0.3,
+                editable: true,
+            }).then(function (polygon) {
+                _this.polygon = polygon;
+            });
+        }
+        else {
+            this.polygon.setPath(this.paths);
+        }
+    };
+    EditOperatorComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.locationForm = this.formBuilder.group({
+            address: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required],
+            name: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required],
+            locationName: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required],
+            currency: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required],
+            email: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required],
+            platformCommission: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required],
+            operatorCommission: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required],
+            driverWorkTime: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required],
+            driverRestTime: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required],
+        });
+        this.activetedRoute.params.subscribe(function (params) {
+            _this.operatorId = params.id;
+            _this.operatorName = params.name;
+            _this.dataService.getOperatorByID("" + _this.operatorId).subscribe(function (result) {
+                _this.address = result.LocationName;
+                _this.locationName = result.LocationName;
+                _this.name = result.Name;
+                _this.email = result.Email;
+                _this.platformCommission = result.PlatformCommission;
+                _this.operatorCommission = result.OperatorCommission;
+                _this.driverWorkTime = result.DriverWorkTime;
+                _this.driverRestTime = result.DriverRestTime;
+                _this.currency = result.Currency;
+            });
+            _this.dataService.getCoordinates("" + _this.operatorId).subscribe(function (result) {
+                var coordinatesArray = result.Coordinates.split(",");
+                coordinatesArray.forEach(function (element) {
+                    var latLngArray = element.split(" ");
+                    var latLng = { lng: Number(latLngArray[1]), lat: Number(latLngArray[0]) };
+                    _this.paths.push(latLng);
+                });
+                console.log(_this.paths);
+                _this.map._mapsWrapper.createPolygon({
+                    paths: _this.paths,
+                    strokeColor: '#FF0000',
+                    strokeOpacity: 0.8,
+                    strokeWeight: 2,
+                    fillColor: '#FF0000',
+                    fillOpacity: 0.20,
+                    editable: true,
+                }).then(function (polygon) {
+                    _this.polygon = polygon;
+                });
+                _this.map._mapsWrapper.setCenter(_this.getLatLonCenterFromGeom(_this.paths));
+                _this.map._mapsWrapper.setZoom(10);
+            });
+        });
+    };
+    Object.defineProperty(EditOperatorComponent.prototype, "f", {
+        get: function () {
+            return this.locationForm.controls;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    EditOperatorComponent.prototype.createCoordinate = function (bearing) {
+        var radius = 6371e3; // meters
+        var δ = Number(this.distance) / radius; // angular distance in radians
+        var θ = this.toRad(Number(bearing));
+        var φ1 = this.toRad(this.latitude);
+        var λ1 = this.toRad(this.longitude);
+        var φ2 = Math.asin(Math.sin(φ1) * Math.cos(δ) + Math.cos(φ1) * Math.sin(δ) * Math.cos(θ));
+        var λ2 = λ1 + Math.atan2(Math.sin(θ) * Math.sin(δ) * Math.cos(φ1), Math.cos(δ) - Math.sin(φ1) * Math.sin(φ2));
+        λ2 = (λ2 + 3 * Math.PI) % (2 * Math.PI) - Math.PI; // normalise to -180..+180°
+        return { lng: this.toDeg(λ2), lat: this.toDeg(φ2) }; // [lon, lat]
+    };
+    EditOperatorComponent.prototype.toDeg = function (value) { return value * 180 / Math.PI; };
+    EditOperatorComponent.prototype.toRad = function (value) { return value * Math.PI / 180; };
+    EditOperatorComponent.prototype.onSubmit = function () {
+        var _this = this;
+        this.submitted = true;
+        if (this.locationForm.invalid) {
+            return;
+        }
+        console.log('address =' + this.f.address.value);
+        console.log('address =' + this.f.name.value);
+        console.log('address =' + this.f.currency.value);
+        var path;
+        path = this.polygon.getPath();
+        var polygonPoints = [];
+        path.forEach(function (element) {
+            polygonPoints.push({ Lat: element.lat(), Lng: element.lng() });
+        });
+        polygonPoints.push(polygonPoints[0]);
+        this.dataService.editOperator(this.operatorId, polygonPoints, this.currency, this.name, this.email, this.locationName, this.platformCommission, this.operatorCommission, this.driverWorkTime, this.driverRestTime).subscribe(function (data) {
+            if (data.Status) {
+                _this.notifier.show({
+                    type: 'success',
+                    message: _this.name + ' ' + data.Message,
+                });
+                _this.router.navigate(['admin/locations']);
+            }
+            else {
+                _this.notifier.show({
+                    type: 'error',
+                    message: data.Message,
+                });
+            }
+        });
+    };
+    EditOperatorComponent.prototype.onCancel = function () {
+        this.router.navigate(['admin/locations']);
+    };
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewChild"])('placesRef'),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", ngx_google_places_autocomplete__WEBPACK_IMPORTED_MODULE_2__["GooglePlaceDirective"])
+    ], EditOperatorComponent.prototype, "placesRef", void 0);
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewChild"])(_agm_core__WEBPACK_IMPORTED_MODULE_3__["AgmMap"]),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", Object)
+    ], EditOperatorComponent.prototype, "map", void 0);
+    EditOperatorComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+            selector: 'app-edit-operator',
+            template: __webpack_require__(/*! ./edit-operator.component.html */ "./src/app/edit-operator/edit-operator.component.html"),
+            styles: [__webpack_require__(/*! ./edit-operator.component.css */ "./src/app/edit-operator/edit-operator.component.css")]
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_data_service__WEBPACK_IMPORTED_MODULE_5__["DataService"], _angular_router__WEBPACK_IMPORTED_MODULE_6__["ActivatedRoute"], _angular_router__WEBPACK_IMPORTED_MODULE_6__["Router"],
+            _angular_forms__WEBPACK_IMPORTED_MODULE_4__["FormBuilder"], angular_notifier__WEBPACK_IMPORTED_MODULE_7__["NotifierService"]])
+    ], EditOperatorComponent);
+    return EditOperatorComponent;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/edit-vehicle-category/edit-vehicle-category.component.css":
 /*!***************************************************************************!*\
   !*** ./src/app/edit-vehicle-category/edit-vehicle-category.component.css ***!
@@ -3635,7 +4057,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row page-tilte align-items-center\">\n  \n  <div class=\"col-md-auto\">\n    <a href=\"#\" class=\"mt-3 d-md-none float-right toggle-controls\"><span class=\"material-icons\">keyboard_arrow_down</span></a>\n    <h1 class=\"weight-300 h3 title\">{{location_name}} - <h1 class=\"weight-300 h3 title\" translate>fare_list</h1></h1>\n    <p class=\"text-muted m-0 desc\">\n    </p>\n  </div>\n  <div class=\"col controls-wrapper mt-3 mt-md-0 d-none d-md-block \">\n    <div class=\"controls d-flex justify-content-center justify-content-md-end\">\n      <button type=\"button\" routerLink=\"new\" routerLinkActive=\"active\" style=\"cursor:pointer;\" class=\"btn btn-primary\" style=\"float:right\" translate><span class=\"material-icons mr-2 align-top\">add</span>fare_add</button>\n    </div>\n  </div>\n\n</div>\n\n<div class=\"content\">\n  <table datatable  [dtTrigger]=\"dtTrigger\" id=\"example\"  class=\"table table-striped mb-4 bg-white table-bordered\">\n    <thead>\n      <tr>\n        <th translate>fare_id</th>\n        <th data-orderable=\"false\" translate>fare_image</th>\n        <th translate>fare_vehicle_type</th>\n        <th data-orderable=\"false\" translate>base_fare</th>\n        <th data-orderable=\"false\" translate>distance_fare</th>\n        <th data-orderable=\"false\" translate>duration_fare</th>\n        <th data-orderable=\"false\" translate>tax</th>\n        <th data-orderable=\"false\" translate>actions</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let fare of fares\">\n        <td>{{fare.fare_id}}</td>\n        <td><img src=\"{{'http://35.197.237.60:4001/'+fare.vehicle_type_image}}\" height=\"40\" width=\"40\"/></td>\n        <td>{{fare.vehicle_type_name}}</td>\n        <td>{{location_currency}} {{fare.base_fare}}  ({{fare.base_fare_distance+\" Km & \"+fare.base_fare_duration+\" Minutes incl.\"}})</td>\n        <td>{{location_currency}} {{fare.distance_fare}}</td>\n        <td>{{location_currency}} {{fare.duration_fare}}</td>\n        <td>{{fare.tax}}%</td>\n        <td>\n          <button [hidden]=\"!fare.is_active\" type=\"button\" class=\"btn mb-2 flat btn-sm btn-outline-danger\" (click)=\"openModal(Fare_disable_modal)\" translate>delete</button>\n          <ng-template #Fare_disable_modal>\n            <div class=\"modal-header\">\n              <h4 class=\"modal-title pull-left\">Fare</h4>\n              <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">\n                <span aria-hidden=\"true\">&times;</span>\n              </button>\n            </div>\n            <div class=\"modal-body\">\n             Are you Sure Delete This Fare<br>\n            </div>\n            <div class=\"modal-footer\">\n              <button type=\"button\" class=\"btn mb-2 flat btn-sm btn-outline-warning\" (click)=\"modalRef.hide()\">Cancel</button>\n              <button [hidden]=\"!fare.is_active\" type=\"button\" class=\"btn mb-2 flat btn-sm btn-outline-danger\" (click)=\"disableFare(fare.fare_id,fare.vehicle_type_name,template); modalRef.hide()\">Confirm</button>\n            </div>\n          </ng-template>\n        </td>\n      </tr>\n    </tbody>\n  </table>\n\n  <div class=\"loader-wrapper incomponent\" id=\"demoCardLoader\" [style.display]=\"isLoading? 'block':'none'\">\n    <div class=\"spinner\">\n      <svg viewBox=\"0 0 66 66\" xmlns=\"http://www.w3.org/2000/svg\">\n        <circle class=\"length\" fill=\"none\" stroke-width=\"6\" stroke-linecap=\"round\" cx=\"33\" cy=\"33\" r=\"28\"></circle>\n      </svg>\n      <svg viewBox=\"0 0 66 66\" xmlns=\"http://www.w3.org/2000/svg\">\n        <circle fill=\"none\" stroke-width=\"6\" stroke-linecap=\"round\" cx=\"33\" cy=\"33\" r=\"28\"></circle>\n      </svg>\n      <svg viewBox=\"0 0 66 66\" xmlns=\"http://www.w3.org/2000/svg\">\n        <circle fill=\"none\" stroke-width=\"6\" stroke-linecap=\"round\" cx=\"33\" cy=\"33\" r=\"28\"></circle>\n      </svg>\n      <svg viewBox=\"0 0 66 66\" xmlns=\"http://www.w3.org/2000/svg\">\n        <circle fill=\"none\" stroke-width=\"6\" stroke-linecap=\"round\" cx=\"33\" cy=\"33\" r=\"28\"></circle>\n      </svg>\n    </div>\n  </div>  \n</div>\n"
+module.exports = "<div class=\"row page-tilte align-items-center\">\n  \n  <div class=\"col-md-auto\">\n    <a href=\"#\" class=\"mt-3 d-md-none float-right toggle-controls\"><span class=\"material-icons\">keyboard_arrow_down</span></a>\n    <h1 class=\"weight-300 h3 title\">{{location_name}} - <h1 class=\"weight-300 h3 title\" translate>fare_list</h1></h1>\n    <p class=\"text-muted m-0 desc\">\n    </p>\n  </div>\n  <div class=\"col controls-wrapper mt-3 mt-md-0 d-none d-md-block \">\n    <div class=\"controls d-flex justify-content-center justify-content-md-end\">\n      <button type=\"button\" routerLink=\"new\" routerLinkActive=\"active\" style=\"cursor:pointer;\" class=\"btn btn-primary\" style=\"float:right\" translate><span class=\"material-icons mr-2 align-top\">add</span>fare_add</button>\n    </div>\n  </div>\n\n</div>\n\n<div class=\"content\">\n  <table datatable  [dtTrigger]=\"dtTrigger\" id=\"example\"  class=\"table table-striped mb-4 bg-white table-bordered\">\n    <thead>\n      <tr>\n        <th translate>fare_id</th>\n        <th data-orderable=\"false\" translate>fare_image</th>\n        <th translate>fare_vehicle_type</th>\n        <th data-orderable=\"false\" translate>base_fare</th>\n        <th data-orderable=\"false\" translate>distance_fare</th>\n        <th data-orderable=\"false\" translate>duration_fare</th>\n        <th data-orderable=\"false\" translate>tax</th>\n        <th data-orderable=\"false\" translate>actions</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let fare of fares\">\n        <td>{{fare.fare_id}}</td>\n        <td><img src=\"{{'http://35.197.237.60:4001/'+fare.vehicle_type_image}}\" height=\"40\" width=\"40\"/></td>\n        <td>{{fare.vehicle_type_name}}</td>\n        <td>{{location_currency}} {{fare.base_fare}}  ({{fare.base_fare_distance+\" Km & \"+fare.base_fare_duration+\" Minutes incl.\"}})</td>\n        <td>{{location_currency}} {{fare.distance_fare}}</td>\n        <td>{{location_currency}} {{fare.duration_fare}}</td>\n        <td>{{fare.tax}}%</td>\n        <td>\n          <button type=\"button\" class=\"btn mb-2 flat btn-sm btn-outline-warning\" (click)=\"navigateToEdit()\" translate>Edit</button>\n          <button [hidden]=\"!fare.is_active\" type=\"button\" class=\"btn mb-2 flat btn-sm btn-outline-danger\" (click)=\"openModal(Fare_disable_modal)\" translate>delete</button>\n          <ng-template #Fare_disable_modal>\n            <div class=\"modal-header\">\n              <h4 class=\"modal-title pull-left\">Fare</h4>\n              <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">\n                <span aria-hidden=\"true\">&times;</span>\n              </button>\n            </div>\n            <div class=\"modal-body\">\n             Are you Sure Delete This Fare<br>\n            </div>\n            <div class=\"modal-footer\">\n              <button type=\"button\" class=\"btn mb-2 flat btn-sm btn-outline-warning\" (click)=\"modalRef.hide()\">Cancel</button>\n              <button [hidden]=\"!fare.is_active\" type=\"button\" class=\"btn mb-2 flat btn-sm btn-outline-danger\" (click)=\"disableFare(fare.fare_id,fare.vehicle_type_name,template); modalRef.hide()\">Confirm</button>\n            </div>\n          </ng-template>\n        </td>\n      </tr>\n    </tbody>\n  </table>\n\n  <div class=\"loader-wrapper incomponent\" id=\"demoCardLoader\" [style.display]=\"isLoading? 'block':'none'\">\n    <div class=\"spinner\">\n      <svg viewBox=\"0 0 66 66\" xmlns=\"http://www.w3.org/2000/svg\">\n        <circle class=\"length\" fill=\"none\" stroke-width=\"6\" stroke-linecap=\"round\" cx=\"33\" cy=\"33\" r=\"28\"></circle>\n      </svg>\n      <svg viewBox=\"0 0 66 66\" xmlns=\"http://www.w3.org/2000/svg\">\n        <circle fill=\"none\" stroke-width=\"6\" stroke-linecap=\"round\" cx=\"33\" cy=\"33\" r=\"28\"></circle>\n      </svg>\n      <svg viewBox=\"0 0 66 66\" xmlns=\"http://www.w3.org/2000/svg\">\n        <circle fill=\"none\" stroke-width=\"6\" stroke-linecap=\"round\" cx=\"33\" cy=\"33\" r=\"28\"></circle>\n      </svg>\n      <svg viewBox=\"0 0 66 66\" xmlns=\"http://www.w3.org/2000/svg\">\n        <circle fill=\"none\" stroke-width=\"6\" stroke-linecap=\"round\" cx=\"33\" cy=\"33\" r=\"28\"></circle>\n      </svg>\n    </div>\n  </div>  \n</div>\n"
 
 /***/ }),
 
@@ -3666,8 +4088,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var FareListComponent = /** @class */ (function () {
-    function FareListComponent(router, dataService, notifier, modalService) {
+    function FareListComponent(router, navRouter, dataService, notifier, modalService) {
         this.router = router;
+        this.navRouter = navRouter;
         this.dataService = dataService;
         this.notifier = notifier;
         this.modalService = modalService;
@@ -3721,6 +4144,9 @@ var FareListComponent = /** @class */ (function () {
             _this.dtTrigger.next();
         });
     };
+    FareListComponent.prototype.navigateToEdit = function () {
+        this.navRouter.navigate(['admin/locations/editfares/' + this.location_id + '/' + this.location_name]);
+    };
     FareListComponent.prototype.openModal = function (Fare_disable_modal) {
         this.modalRef = this.modalService.show(Fare_disable_modal);
     };
@@ -3734,7 +4160,7 @@ var FareListComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./fare-list.component.html */ "./src/app/fare-list/fare-list.component.html"),
             styles: [__webpack_require__(/*! ./fare-list.component.css */ "./src/app/fare-list/fare-list.component.css")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_6__["ActivatedRoute"], _data_service__WEBPACK_IMPORTED_MODULE_2__["DataService"], angular_notifier__WEBPACK_IMPORTED_MODULE_5__["NotifierService"], ngx_bootstrap_modal__WEBPACK_IMPORTED_MODULE_7__["BsModalService"]])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_6__["ActivatedRoute"], _angular_router__WEBPACK_IMPORTED_MODULE_6__["Router"], _data_service__WEBPACK_IMPORTED_MODULE_2__["DataService"], angular_notifier__WEBPACK_IMPORTED_MODULE_5__["NotifierService"], ngx_bootstrap_modal__WEBPACK_IMPORTED_MODULE_7__["BsModalService"]])
     ], FareListComponent);
     return FareListComponent;
 }());
@@ -3761,7 +4187,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row page-tilte align-items-center\">\n  \n  <div class=\"col-md-auto\">\n    <a href=\"#\" class=\"mt-3 d-md-none float-right toggle-controls\"><span class=\"material-icons\">keyboard_arrow_down</span></a>\n    <h1 [hidden]=\"!isAdmin\" class=\"weight-300 h3 title\" >Operator List</h1>\n    <p class=\"text-muted m-0 desc\"></p>\n  </div>\n\n  <div class=\"col controls-wrapper mt-3 mt-md-0 d-none d-md-block \">\n    <div class=\"controls d-flex justify-content-center justify-content-md-end\">\n      <button [hidden]=\"!isAdmin\" type=\"button\" routerLink=\"new\" routerLinkActive=\"active\" style=\"cursor:pointer;\" class=\"btn btn-primary\" style=\"float:right\" ><span class=\"material-icons mr-2 align-top\">add</span>Add New Operator</button>\n\n    </div>\n  </div>\n\n</div>\n<div class=\"content\">\n  <table datatable [dtOptions]=\"dtOptions\"  [dtTrigger]=\"dtTrigger\" id=\"example\"  class=\"table table-striped mb-4 bg-white table-bordered\">\n    <thead>\n      <tr>\n        <th >ID</th>\n        <th >Operator Name</th>\n        <th >Location Name</th>\n        <th >Driver Work Time</th>\n        <th >Driver Rest Time</th>\n        <th >ActiveVehicle Types</th>\n        <th data-orderable=\"false\" >Status</th>\n        <th data-orderable=\"false\" >Action</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let location of locations\">\n        <td>{{location.ID}}</td>\n        <td>{{location.Name}}</td>\n        <td>{{location.LocationName}}</td>\n        <td>{{location.DriverWorkTime}} hours</td>\n        <td>{{location.DriverRestTime}} hours</td>\n        <td class=\"th_width\">{{location.TotalFareCount}}</td>\n        <td>\n          <span [hidden]=\"!location.IsActive\" class=\"badge badge-pill badge-success\" style=\"padding-top:4px;padding-bottom:4px;padding-left:8px;padding-right:8px;color:#FFFFFF;font-size: 12px;\" translate>location_enabled</span>\n          <span [hidden]=\"location.IsActive\" class=\"badge badge-pill badge-danger\" style=\"padding-top:4px;padding-bottom:4px;padding-left:8px;padding-right:8px;color:#FFFFFF;font-size: 12px;\" translate>location_disabled</span>\n        </td>\n        <td>\n          <button [hidden]=\"!location.IsActive\" type=\"button\" class=\"btn btn-purple btn-sm\" style=\"margin-right:10px;\"\n                      (click)=\"navigateToZoneList(location.ID,location.Name)\" translate>location_manage_zone</button>\n          \n          <button [hidden]=\"!location.IsActive\" type=\"button\" class=\"btn btn-primary btn-sm\" style=\"margin-right:10px;\" (click) = \"navigateToFareList(location.ID,location.Name,location.Currency)\" translate>location_vehicle_fare</button>\n          <!--button [hidden]=\"!location.IsActive\" type=\"button\" class=\"btn btn-warning btn-sm\" style=\"margin-right:10px;\"\n            (click)=\"navigateToEdit(location.ID,location.Name)\">Edit\n          </button-->\n          <button [hidden]=\"location.IsActive\" type=\"button\" class=\"btn btn-outline-success btn-sm\" (click)=\"enableLocation(location.ID,location.Name)\" translate>vehicle_type_enable</button>\n          <button [hidden]=\"!location.IsActive\" type=\"button\" class=\"btn btn-outline-danger btn-sm\" (click)=\"openModal(location_disable_modal)\" translate>vehicle_type_disable</button> \n          <ng-template #location_disable_modal>\n            <div class=\"modal-header\">\n              <h4 class=\"modal-title pull-left\">Location</h4>\n              <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">\n                <span aria-hidden=\"true\">&times;</span>\n              </button>\n            </div>\n            <div class=\"modal-body\">\n             Do you want to disable this location <br>\n            </div>\n            <div class=\"modal-footer\">\n              <button type=\"button\" class=\"btn mb-2 flat btn-sm btn-outline-warning\" (click)=\"modalRef.hide()\">Cancel</button>\n              <button [hidden]=\"!location.IsActive\" type=\"button\" class=\"btn mb-2 flat btn-sm btn-outline-danger\" (click)=\"disableLocation(location.ID,location.Name); modalRef.hide()\">Confirm</button>\n            </div>\n          </ng-template>\n        </td>\n      </tr>\n    </tbody>\n  </table>\n\n  <div class=\"loader-wrapper incomponent\" id=\"demoCardLoader\" [style.display]=\"isLoading? 'block':'none'\">\n    <div class=\"spinner\">\n      <svg viewBox=\"0 0 66 66\" xmlns=\"http://www.w3.org/2000/svg\">\n        <circle class=\"length\" fill=\"none\" stroke-width=\"6\" stroke-linecap=\"round\" cx=\"33\" cy=\"33\" r=\"28\"></circle>\n      </svg>\n      <svg viewBox=\"0 0 66 66\" xmlns=\"http://www.w3.org/2000/svg\">\n        <circle fill=\"none\" stroke-width=\"6\" stroke-linecap=\"round\" cx=\"33\" cy=\"33\" r=\"28\"></circle>\n      </svg>\n      <svg viewBox=\"0 0 66 66\" xmlns=\"http://www.w3.org/2000/svg\">\n        <circle fill=\"none\" stroke-width=\"6\" stroke-linecap=\"round\" cx=\"33\" cy=\"33\" r=\"28\"></circle>\n      </svg>\n      <svg viewBox=\"0 0 66 66\" xmlns=\"http://www.w3.org/2000/svg\">\n        <circle fill=\"none\" stroke-width=\"6\" stroke-linecap=\"round\" cx=\"33\" cy=\"33\" r=\"28\"></circle>\n      </svg>\n    </div>\n  </div>\n  \n</div>\n          \n\n"
+module.exports = "<div class=\"row page-tilte align-items-center\">\n  \n  <div class=\"col-md-auto\">\n    <a href=\"#\" class=\"mt-3 d-md-none float-right toggle-controls\"><span class=\"material-icons\">keyboard_arrow_down</span></a>\n    <h1 [hidden]=\"!isAdmin\" class=\"weight-300 h3 title\" >Operator List</h1>\n    <p class=\"text-muted m-0 desc\"></p>\n  </div>\n\n  <div class=\"col controls-wrapper mt-3 mt-md-0 d-none d-md-block \">\n    <div class=\"controls d-flex justify-content-center justify-content-md-end\">\n      <button [hidden]=\"!isAdmin\" type=\"button\" routerLink=\"new\" routerLinkActive=\"active\" style=\"cursor:pointer;\" class=\"btn btn-primary\" style=\"float:right\" ><span class=\"material-icons mr-2 align-top\">add</span>Add New Operator</button>\n\n    </div>\n  </div>\n\n</div>\n<div class=\"content\">\n  <table datatable [dtOptions]=\"dtOptions\"  [dtTrigger]=\"dtTrigger\" id=\"example\"  class=\"table table-striped mb-4 bg-white table-bordered\">\n    <thead>\n      <tr>\n        <th >ID</th>\n        <th >Operator Name</th>\n        <th >Location Name</th>\n        <th >Driver Work Time</th>\n        <th >Driver Rest Time</th>\n        <th >ActiveVehicle Types</th>\n        <th data-orderable=\"false\" >Status</th>\n        <th data-orderable=\"false\" >Action</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let location of locations\">\n        <td>{{location.ID}}</td>\n        <td>{{location.Name}}</td>\n        <td>{{location.LocationName}}</td>\n        <td>{{location.DriverWorkTime}} hours</td>\n        <td>{{location.DriverRestTime}} hours</td>\n        <td class=\"th_width\">{{location.TotalFareCount}}</td>\n        <td>\n          <span [hidden]=\"!location.IsActive\" class=\"badge badge-pill badge-success\" style=\"padding-top:4px;padding-bottom:4px;padding-left:8px;padding-right:8px;color:#FFFFFF;font-size: 12px;\" translate>location_enabled</span>\n          <span [hidden]=\"location.IsActive\" class=\"badge badge-pill badge-danger\" style=\"padding-top:4px;padding-bottom:4px;padding-left:8px;padding-right:8px;color:#FFFFFF;font-size: 12px;\" translate>location_disabled</span>\n        </td>\n        <td>\n          <button [hidden]=\"!location.IsActive\" type=\"button\" class=\"btn btn-purple btn-sm\" style=\"margin-right:10px;\"\n                      (click)=\"navigateToZoneList(location.ID,location.Name)\" translate>location_manage_zone</button>\n          \n          <button [hidden]=\"!location.IsActive\" type=\"button\" class=\"btn btn-primary btn-sm\" style=\"margin-right:10px;\" (click) = \"navigateToFareList(location.ID,location.Name,location.Currency)\" translate>location_vehicle_fare</button>\n          <button [hidden]=\"!location.IsActive\" type=\"button\" class=\"btn btn-warning btn-sm\" style=\"margin-right:10px;\" (click) = \"navigateToEdit(location.ID,location.Name,location.Currency)\" >Edit</button>\n          <!--button [hidden]=\"!location.IsActive\" type=\"button\" class=\"btn btn-warning btn-sm\" style=\"margin-right:10px;\"\n            (click)=\"navigateToEdit(location.ID,location.Name)\">Edit\n          </button-->\n          <button [hidden]=\"location.IsActive\" type=\"button\" class=\"btn btn-outline-success btn-sm\" (click)=\"enableLocation(location.ID,location.Name)\" translate>vehicle_type_enable</button>\n          <button [hidden]=\"!location.IsActive\" type=\"button\" class=\"btn btn-outline-danger btn-sm\" (click)=\"openModal(location_disable_modal)\" translate>vehicle_type_disable</button> \n          <ng-template #location_disable_modal>\n            <div class=\"modal-header\">\n              <h4 class=\"modal-title pull-left\">Location</h4>\n              <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">\n                <span aria-hidden=\"true\">&times;</span>\n              </button>\n            </div>\n            <div class=\"modal-body\">\n             Do you want to disable this location <br>\n            </div>\n            <div class=\"modal-footer\">\n              <button type=\"button\" class=\"btn mb-2 flat btn-sm btn-outline-warning\" (click)=\"modalRef.hide()\">Cancel</button>\n              <button [hidden]=\"!location.IsActive\" type=\"button\" class=\"btn mb-2 flat btn-sm btn-outline-danger\" (click)=\"disableLocation(location.ID,location.Name); modalRef.hide()\">Confirm</button>\n            </div>\n          </ng-template>\n        </td>\n      </tr>\n    </tbody>\n  </table>\n\n  <div class=\"loader-wrapper incomponent\" id=\"demoCardLoader\" [style.display]=\"isLoading? 'block':'none'\">\n    <div class=\"spinner\">\n      <svg viewBox=\"0 0 66 66\" xmlns=\"http://www.w3.org/2000/svg\">\n        <circle class=\"length\" fill=\"none\" stroke-width=\"6\" stroke-linecap=\"round\" cx=\"33\" cy=\"33\" r=\"28\"></circle>\n      </svg>\n      <svg viewBox=\"0 0 66 66\" xmlns=\"http://www.w3.org/2000/svg\">\n        <circle fill=\"none\" stroke-width=\"6\" stroke-linecap=\"round\" cx=\"33\" cy=\"33\" r=\"28\"></circle>\n      </svg>\n      <svg viewBox=\"0 0 66 66\" xmlns=\"http://www.w3.org/2000/svg\">\n        <circle fill=\"none\" stroke-width=\"6\" stroke-linecap=\"round\" cx=\"33\" cy=\"33\" r=\"28\"></circle>\n      </svg>\n      <svg viewBox=\"0 0 66 66\" xmlns=\"http://www.w3.org/2000/svg\">\n        <circle fill=\"none\" stroke-width=\"6\" stroke-linecap=\"round\" cx=\"33\" cy=\"33\" r=\"28\"></circle>\n      </svg>\n    </div>\n  </div>\n  \n</div>\n          \n\n"
 
 /***/ }),
 
@@ -3839,6 +4265,9 @@ var LocationListComponent = /** @class */ (function () {
     };
     LocationListComponent.prototype.navigateToFareList = function (id, name, currency) {
         this.router.navigate(["admin/locations/fares/" + id + "/" + name + "/" + currency]);
+    };
+    LocationListComponent.prototype.navigateToEdit = function (id, name, currency) {
+        this.router.navigate(["admin/editOperator/" + id + "/" + name]);
     };
     LocationListComponent.prototype.navigateToZoneList = function (id, name) {
         this.router.navigate(["admin/locations/zones/" + id + "/" + name]);
