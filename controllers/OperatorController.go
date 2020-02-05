@@ -50,6 +50,13 @@ func FloatToString(input_num float64) string {
 	return strconv.FormatFloat(input_num, 'f', 6, 64)
 }
 
+func (a *OperatorController) GetOperatorByID( c *gin.Context){
+	var response models.Operator
+	database.Db.Where("id = ?",c.Param("id")).First(&response)
+	c.JSON(http.StatusOK, response)
+
+}
+
 func (a *OperatorController) GetOperators(c *gin.Context) {
 	type locationWithFareCount struct {
 		ID             uint
