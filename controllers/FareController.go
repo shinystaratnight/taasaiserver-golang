@@ -85,6 +85,28 @@ func (a *FareController) DisableFare(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
+func (a *FareController) EditFare(c *gin.Context) {
+	var data models.Fare
+	var response = addNewFareResponse{Status: false}
+	fmt.Println("method called")
+	err := c.BindJSON(&data)
+	if err == nil {
+		var fare models.Fare
+		database.Db.Where("id = ? ",data.ID).Find(&fare)
+		if fare.IsActive {
+			database.Db.Model(&fare).UpdateColumns(&data)
+			response.Status = true
+			response.Message = "Fare edited successfully"
+		}else{
+			response.Message = "Can't Edit This Fare"
+		}
+	} else{
+		response.Message = err.Error()
+	}
+		fmt.Printf("%+v\n", data)
+	c.JSON(http.StatusOK, response)
+
+}
 func (a *FareController) AddNewFare(c *gin.Context) {
 	var data models.Fare
 	var response = addNewFareResponse{Status: false}
