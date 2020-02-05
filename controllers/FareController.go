@@ -36,12 +36,12 @@ type getFareResponse struct {
 
 func (a *FareController) GetActiveFare(c *gin.Context) {
 	var list []getFareResponse
-	database.Db.Raw("SELECT fares.* ,locations.currency,locations.name as location_name,vehicle_types.name as vehicle_type_name,vehicle_types.image_active as vehicle_type_image FROM fares INNER JOIN locations ON fares.location_id = locations.id INNER JOIN vehicle_types ON fares.vehicle_type_id = vehicle_types.id WHERE fares.is_active=true AND fares.deleted_at IS NULL ").Find(&list)
+	database.Db.Raw("SELECT fares.* ,operators.currency,operators.name as location_name,vehicle_types.name as vehicle_type_name,vehicle_types.image_active as vehicle_type_image FROM fares INNER JOIN operators ON fares.operator_id = operators.id INNER JOIN vehicle_types ON fares.vehicle_type_id = vehicle_types.id WHERE fares.is_active=true AND fares.deleted_at IS NULL ").Find(&list)
 	c.JSON(http.StatusOK, list)
 }
 func (a *FareController) GetFareByID(c *gin.Context) {
 	var list []getFareResponse
-	database.Db.Raw("SELECT fares.* ,locations.currency,locations.name as location_name,vehicle_types.name as vehicle_type_name,vehicle_types.image_active as vehicle_type_image FROM fares INNER JOIN locations ON fares.location_id = locations.id INNER JOIN vehicle_types ON fares.vehicle_type_id = vehicle_types.id WHERE fares.deleted_at IS NULL AND fares.id = " + c.Param("id")).Find(&list)
+	database.Db.Raw("SELECT fares.* ,operators.currency,operators.name as location_name,vehicle_types.name as vehicle_type_name,vehicle_types.image_active as vehicle_type_image FROM fares INNER JOIN operators ON fares.operator_id = operators.id INNER JOIN vehicle_types ON fares.vehicle_type_id = vehicle_types.id WHERE fares.deleted_at IS NULL AND fares.id = " + c.Param("id")).Find(&list)
 	c.JSON(http.StatusOK, list)
 }
 
