@@ -258,7 +258,7 @@ func (a *OperatorController) EditOperator(c *gin.Context) {
 			polyString += FloatToString(data.Polygon[i].Lat) + " " + FloatToString(data.Polygon[i].Lng)
 		}
 		var intersectLocation models.Operator
-		var res = database.Db.Where("ST_Intersects(polygon,ST_GeometryFromText('POLYGON((" + polyString + "))'))").First(&intersectLocation)
+		var res = database.Db.Where("id != ? AND ST_Intersects(polygon,ST_GeometryFromText('POLYGON((" + polyString + "))'))",c.Param("id")).First(&intersectLocation)
 		log.Println("count = ", res.RowsAffected)
 		if intersectLocation.ID == 0 {
 			var dataString = fmt.Sprintf("name = '%s',currency = '%s',polygon = ST_GeometryFromText('POLYGON((%s))'),location_name = '%s' , email = '%s', platform_commission = %f , operator_commission = %f , driver_work_time = %d , driver_rest_time = %d ",data.Name,data.Currency,polyString,data.LocationName,data.Email,data.PlatformCommission,data.OperatorCommission,data.WorkTime,data.RestTime)
