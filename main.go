@@ -143,6 +143,7 @@ func setupRouter() http.Handler {
 		adminRoutePrivate.GET("/getZoneFares/:zoneId", zoneFareController.GetActiveZoneFare)
 		adminRoutePrivate.GET("/getFares/:operatorId", fareController.GetActiveFareForLocation)
 		adminRoutePrivate.PUT("/disableFare", fareController.DisableFare)
+		adminRoutePrivate.PUT("/editFare", fareController.EditFare)
 		adminRoutePrivate.PUT("/disableZoneFare", zoneFareController.DisableZoneFare)
 		adminRoutePrivate.POST("/addNewFare", fareController.AddNewFare)
 		adminRoutePrivate.POST("/addNewZoneFare", zoneFareController.AddNewZoneFare)
