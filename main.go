@@ -139,6 +139,7 @@ func setupRouter() http.Handler {
 		adminRoutePrivate.GET("/getUnAssignedVehicleType/:operatorId", vehicleTypeController.GetUnAssignedVehicleTypes)
 
 		adminRoutePrivate.GET("/getFares", fareController.GetActiveFare)
+		adminRoutePrivate.GET("/getFareByID/:id", fareController.GetFareByID)
 		adminRoutePrivate.GET("/getZoneFares/:zoneId", zoneFareController.GetActiveZoneFare)
 		adminRoutePrivate.GET("/getFares/:operatorId", fareController.GetActiveFareForLocation)
 		adminRoutePrivate.PUT("/disableFare", fareController.DisableFare)
