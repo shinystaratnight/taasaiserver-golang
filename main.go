@@ -150,6 +150,7 @@ func setupRouter() http.Handler {
 		adminRoutePrivate.POST("/addNewZoneFare", zoneFareController.AddNewZoneFare)
 
 		adminRoutePrivate.POST("/addNewOperator", operatorController.AddNewOperator)
+		adminRoutePrivate.PUT("/editOperator/:id", operatorController.EditOperator)
 		adminRoutePrivate.POST("/addOperatorDoc", operatorController.AddOperatorDoc)
 		adminRoutePrivate.POST("/getOperatorDocs", operatorController.OperatorDocs)
 
