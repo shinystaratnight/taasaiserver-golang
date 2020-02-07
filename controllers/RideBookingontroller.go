@@ -77,10 +77,14 @@ func (r *RideBookingController) GetEstimatedFare(c *gin.Context) {
 	if intersectLocation.ID != 0 {
 		var origins = []string{data.PickupLatitude + "," + data.PickupLongitude};
 		var destinations = []string{};
+		fmt.Println("Stops List Start")
 		for _, stop := range data.StopLocation {
+			fmt.Printf("%f,%f",stop.Latitude,stop.Longitude)
 			origins = append(origins, fmt.Sprintf("%f,%f",stop.Latitude,stop.Longitude))
 			destinations = append(destinations, fmt.Sprintf("%f,%f",stop.Latitude,stop.Longitude))
 		}
+		fmt.Println("Stops List End")
+
 		destinations = append(destinations, data.DropLatitude + "," + data.DropLongitude)
 
 		distanceRequest := &maps.DistanceMatrixRequest{
@@ -161,18 +165,17 @@ func (r *RideBookingController) GetEstimatedFare(c *gin.Context) {
 					response.Message = "Service Available"
 					response.Data = fareList
 
-					c.JSON(http.StatusOK, response)
 				} else {
 					response.Message = "Sorry! No cars available at the moment."
-					c.JSON(http.StatusOK, response)
 				}
 			}
 
 		}
 	} else {
 		response.Message = "Sorry! Service not available at the pickup location specified."
-		c.JSON(http.StatusOK, response)
+
 	}
+	c.JSON(http.StatusOK, response)
 }
 
 type rideBookingResponse struct {
