@@ -19,11 +19,18 @@ import (
 type RideBookingController struct {
 }
 
+type LocationStop struct{
+	Name string
+	Latitude  float64
+	Longitude  float64
+}
+
 type estimateFareRequest struct {
 	PickupLatitude  string `json:"pickup_latitude"`
 	PickupLongitude string `json:"pickup_longitude"`
 	DropLatitude    string `json:"drop_latitude"`
 	DropLongitude   string `json:"drop_longitude"`
+	StopLocation   []LocationStop `json:"stop_locations"`
 }
 
 type estimateFareResponse struct {
@@ -68,10 +75,17 @@ func (r *RideBookingController) GetEstimatedFare(c *gin.Context) {
 	var intersectLocation models.Operator
 	database.Db.Where("is_active = true AND ST_Contains(polygon,ST_GeometryFromText('POINT(" + data.PickupLatitude + " " + data.PickupLongitude + ")'))").First(&intersectLocation)
 	if intersectLocation.ID != 0 {
+		var origins = []string{data.PickupLatitude + "," + data.PickupLongitude};
+		var destinations = []string{};
+		for _, stop := range data.StopLocation {
+			origins = append(origins, fmt.Sprintf("%f,%f",stop.Latitude,stop.Longitude))
+			destinations = append(destinations, fmt.Sprintf("%f,%f",stop.Latitude,stop.Longitude))
+		}
+		destinations = append(destinations, data.DropLatitude + "," + data.DropLongitude)
 
 		distanceRequest := &maps.DistanceMatrixRequest{
-			Origins:      []string{data.PickupLatitude + "," + data.PickupLongitude},
-			Destinations: []string{data.DropLatitude + "," + data.DropLongitude},
+			Origins:      origins,
+			Destinations: destinations,
 			Mode:         maps.TravelModeDriving,
 		}
 		distanceMatrixResponse, distanceReqError := googleMap.Client.DistanceMatrix(context.Background(), distanceRequest)
@@ -80,6 +94,13 @@ func (r *RideBookingController) GetEstimatedFare(c *gin.Context) {
 			if len(distanceMatrixResponse.Rows) > 0 && len(distanceMatrixResponse.Rows[0].Elements) > 0 {
 				estimatedDistance := float64(distanceMatrixResponse.Rows[0].Elements[0].Distance.Meters / 1000.0)
 				estimatedDuration := distanceMatrixResponse.Rows[0].Elements[0].Duration.Minutes()
+
+				for i, _ := range data.StopLocation {
+					estimatedDistance+= float64(distanceMatrixResponse.Rows[i+1].Elements[i+1].Distance.Meters / 1000.0)
+					estimatedDuration += distanceMatrixResponse.Rows[i+1].Elements[i+1].Duration.Minutes()
+
+				}
+
 
 				var fareList []estimatedFare
 				fareResult := database.Db.Raw("SELECT fares.*,vehicle_categories.id as category_id,vehicle_categories.name as category_name ,operators.currency,operators.name as operator_name,operators.location_name as location_name,vehicle_types.description as vehicle_type_desc,vehicle_types.name as vehicle_type_name,vehicle_types.image as vehicle_type_image_inactive,vehicle_types.image_active as vehicle_type_image FROM fares INNER JOIN operators ON fares.operator_id = operators.id AND operators.is_active = true INNER JOIN vehicle_types ON fares.vehicle_type_id = vehicle_types.id AND vehicle_types.is_active = true INNER JOIN vehicle_categories ON vehicle_types.vehicle_category_id = vehicle_categories.id AND vehicle_categories.is_active = true WHERE fares.is_active=true AND fares.deleted_at IS NULL AND fares.operator_id = ?", intersectLocation.ID).Find(&fareList)
