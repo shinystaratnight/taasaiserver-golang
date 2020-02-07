@@ -27,6 +27,7 @@ type RideAcceptDriverResponse struct {
 	Message       string
 	PassengerName string
 	RideDetails   models.Ride
+	StopDetails models.RideStop
 }
 type GetRidesRequest struct {
 	RideStatus int64
@@ -234,6 +235,9 @@ func (r *RideController) RideAccept(c *gin.Context) {
 
 		driverResponse.Status = true
 		driverResponse.RideDetails = ride
+		if ride.IsMultiStop {
+			database.Db.Where("ride_id = ?",ride.ID).Find(&driverResponse.StopDetails)
+		}
 		driverResponse.PassengerName = passengerDetails.Name
 
 	} else {
