@@ -27,7 +27,7 @@ type RideAcceptDriverResponse struct {
 	Message       string
 	PassengerName string
 	RideDetails   models.Ride
-	StopDetails models.RideStop
+	StopDetails []models.RideStop
 }
 type GetRidesRequest struct {
 	RideStatus int64
