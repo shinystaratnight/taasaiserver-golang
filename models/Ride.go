@@ -45,6 +45,7 @@ type Ride struct {
 	CancellationFee  float64 `sql: "default: null"`
 	Tax           float64 `sql: "default: null"`
 	IsPaid        bool    `sql: "default: null"`
+	IsMultiStop      bool    `sql: "default: null"`
 	TransactionID string  `sql: "default: null"`
 	TotalFare     float64 `sql: "default: null"`
 

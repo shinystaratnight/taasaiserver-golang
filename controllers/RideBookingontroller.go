@@ -200,8 +200,13 @@ func (a *RideBookingController) GetDriverBookingHistory(c *gin.Context) {
 
 }
 
+type BookRideRequest struct {
+	Ride models.Ride
+	StopLocation []LocationStop
+}
+
 func (a *RideBookingController) BookRide(c *gin.Context) {
-	var data models.Ride
+	var data BookRideRequest
 	c.BindJSON(&data)
 	var userData = c.MustGet("jwt_data").(*config.JwtClaims)
 
@@ -214,51 +219,51 @@ func (a *RideBookingController) BookRide(c *gin.Context) {
 		response.Message = "Sorry! Non passenger accounts cannot book rides."
 		c.JSON(http.StatusOK, response)
 		return
-	} else if data.VehicleTypeID == 0 {
+	} else if data.Ride.VehicleTypeID == 0 {
 		response.Message = "VehicleTypeID is required."
 		c.JSON(http.StatusOK, response)
 		return
-	} else if data.PickupLatitude == 0 {
+	} else if data.Ride.PickupLatitude == 0 {
 		response.Message = "PickupLatitude is required"
 		c.JSON(http.StatusOK, response)
 		return
-	} else if data.PickupLongitude == 0 {
+	} else if data.Ride.PickupLongitude == 0 {
 		response.Message = "PickupLongitude is required"
 		c.JSON(http.StatusOK, response)
 		return
-	} else if data.DropLatitude == 0 {
+	} else if data.Ride.DropLatitude == 0 {
 		response.Message = "DropLatitude is required"
 		c.JSON(http.StatusOK, response)
 		return
-	} else if data.DropLongitude == 0 {
+	} else if data.Ride.DropLongitude == 0 {
 		response.Message = "DropLongitude is required"
 		c.JSON(http.StatusOK, response)
 		return
 	} else {
 		var intersectLocation models.Operator
-		database.Db.Where("is_active = true AND ST_Contains(polygon,ST_GeometryFromText('POINT(" + fmt.Sprintf("%f", data.PickupLatitude) + " " + fmt.Sprintf("%f", data.PickupLongitude) + ")'))").First(&intersectLocation)
+		database.Db.Where("is_active = true AND ST_Contains(polygon,ST_GeometryFromText('POINT(" + fmt.Sprintf("%f", data.Ride.PickupLatitude) + " " + fmt.Sprintf("%f", data.Ride.PickupLongitude) + ")'))").First(&intersectLocation)
 		if intersectLocation.ID != 0 {
-			data.PassengerID = userData.UserID
-			data.OperatorID = intersectLocation.ID
+			data.Ride.PassengerID = userData.UserID
+			data.Ride.OperatorID = intersectLocation.ID
 			var intersectZoneLocation models.Zone
-			database.Db.Where("is_active = true AND operator_id = ?  AND ST_Contains(polygon,ST_GeometryFromText('POINT("+fmt.Sprintf("%f", data.PickupLatitude)+" "+fmt.Sprintf("%f", data.PickupLongitude)+")'))", intersectLocation.ID).First(&intersectZoneLocation)
+			database.Db.Where("is_active = true AND operator_id = ?  AND ST_Contains(polygon,ST_GeometryFromText('POINT("+fmt.Sprintf("%f", data.Ride.PickupLatitude)+" "+fmt.Sprintf("%f", data.Ride.PickupLongitude)+")'))", intersectLocation.ID).First(&intersectZoneLocation)
 			if intersectZoneLocation.ID != 0 {
 				var zoneFare models.ZoneFare
-				database.Db.Where("is_active = true AND vehicle_type_id = ? AND deleted_at IS NULL AND zone_id = ?", data.VehicleTypeID, intersectZoneLocation.ID).Find(&zoneFare)
+				database.Db.Where("is_active = true AND vehicle_type_id = ? AND deleted_at IS NULL AND zone_id = ?", data.Ride.VehicleTypeID, intersectZoneLocation.ID).Find(&zoneFare)
 				if zoneFare.ID != 0 {
-					data.ZoneID = intersectZoneLocation.ID
-					data.ZoneFareID = zoneFare.ID
+					data.Ride.ZoneID = intersectZoneLocation.ID
+					data.Ride.ZoneFareID = zoneFare.ID
 				}
 			}
 			var fare models.Fare
-			database.Db.Where("is_active = true AND vehicle_type_id = ? AND deleted_at IS NULL AND operator_id = ?", data.VehicleTypeID, intersectLocation.ID).Find(&fare)
+			database.Db.Where("is_active = true AND vehicle_type_id = ? AND deleted_at IS NULL AND operator_id = ?", data.Ride.VehicleTypeID, intersectLocation.ID).Find(&fare)
 			if fare.ID != 0 {
-				data.FareID = fare.ID
-				data.RideDateTime = time.Now()
+				data.Ride.FareID = fare.ID
+				data.Ride.RideDateTime = time.Now()
 				geocoder.ApiKey = "AIzaSyCmua_JtLFnNux2uKsi1sACWNm_qrSxlBo"
 				pickupLocation := geocoder.Location{
-					Latitude:  data.PickupLatitude,
-					Longitude: data.PickupLongitude,
+					Latitude:  data.Ride.PickupLatitude,
+					Longitude: data.Ride.PickupLongitude,
 				}
 
 				// Convert location (latitude, longitude) to a slice of addresses
@@ -268,11 +273,11 @@ func (a *RideBookingController) BookRide(c *gin.Context) {
 					// Usually, the first address returned from the API
 					// is more detailed, so let's work with it
 					address := addresses[0]
-					data.PickupLocation = address.FormatAddress()
+					data.Ride.PickupLocation = address.FormatAddress()
 				}
 				dropLocation := geocoder.Location{
-					Latitude:  data.DropLatitude,
-					Longitude: data.DropLongitude,
+					Latitude:  data.Ride.DropLatitude,
+					Longitude: data.Ride.DropLongitude,
 				}
 
 				// Convert location (latitude, longitude) to a slice of addresses
@@ -282,22 +287,35 @@ func (a *RideBookingController) BookRide(c *gin.Context) {
 					// Usually, the first address returned from the API
 					// is more detailed, so let's work with it
 					address := addresses[0]
-					data.DropLocation = address.FormatAddress()
+					data.Ride.DropLocation = address.FormatAddress()
 				}
-				result := database.Db.Create(&data)
+				data.Ride.IsMultiStop = len(data.StopLocation)>0
+
+				result := database.Db.Create(&data.Ride)
 				if result.Error == nil {
+
+					for _, stop := range data.StopLocation {
+						database.Db.Create(&models.RideStop{
+							RideID:    data.Ride.ID,
+							Location:  stop.Name,
+							Latitude:  stop.Latitude,
+							Longitude: stop.Longitude,
+							IsActive:  true,
+						})
+					}
+
 					var eventLog = models.RideEventLog{
-						RideID:     data.ID,
-						RideStatus: data.RideStatus,
+						RideID:     data.Ride.ID,
+						RideStatus: data.Ride.RideStatus,
 						Message:    "Ride Booking Accepted By "+intersectLocation.Name+" Operator",
 					}
 					database.Db.Create(&eventLog)
 					response.Message = intersectLocation.Name + " Accepted Your Request"
 					response.Status = true
-					response.RideDetails = data
+					response.RideDetails = data.Ride
 					c.JSON(http.StatusOK, response)
 					go func() {
-						AssignDriverForRide(data)
+						AssignDriverForRide(data.Ride)
 					}()
 					return
 				} else {
