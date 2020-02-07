@@ -45,6 +45,7 @@ func SetupDb() {
 	Db.AutoMigrate(
 		&models.Passenger{},
 		&models.Ride{},
+		&models.RideStop{},
 		&models.SentRideRequest{},
 		&models.RideLocation{},
 		&models.RideEventLog{},
