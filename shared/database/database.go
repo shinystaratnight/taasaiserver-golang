@@ -46,7 +46,6 @@ func SetupDb() {
 		&models.Passenger{},
 		&models.Ride{},
 		&models.RideStop{},
-		&models.RideMessage{},
 		&models.SentRideRequest{},
 		&models.RideLocation{},
 		&models.RideEventLog{},
@@ -54,6 +53,7 @@ func SetupDb() {
 	)
 
 	Db.CreateTable(&models.PickupPoint{})
+	Db.CreateTable(&models.RideMessage{})
 	Db.Exec("ALTER TABLE ride_locations ADD COLUMN latlng geometry;")
 	Db.Exec("CREATE INDEX ride_locations_latlng_idx ON ride_locations USING gist (latlng);")
 
