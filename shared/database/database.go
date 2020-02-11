@@ -46,6 +46,7 @@ func SetupDb() {
 		&models.Passenger{},
 		&models.Ride{},
 		&models.RideStop{},
+		&models.RideMessage{},
 		&models.SentRideRequest{},
 		&models.RideLocation{},
 		&models.RideEventLog{},

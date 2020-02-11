@@ -4,15 +4,12 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-type RideStop struct {
+type RideMessage struct {
 	gorm.Model
 
 	RideID   uint `gorm:"not null;index:idx_ride"`
-	Location  string
-	Latitude  float64 `gorm:"not null"`
-	Longitude float64 `gorm:"not null"`
-	IsReached bool
-
+	Message  string
+	From int //driver - 0 , passenger - 1
 	IsActive   bool
 }
 

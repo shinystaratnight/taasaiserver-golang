@@ -98,10 +98,27 @@ type RideDetail struct {
 	RideStatus    int64
 }
 
+func (r *RideController) SendMessage(c *gin.Context) {
+	var message models.RideMessage
+	_ = c.BindJSON(&message)
+	message.IsActive = true
+	var ride models.Ride
+	database.Db.Where("id = ? ", message.RideID).First(&ride)
+	database.Db.Create(&message)
+	messageData, err := json.Marshal(&message)
+
+	if err==nil {
+		mqttController.Publish(fmt.Sprintf("passenger/%d/new_message", ride.PassengerID), 2, string(messageData))
+		mqttController.Publish(fmt.Sprintf("driver/%d/new_message", ride.DriverID), 2, string(messageData))
+	}
+
+	c.JSON(http.StatusOK, GenericResponse{Status:true,Message:"Success!"})
+}
+
 func (r *RideController) GetRides(c *gin.Context) {
 	var data GetRidesRequest
 	var list []RideListItem
-	c.BindJSON(&data)
+	_ = c.BindJSON(&data)
 	var userData = c.MustGet("jwt_data").(*config.JwtClaims)
 	if userData.UserType == "admin" {
 		if data.RideStatus == -1 {
