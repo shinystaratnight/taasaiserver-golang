@@ -236,7 +236,9 @@ func (r *RideController) RideAccept(c *gin.Context) {
 		driverResponse.Status = true
 		driverResponse.RideDetails = ride
 		if ride.IsMultiStop {
-			database.Db.Where("ride_id = ?",ride.ID).Find(&driverResponse.StopDetails)
+			var stopsList []models.RideStop
+			database.Db.Where("ride_id = ?",ride.ID).Find(&stopsList)
+			driverResponse.StopDetails = stopsList
 		}
 		driverResponse.PassengerName = passengerDetails.Name
 
