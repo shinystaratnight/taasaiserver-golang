@@ -114,6 +114,11 @@ func (r *RideController) SendMessage(c *gin.Context) {
 
 	c.JSON(http.StatusOK, GenericResponse{Status:true,Message:"Success!"})
 }
+func (r *RideController) GetMessages(c *gin.Context) {
+	var list []models.RideMessage
+	database.Db.Where("ride_id = ?",c.Param("id")).Find(&list)
+	c.JSON(http.StatusOK, list)
+}
 
 func (r *RideController) GetRides(c *gin.Context) {
 	var data GetRidesRequest
