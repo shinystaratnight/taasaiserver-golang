@@ -31,6 +31,7 @@ type AddOperatorRequest struct {
 	OperatorCommission float64
 	WorkTime int
 	RestTime int
+	ReferAmount float64
 	Polygon  []polyPoint
 	Docs []Doc
 }
@@ -326,8 +327,8 @@ func (a *OperatorController) AddNewOperator(c *gin.Context) {
 			var res = database.Db.Where("ST_Intersects(polygon,ST_GeometryFromText('POLYGON((" + polyString + "))'))").First(&intersectLocation)
 			log.Println("count = ", res.RowsAffected)
 			if intersectLocation.ID == 0 {
-				var dataString = fmt.Sprintf(" '%s' , '%s' , '%s', %f , %f , %d , %d ",data.LocationName,data.Email,hashedPassword,data.PlatformCommission,data.OperatorCommission,data.WorkTime,data.RestTime)
-				var newLocationAddResponse = database.Db.Exec("INSERT INTO operators (name,currency, polygon,is_active,location_name,email,password,platform_commission,operator_commission,driver_work_time,driver_rest_time) VALUES ('" + data.Name + "','" + data.Currency + "',ST_GeometryFromText('POLYGON((" + polyString + "))'),true,"+dataString+");")
+				var dataString = fmt.Sprintf(" '%s' , '%s' , '%s', %f , %f , %d , %d ,%f",data.LocationName,data.Email,hashedPassword,data.PlatformCommission,data.OperatorCommission,data.WorkTime,data.RestTime,data.ReferAmount)
+				var newLocationAddResponse = database.Db.Exec("INSERT INTO operators (name,currency, polygon,is_active,location_name,email,password,platform_commission,operator_commission,driver_work_time,driver_rest_time,refer_amount) VALUES ('" + data.Name + "','" + data.Currency + "',ST_GeometryFromText('POLYGON((" + polyString + "))'),true,"+dataString+");")
 				if newLocationAddResponse.Error != nil {
 					response.Message = newLocationAddResponse.Error.Error()
 				} else {
