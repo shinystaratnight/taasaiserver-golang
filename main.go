@@ -225,6 +225,7 @@ func setupMobileAppRouter() http.Handler {
 		customerRoutePrivate.POST("/getRideTimeline/:id", rideController.GetRideTimeline)
 		customerRoutePrivate.POST("/sendMessage", rideController.SendMessage)
 		customerRoutePrivate.POST("/getMessages/:id", rideController.GetMessages)
+		customerRoutePrivate.POST("/getReferCode", passengerController.GetReferralCode)
 
 
 	}

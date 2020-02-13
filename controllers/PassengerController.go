@@ -40,6 +40,7 @@ type verifyOtpRequest struct {
 	CountryCode  string
 	MobileNumber string
 	Name         string
+	ReferCode         string
 	Otp          string
 }
 type addBasicInfoRequest struct {
@@ -108,6 +109,34 @@ func (a *PassengerController) UpdateFcm(c *gin.Context) {
 	c.JSON(http.StatusOK, GenericResponse{Message:"",Status:true})
 
 }
+
+func randomInt(min, max int) int {
+	return min + rand.Intn(max-min)
+}
+
+func randomString(len int) string {
+	bytes := make([]byte, len)
+	for i := 0; i < len; i++ {
+		bytes[i] = byte(randomInt(65, 90))
+	}
+	return string(bytes)
+}
+
+type GetReferralCodeResponse struct{
+	Status bool
+	ReferCode string
+}
+
+func (a *PassengerController) GetReferralCode(c *gin.Context) {
+	var userData = c.MustGet("jwt_data").(*config.JwtClaims)
+	var user models.Passenger
+	database.Db.Where("id=?",userData.UserID).First(&user)
+	if len(user.ReferralCode)==0 {
+		database.Db.Model(&user).UpdateColumn("referral_code",fmt.Sprintf("%d%s",user.ID,randomString(5)))
+	}
+	c.JSON(http.StatusOK, GetReferralCodeResponse{ReferCode:user.ReferralCode,Status:true})
+
+}
 func (a *PassengerController) VerifyOtp(c *gin.Context) {
 	var data verifyOtpRequest
 	var response = verifyOtpResponse{Status: false}
@@ -139,8 +168,10 @@ func (a *PassengerController) VerifyOtp(c *gin.Context) {
 					customer.DialCode = data.DialCode
 					customer.CountryCode = data.CountryCode
 					customer.Name = data.Name
+					customer.ReferredBy = data.ReferCode
 					customer.IsActive = true
 					database.Db.Create(&customer)
+					database.Db.Model(&customer).UpdateColumn("referral_code",fmt.Sprintf("%d%s",customer.ID,randomString(5)))
 					token := jwt.NewWithClaims(jwt.SigningMethodHS256, config.JwtClaims{
 						customer.ID,
 						"passenger",
