@@ -534,18 +534,7 @@ func (a *DriverController) DisableDriver(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, response)
 }
-/*
-* Saving the updates for Editable by Richard
-*/
-func (d *DriverController) updateDetails(c *gin.Context) {
-	var response = DriverStatusResponse{Status: true, Message: "Success! Now you are Online"}
 
-	var Id = c.Param("ID")
-	var Name = c.Param("Name")
-	database.Db.Model(&models.Driver{}).Where("id", Id).UpdateColumn("Name", Name)
-	c.JSON(http.StatusOK, response)
-	return
-}
 /*
 func (v *VehicleController) AddNewVehicle(c *gin.Context) {
 	var data models.Vehicle
