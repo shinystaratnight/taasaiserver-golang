@@ -311,7 +311,7 @@ func main() {
 	}
 
 	g.Go(func() error {
-		return publicServer.ListenAndServeTLS(":4001", "./taasai.com_ssl_certificate.cer", "./_.taasai.com_private_key.key", nil)
+		return publicServer.ListenAndServeTLS("./taasai.com_ssl_certificate.cer", "./_.taasai.com_private_key.key")
 	})
 	g.Go(func() error {
 		return mobileAppServer.ListenAndServe()
