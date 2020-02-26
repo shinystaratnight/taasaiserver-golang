@@ -19,23 +19,24 @@ type DriverController struct {
 type addNewDriverResponse struct {
 	Status  bool
 	Message string
+	ID      uint
 }
 type getDriverResponse struct {
-	ID            int64  `json:"driver_id"`
-	Name          string `json:"driver_name"`
-	OperatorID    int64  `json:"operator_id"`
-	DialCode      string `json:"dial_code"`
-	MobileNumber  string `json:"mobile_number"`
-	LicenseNumber string `json:"license_number"`
-	DriverImage         string `json:"driver_image"`
-	FcmID         string `json:"fcm_id"`
-	IsActive      bool   `json:"is_active"`
-	IsProfileCompleted      bool   `json:"is_profile_completed"`
-	LocationName  string `json:"location_name"`
-	OperatorName  string `json:"operator_name"`
-	VehicleName   string `json:"vehicle_name"`
-	VehicleNumber string `json:"vehicle_number"`
-	VehicleImage  string `json:"vehicle_image"`
+	ID                 int64  `json:"driver_id"`
+	Name               string `json:"driver_name"`
+	OperatorID         int64  `json:"operator_id"`
+	DialCode           string `json:"dial_code"`
+	MobileNumber       string `json:"mobile_number"`
+	LicenseNumber      string `json:"license_number"`
+	DriverImage        string `json:"driver_image"`
+	FcmID              string `json:"fcm_id"`
+	IsActive           bool   `json:"is_active"`
+	IsProfileCompleted bool   `json:"is_profile_completed"`
+	LocationName       string `json:"location_name"`
+	OperatorName       string `json:"operator_name"`
+	VehicleName        string `json:"vehicle_name"`
+	VehicleNumber      string `json:"vehicle_number"`
+	VehicleImage       string `json:"vehicle_image"`
 }
 
 type addVehicleAssignmentResponse struct {
@@ -49,8 +50,8 @@ func (a *DriverController) GetDrivers(c *gin.Context) {
 	if userData.UserType == "admin" {
 		database.Db.Raw("SELECT drivers.* ,operators.name as operator_name,operators.location_name FROM drivers INNER JOIN operators ON drivers.operator_id = operators.id ").Find(&list)
 
-	}else{
-		database.Db.Raw("SELECT drivers.* ,operators.name as operator_name,operators.location_name FROM drivers INNER JOIN operators ON drivers.operator_id = operators.id AND operators.id = "+strconv.Itoa(int(userData.UserID))).Find(&list)
+	} else {
+		database.Db.Raw("SELECT drivers.* ,operators.name as operator_name,operators.location_name FROM drivers INNER JOIN operators ON drivers.operator_id = operators.id AND operators.id = " + strconv.Itoa(int(userData.UserID))).Find(&list)
 
 	}
 	c.JSON(http.StatusOK, list)
@@ -65,9 +66,42 @@ func (a *DriverController) GetDriversForCompany(c *gin.Context) {
 func (a *DriverController) AddNewDriver(c *gin.Context) {
 	var data models.Driver
 	var response = addNewDriverResponse{Status: false}
+	var convertError error
+	id, convertError := strconv.Atoi(c.PostForm("id"))
+	if convertError != nil {
+		data.ID = 0
+	} else {
+		data.ID = uint(id)
+	}
 	data.Name = c.PostForm("name")
 	data.MobileNumber = c.PostForm("mobile_number")
+
 	operatorID, convertError := strconv.Atoi(c.PostForm("operator_id"))
+	if convertError != nil {
+		response.Message = "Operator Id is required"
+		c.JSON(http.StatusOK, response)
+		return
+	}
+	data.OperatorID = operatorID
+
+	data.LicenseNumber = c.PostForm("license_number")
+	data.VehicleName = c.PostForm("vehicle_name")
+
+	var vehicleTypeId uint64 = 0
+	vehicleTypeId, convertError = strconv.ParseUint(c.PostForm("vehicle_type_id"), 10, 64)
+	if convertError != nil {
+		response.Message = "Vehicle Type Id is required"
+		c.JSON(http.StatusOK, response)
+		return
+	}
+	data.VehicleTypeID = uint(vehicleTypeId)
+
+	data.VehicleBrand = c.PostForm("vehicle_brand")
+	data.VehicleModel = c.PostForm("vehicle_model")
+	data.VehicleColor = c.PostForm("vehicle_color")
+	data.VehicleNumber = c.PostForm("vehicle_number")
+	data.IsActive = false
+
 	var dialCode = 0
 	dialCode, convertError = strconv.Atoi(c.PostForm("dial_code"))
 	if convertError == nil {
@@ -75,14 +109,17 @@ func (a *DriverController) AddNewDriver(c *gin.Context) {
 		data.OperatorID = operatorID
 		form, _ := c.MultipartForm()
 		fmt.Println("file count = %d", len(form.File))
-		driverImage, err := c.FormFile("image")
-		if err != nil {
-			fmt.Println(err)
-			response.Message = "Active Image is required"
-			c.JSON(http.StatusBadRequest, response)
-			fmt.Println(response)
-			return
-		}
+		var vehicleImageErr error
+		var driverImageErr error
+		vehicleImage, vehicleImageErr := c.FormFile("vehicle_image")
+		driverImage, driverImageErr := c.FormFile("driver_image")
+		// if err != nil {
+		// 	fmt.Println(err)
+		// 	response.Message = "Active Image is required"
+		// 	c.JSON(http.StatusBadRequest, response)
+		// 	fmt.Println(response)
+		// 	return
+		// }
 		if (data.DialCode) == 0 {
 			response.Message = "Dial code is required"
 			c.JSON(http.StatusOK, response)
@@ -96,21 +133,66 @@ func (a *DriverController) AddNewDriver(c *gin.Context) {
 			c.JSON(http.StatusOK, response)
 			return
 		} else {
-			imageFileName := strconv.FormatInt(time.Now().UTC().UnixNano(), 10) + "_" + driverImage.Filename
-			if err := c.SaveUploadedFile(driverImage, "public/driver/"+imageFileName); err != nil {
-				response.Message = fmt.Sprintf("upload file err: %s", err.Error())
-				c.JSON(http.StatusBadRequest, response)
-				return
-			} else {
+			// if vehicleImageErr != nil {
+			// 	fmt.Println(vehicleImageErr)
+			// 	response.Message = "Vehicle Image is required"
+			// 	c.JSON(http.StatusBadRequest, response)
+			// 	fmt.Println(response)
+			// 	return
+			// } else {
+			if vehicleImageErr == nil {
+				imageFileName := strconv.FormatInt(time.Now().UTC().UnixNano(), 10) + "_" + vehicleImage.Filename
+				if err := c.SaveUploadedFile(vehicleImage, "public/vehicle/"+imageFileName); err != nil {
+					response.Message = fmt.Sprintf("upload file err: %s", err.Error())
+					c.JSON(http.StatusBadRequest, response)
+					return
+				}
+				data.VehicleImage = "public/driver/" + imageFileName
+			}
+			// if driverImageErr != nil {
+			// 	fmt.Println(driverImageErr)
+			// 	response.Message = "Driver Image is required"
+			// 	c.JSON(http.StatusBadRequest, response)
+			// 	fmt.Println(response)
+			// 	return
+			// } else {
+			if driverImageErr == nil {
+				imageFileName := strconv.FormatInt(time.Now().UTC().UnixNano(), 10) + "_" + driverImage.Filename
+				if err := c.SaveUploadedFile(driverImage, "public/driver/"+imageFileName); err != nil {
+					response.Message = fmt.Sprintf("upload file err: %s", err.Error())
+					c.JSON(http.StatusBadRequest, response)
+					return
+				}
 				data.DriverImage = "public/driver/" + imageFileName
-				data.IsActive = true
-				var count = 0
+			}
+
+			data.IsActive = false
+			var count = 0
+			rows := database.Db.Model(&models.Driver{}).Where("id = ?", data.ID)
+			rows.Count(&count)
+			if count == 0 {
+				if vehicleImageErr != nil {
+					fmt.Println(vehicleImageErr)
+					response.Message = "Vehicle Image is required"
+					c.JSON(http.StatusBadRequest, response)
+					fmt.Println(response)
+					return
+				} else if driverImageErr != nil {
+					fmt.Println(driverImageErr)
+					response.Message = "Driver Image is required"
+					c.JSON(http.StatusBadRequest, response)
+					fmt.Println(response)
+					return
+				}
 				database.Db.Model(&models.Driver{}).Where("dial_code = ? AND mobile_number = ?", data.DialCode, data.MobileNumber).Count(&count)
 				if count == 0 {
 					result := database.Db.Create(&data)
+					var dbResult models.Driver
+					result.Last(&dbResult)
 					if result.Error == nil {
 						response.Status = true
 						response.Message = "Driver added successfully!"
+						response.ID = dbResult.ID
 						c.JSON(http.StatusOK, response)
 						return
 					} else {
@@ -123,6 +205,29 @@ func (a *DriverController) AddNewDriver(c *gin.Context) {
 					c.JSON(http.StatusOK, response)
 					return
 				}
+			} else {
+				var row models.Driver
+				rows.First(&row)
+				if vehicleImageErr != nil {
+					data.VehicleImage = row.VehicleImage
+				}
+				if driverImageErr != nil {
+					data.DriverImage = row.DriverImage
+				}
+				result := database.Db.Model(&models.Driver{}).Where("id = ?", data.ID).Update(&data)
+				if result.Error == nil {
+					response.Status = true
+					response.Message = "Driver updated successfully!"
+					c.JSON(http.StatusOK, response)
+					return
+				} else {
+					response.Message = result.Error.Error()
+					c.JSON(http.StatusOK, response)
+					return
+				}
+				// response.Message = "Driver mobile number already exists!"
+				// c.JSON(http.StatusOK, response)
+				// return
 			}
 		}
 	} else {
@@ -186,12 +291,11 @@ type ApproveDriverRequest struct {
 	DriverID int
 }
 
-
 func (a *DriverController) ApproveDriver(c *gin.Context) {
 	var response = GenericResponse{Status: true}
 	var data ApproveDriverRequest
 	c.BindJSON(&data)
-	database.Db.Model(&models.Driver{}).Where("id = ?",data.DriverID).UpdateColumn("is_active",true)
+	database.Db.Model(&models.Driver{}).Where("id = ?", data.DriverID).UpdateColumn("is_active", true)
 	c.JSON(http.StatusOK, response)
 
 }
@@ -200,24 +304,24 @@ func (a *DriverController) SubmitForApproval(c *gin.Context) {
 
 	var userData = c.MustGet("jwt_data").(*config.JwtClaims)
 	var driver models.Driver
-	database.Db.Where("id = ?",userData.UserID).First(&driver)
+	database.Db.Where("id = ?", userData.UserID).First(&driver)
 	if driver.ID == userData.UserID {
 		var documentsRequired []models.DriverDocument
-		database.Db.Where("operator_id = ? ",driver.OperatorID).Find(&documentsRequired)
+		database.Db.Where("operator_id = ? ", driver.OperatorID).Find(&documentsRequired)
 		isAllDocumentSubmitted := true
-		for i:=0;i<len(documentsRequired) ;i++  {
+		for i := 0; i < len(documentsRequired); i++ {
 			var count = 0
-			database.Db.Model(&models.DriverDocumentUpload{}).Where("doc_id = ? AND driver_id = ? AND is_active = true",documentsRequired[i].ID,userData.UserID).Count(&count)
-			if count==0 {
+			database.Db.Model(&models.DriverDocumentUpload{}).Where("doc_id = ? AND driver_id = ? AND is_active = true", documentsRequired[i].ID, userData.UserID).Count(&count)
+			if count == 0 {
 				isAllDocumentSubmitted = false
 				break
 			}
 
 		}
-		if(isAllDocumentSubmitted){
-			database.Db.Model(&driver).UpdateColumn("is_profile_completed",true)
+		if isAllDocumentSubmitted {
+			database.Db.Model(&driver).UpdateColumn("is_profile_completed", true)
 			response.Status = true
-		}else{
+		} else {
 			response.Message = "Kindly Upload All Documents Before Submitting For Approval"
 		}
 	}
@@ -229,7 +333,7 @@ func (a *DriverController) UploadDriverDocument(c *gin.Context) {
 	var response = GenericResponse{Status: false}
 
 	docID, docIdError := strconv.Atoi(c.PostForm("id"))
-	if docIdError==nil{
+	if docIdError == nil {
 		form, _ := c.MultipartForm()
 		fmt.Println("file count = %d", len(form.File))
 		// Source
@@ -251,19 +355,19 @@ func (a *DriverController) UploadDriverDocument(c *gin.Context) {
 		} else {
 			var userData = c.MustGet("jwt_data").(*config.JwtClaims)
 
-			database.Db.Model(&models.DriverDocumentUpload{}).Where("doc_id = ? AND driver_id = ?",docID,userData.UserID).UpdateColumn("is_active",false)
+			database.Db.Model(&models.DriverDocumentUpload{}).Where("doc_id = ? AND driver_id = ?", docID, userData.UserID).UpdateColumn("is_active", false)
 
 			var newDocUpload = models.DriverDocumentUpload{
-				DocID: uint(docID),
+				DocID:    uint(docID),
 				DriverID: userData.UserID,
-				Image:driverImageFileName,
-				IsActive:true,
+				Image:    driverImageFileName,
+				IsActive: true,
 			}
 
-			database.Db.Create(&newDocUpload);
+			database.Db.Create(&newDocUpload)
 			response.Status = true
 		}
-	}else{
+	} else {
 		response.Message = docIdError.Error()
 	}
 
@@ -285,22 +389,22 @@ func (a *DriverController) CreateDriverAccount(c *gin.Context) {
 	vehicleNumber := c.PostForm("VehicleNumber")
 	licenseNumber := c.PostForm("LicenseNumber")
 
-	fmt.Println("Name = "+c.PostForm("Name"))
-	fmt.Println("MobileNumber "+c.PostForm("MobileNumber"))
-	fmt.Println("VehicleNumber "+c.PostForm("VehicleNumber"))
-	fmt.Println("LicenseNumber "+c.PostForm("LicenseNumber"))
-	fmt.Println("VehicleTypeID = "+c.PostForm("VehicleTypeID"))
-	fmt.Println("DialCode = "+c.PostForm("DialCode"))
-	fmt.Println("OperatorID = "+c.PostForm("OperatorID"))
+	fmt.Println("Name = " + c.PostForm("Name"))
+	fmt.Println("MobileNumber " + c.PostForm("MobileNumber"))
+	fmt.Println("VehicleNumber " + c.PostForm("VehicleNumber"))
+	fmt.Println("LicenseNumber " + c.PostForm("LicenseNumber"))
+	fmt.Println("VehicleTypeID = " + c.PostForm("VehicleTypeID"))
+	fmt.Println("DialCode = " + c.PostForm("DialCode"))
+	fmt.Println("OperatorID = " + c.PostForm("OperatorID"))
 
 	vehicleTypeID, vehicleTypeIdError := strconv.Atoi(c.PostForm("VehicleTypeID"))
 	dialCode, dialCodeError := strconv.Atoi(c.PostForm("DialCode"))
 	operatorID, operatorIDError := strconv.Atoi(c.PostForm("OperatorID"))
-	fmt.Println("VehicleTypeID = "+c.PostForm("VehicleTypeID"))
-	fmt.Println("DialCode = "+c.PostForm("DialCode"))
-	fmt.Println("OperatorID = "+c.PostForm("OperatorID"))
+	fmt.Println("VehicleTypeID = " + c.PostForm("VehicleTypeID"))
+	fmt.Println("DialCode = " + c.PostForm("DialCode"))
+	fmt.Println("OperatorID = " + c.PostForm("OperatorID"))
 
-	if vehicleTypeIdError==nil && dialCodeError==nil && operatorIDError==nil {
+	if vehicleTypeIdError == nil && dialCodeError == nil && operatorIDError == nil {
 
 		form, _ := c.MultipartForm()
 		fmt.Println("file count = %d", len(form.File))
@@ -310,11 +414,11 @@ func (a *DriverController) CreateDriverAccount(c *gin.Context) {
 		if err != nil {
 			fmt.Println(err)
 			response.Message = "Driver Image is required"
-		} else{
+		} else {
 			vehicleImage, err1 := c.FormFile("vehicle_image")
 			if err1 != nil {
 				response.Message = "Vehicle Image is required"
-			} else{
+			} else {
 				driverImageFileName := strconv.FormatInt(time.Now().UTC().UnixNano(), 10) + "_" + driverImage.Filename
 				vehicleImageFileName := strconv.FormatInt(time.Now().UTC().UnixNano(), 10) + "_" + vehicleImage.Filename
 
@@ -323,7 +427,7 @@ func (a *DriverController) CreateDriverAccount(c *gin.Context) {
 				} else {
 					if err := c.SaveUploadedFile(vehicleImage, "public/vehicle/"+vehicleImageFileName); err != nil {
 						response.Message = fmt.Sprintf("upload file err: %s", err.Error())
-					}else{
+					} else {
 						var otpDetails models.Otp
 						database.Db.Where("dial_code = ? AND country_code = ? AND mobile_number = ? AND is_used = ?", dialCode, countryCode, mobile, false).First(&otpDetails)
 						if otp == otpDetails.Otp {
@@ -334,14 +438,14 @@ func (a *DriverController) CreateDriverAccount(c *gin.Context) {
 								MobileNumber:       mobile,
 								OperatorID:         operatorID,
 								VehicleName:        vehicleName,
-								VehicleTypeID:       uint(vehicleTypeID),
+								VehicleTypeID:      uint(vehicleTypeID),
 								VehicleBrand:       vehicleBrand,
 								VehicleModel:       vehicleModel,
 								VehicleColor:       vehicleColor,
 								VehicleNumber:      vehicleNumber,
-								LicenseNumber: licenseNumber,
-								VehicleImage:       "public/vehicle/"+vehicleImageFileName,
-								DriverImage:        "public/driver/"+driverImageFileName,
+								LicenseNumber:      licenseNumber,
+								VehicleImage:       "public/vehicle/" + vehicleImageFileName,
+								DriverImage:        "public/driver/" + driverImageFileName,
 								IsProfileCompleted: false,
 								IsActive:           false,
 							}
@@ -366,7 +470,7 @@ func (a *DriverController) CreateDriverAccount(c *gin.Context) {
 								response.Message = "Driver Account Created And Submitted For Approval"
 							}
 
-						}else{
+						} else {
 							response.Message = "Invalid Otp"
 						}
 
@@ -374,46 +478,47 @@ func (a *DriverController) CreateDriverAccount(c *gin.Context) {
 				}
 			}
 		}
-	}else{
-		if vehicleTypeIdError!=nil{
-			response.Message = "vehicleTypeIdError : "+vehicleTypeIdError.Error()
-		} else if dialCodeError!=nil{
-			response.Message = " dialCodeError : "+dialCodeError.Error()
-		} else if operatorIDError!=nil{
-			response.Message = "operatorIDError : "+operatorIDError.Error()
+	} else {
+		if vehicleTypeIdError != nil {
+			response.Message = "vehicleTypeIdError : " + vehicleTypeIdError.Error()
+		} else if dialCodeError != nil {
+			response.Message = " dialCodeError : " + dialCodeError.Error()
+		} else if operatorIDError != nil {
+			response.Message = "operatorIDError : " + operatorIDError.Error()
 		}
 	}
 	c.JSON(http.StatusOK, response)
 
 }
 
-
 func (a *DriverController) GetDriverDetails(c *gin.Context) {
 	var response = verifyOtpDriverResponse{Status: true}
 	var driverDetails models.Driver
 
 	var userData = c.MustGet("jwt_data").(*config.JwtClaims)
-	database.Db.Model(&models.Driver{}).Where("id = ? ",userData.UserID).First(&driverDetails)
+	database.Db.Model(&models.Driver{}).Where("id = ? ", userData.UserID).First(&driverDetails)
 	response.DriverDetails = driverDetails
 	c.JSON(http.StatusOK, response)
 
 }
+
 type GetDriverDetailsWithDocResponse struct {
-	 DriverDetails models.Driver
-	 OperatorDetails models.Operator
-	 DocsRequired []models.DriverDocument
-	 UploadedDocs []models.DriverDocumentUpload
+	DriverDetails   models.Driver
+	OperatorDetails models.Operator
+	DocsRequired    []models.DriverDocument
+	UploadedDocs    []models.DriverDocumentUpload
 }
+
 func (a *DriverController) GetDriverDetailsWithDoc(c *gin.Context) {
 	var response = GetDriverDetailsWithDocResponse{}
 	var driverDetails models.Driver
 	var operatorDetails models.Operator
 	var docsRequired []models.DriverDocument
 	var docsuploaded []models.DriverDocumentUpload
-	database.Db.Model(&models.Driver{}).Where("id = ? ",c.Param("id")).First(&driverDetails)
-	database.Db.Model(&models.Operator{}).Where("id = ? ",driverDetails.OperatorID).First(&driverDetails)
-	database.Db.Where("operator_id = ?",driverDetails.OperatorID).Find(&docsRequired)
-	database.Db.Where("driver_id = ? AND is_active = true",driverDetails.ID).Find(&docsuploaded)
+	database.Db.Model(&models.Driver{}).Where("id = ? ", c.Param("id")).First(&driverDetails)
+	database.Db.Model(&models.Operator{}).Where("id = ? ", driverDetails.OperatorID).First(&driverDetails)
+	database.Db.Where("operator_id = ?", driverDetails.OperatorID).Find(&docsRequired)
+	database.Db.Where("driver_id = ? AND is_active = true", driverDetails.ID).Find(&docsuploaded)
 	response.DriverDetails = driverDetails
 	response.DocsRequired = docsRequired
 	response.OperatorDetails = operatorDetails
@@ -492,7 +597,7 @@ type DriverStatusResponse struct {
 
 func (d *DriverController) GoOnline(c *gin.Context) {
 	var userData = c.MustGet("jwt_data").(*config.JwtClaims)
-	var response = DriverStatusResponse{Status: true,Message : "Success! Now you are Online"}
+	var response = DriverStatusResponse{Status: true, Message: "Success! Now you are Online"}
 	database.Db.Model(&models.Driver{}).Where("id = ?  AND is_active = true", userData.UserID).UpdateColumn("is_online", true)
 	database.Db.Model(&models.Driver{}).Where("id = ?  AND is_active = true", userData.UserID).UpdateColumn("is_ride", false)
 	c.JSON(http.StatusOK, response)
@@ -501,7 +606,7 @@ func (d *DriverController) GoOnline(c *gin.Context) {
 
 func (d *DriverController) GoOffline(c *gin.Context) {
 	var userData = c.MustGet("jwt_data").(*config.JwtClaims)
-	var response = DriverStatusResponse{Status: true,Message: "Success! Now you are Offline"}
+	var response = DriverStatusResponse{Status: true, Message: "Success! Now you are Offline"}
 	database.Db.Model(&models.Driver{}).Where("id = ?", userData.UserID).UpdateColumn("is_online", false)
 	c.JSON(http.StatusOK, response)
 	return
@@ -617,4 +722,4 @@ func (v *VehicleController) AddNewVehicle(c *gin.Context) {
 		return
 	}
 }
- */
+*/

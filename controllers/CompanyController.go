@@ -14,6 +14,7 @@ type addNewCompanyResponse struct {
 	Status  bool
 	Message string
 }
+
 /*
 func (a *CompanyController) AddNewCompany(c *gin.Context) {
 	var data addNewCompanyRequest
@@ -103,4 +104,5 @@ func (a *CompanyController) DisableCompany(c *gin.Context) {
 	var response = statusChangeResponse{Status: true}
 	database.Db.Model(&models.Company{}).Where("id = ?", c.Param("companyId")).UpdateColumn("is_active", false)
 	c.JSON(http.StatusOK, response)
-} */
+}
+*/

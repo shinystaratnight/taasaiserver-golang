@@ -13,7 +13,7 @@ type Driver struct {
 
 	OperatorID int `gorm:"not null"`
 
-	LicenseNumber   string
+	LicenseNumber string
 	VehicleName   string `gorm:"not null"`
 	VehicleTypeID uint   `gorm:"not null;index:idx_vehicle"`
 	VehicleBrand  string `gorm:"not null"`
@@ -27,8 +27,8 @@ type Driver struct {
 	FcmID       string
 
 	IsProfileCompleted bool
-	IsOnline bool
-	IsRide bool
+	IsOnline           bool
+	IsRide             bool
 
 	IsActive bool
 }
