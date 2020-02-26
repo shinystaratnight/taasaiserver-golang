@@ -4,12 +4,15 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"taxi/controllers"
 	"taxi/models"
 	"taxi/shared/config"
 	"taxi/shared/database"
 	"taxi/shared/googleMap"
 	"time"
+
+	"github.com/joho/godotenv"
 
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/gin-contrib/cors"
@@ -22,7 +25,7 @@ var g errgroup.Group
 
 var (
 	passengerController   = controllers.PassengerController{}
-	operatorController   = controllers.OperatorController{}
+	operatorController    = controllers.OperatorController{}
 	vehicleTypeController = controllers.VehicleTypeController{}
 	driverController      = controllers.DriverController{}
 	fareController        = controllers.FareController{}
@@ -68,7 +71,7 @@ func tokenAuthMiddleware(userType string) gin.HandlerFunc {
 							database.Db.Model(&models.Admin{}).Where("id = ? AND auth_token = ? AND is_active = true", claims.UserID, tokenString).Count(&count)
 
 						}
-					}else if claims.UserType == "operator" {
+					} else if claims.UserType == "operator" {
 						database.Db.Model(&models.Operator{}).Where("id = ? AND auth_token = ?", claims.UserID, tokenString).Count(&count)
 					}
 
@@ -158,7 +161,6 @@ func setupRouter() http.Handler {
 
 		adminRoutePrivate.GET("/getDriversForCompany/:companyId", driverController.GetDriversForCompany)
 
-
 		adminRoutePrivate.GET("/getZones/:locationId", operatorController.GetZones)
 		adminRoutePrivate.GET("/getLocations", operatorController.GetOperators)
 		adminRoutePrivate.GET("/getActiveLocations", operatorController.GetActiveOperators)
@@ -227,7 +229,6 @@ func setupMobileAppRouter() http.Handler {
 		customerRoutePrivate.POST("/getMessages/:id", rideController.GetMessages)
 		customerRoutePrivate.POST("/getReferCode", passengerController.GetReferralCode)
 
-
 	}
 
 	driverRoutePublic := router.Group("/driver")
@@ -282,6 +283,13 @@ func setupPrivateRouter() http.Handler {
 }
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	PRODUCTION := os.Getenv("PRODUCTION")
+
 	database.SetupDb()
 	googleMap.SetupClient()
 	gin.SetMode(gin.ReleaseMode)
@@ -311,7 +319,11 @@ func main() {
 	}
 
 	g.Go(func() error {
-		return publicServer.ListenAndServeTLS("./ssl/all-in-one.crt", "./ssl/_.taasai.com_private_key.key")
+		if PRODUCTION == "true" {
+			return publicServer.ListenAndServeTLS("./ssl/all-in-one.crt", "./ssl/_.taasai.com_private_key.key")
+		} else {
+			return publicServer.ListenAndServe()
+		}
 	})
 	g.Go(func() error {
 		return mobileAppServer.ListenAndServe()
