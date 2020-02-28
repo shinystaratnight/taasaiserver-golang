@@ -2,7 +2,9 @@ package controllers
 
 import (
 	"fmt"
+	"io"
 	"net/http"
+	"os"
 	"strconv"
 	"taxi/models"
 	"taxi/shared/config"
@@ -723,3 +725,24 @@ func (v *VehicleController) AddNewVehicle(c *gin.Context) {
 	}
 }
 */
+
+func (a *DriverController) GetDocument(c *gin.Context) {
+	fileName := c.Param("name")
+	downloadName := fileName
+	header := c.Writer.Header()
+	header["Content-type"] = []string{"application/octet-stream"}
+	header["Content-Disposition"] = []string{"attachment; filename= " + downloadName}
+
+	file, err := os.Open("./public/driver/" + fileName)
+	if err != nil {
+		c.String(http.StatusOK, "%v", err)
+		return
+	}
+	defer file.Close()
+
+	_, err = io.Copy(c.Writer, file)
+	if err != nil {
+		c.String(http.StatusOK, "%v", err)
+		return
+	}
+}

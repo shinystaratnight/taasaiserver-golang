@@ -99,15 +99,16 @@ func tokenAuthMiddleware(userType string) gin.HandlerFunc {
 
 func setupRouter() http.Handler {
 	router := gin.Default()
+	router.Static("/public", "./public")
 	router.Use(cors.New(cors.Config{
 		AllowAllOrigins:  true,
 		AllowMethods:     []string{"GET", "PUT", "POST", "DELETE"},
-		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
-		ExposeHeaders:    []string{"Content-Length"},
+		AllowHeaders:     []string{"Content-Type", "Content-Length", "Accept-Encoding", "X-CSRF-Token", "Authorization", "accept", "origin", "Cache-Control", "X-Requested-With"},
+		ExposeHeaders:    []string{"Content-Length", "Access-Control-Allow-Origin"},
 		AllowCredentials: true,
 		MaxAge:           12 * time.Hour,
 	}))
-	router.Static("/public", "./public")
+	// router.Use(cors.Default())
 	router.GET("/test", func(context *gin.Context) {
 		context.JSON(http.StatusOK, "Server running")
 	})
@@ -125,6 +126,7 @@ func setupRouter() http.Handler {
 		adminRoutePrivate.POST("/approveDriver", driverController.ApproveDriver)
 		adminRoutePrivate.GET("/getDrivers", driverController.GetDrivers)
 		adminRoutePrivate.GET("/getDriverDetailsWithDoc/:id", driverController.GetDriverDetailsWithDoc)
+		adminRoutePrivate.GET("/getDriverDocument/:name", driverController.GetDocument)
 		adminRoutePrivate.POST("/addNewVehicleType", vehicleTypeController.AddNewVehicleType)
 		adminRoutePrivate.POST("/editVehicleType", vehicleTypeController.EditVehicleType)
 		adminRoutePrivate.POST("/addNewVehicleTypeCategory", vehicleTypeController.AddNewVehicleTypeCategory)
