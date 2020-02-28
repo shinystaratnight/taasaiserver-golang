@@ -52,7 +52,8 @@ type RideListItem struct {
 	Tax              float64
 	TotalFare        float64
 
-	RideStatus int64
+	RideStatus  int64
+	PlatformFee float64
 }
 
 type RideDetail struct {
@@ -145,7 +146,7 @@ func (r *RideController) GetRides(c *gin.Context) {
 func (r *RideController) GetRidesByDriver(c *gin.Context) {
 	driverId := c.Param("driverId")
 	var list []RideListItem
-	database.Db.Raw("SELECT R.*, D.name driver_name, P.name passenger_name FROM rides R INNER JOIN drivers D ON D.id = R.driver_id INNER JOIN passengers P ON P.id = R.passenger_id WHERE R.driver_id = " + driverId + " ORDER BY R.created_at DESC;").Scan(&list)
+	database.Db.Raw("SELECT R.*, D.name driver_name, P.name passenger_name, (R.total_fare * O.platform_commission / 100) platform_fee FROM rides R INNER JOIN drivers D ON D.id = R.driver_id INNER JOIN passengers P ON P.id = R.passenger_id INNER JOIN operators O ON O.id = D.operator_id WHERE R.driver_id = " + driverId + " ORDER BY R.created_at DESC;").Scan(&list)
 
 	c.JSON(http.StatusOK, list)
 }

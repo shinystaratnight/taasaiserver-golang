@@ -120,6 +120,7 @@ func setupRouter() http.Handler {
 	}
 
 	adminRoutePrivate := router.Group("/admin")
+	adminRoutePrivate.Static("/public", "./public")
 	adminRoutePrivate.Use(tokenAuthMiddleware("admin"))
 	{
 		adminRoutePrivate.POST("/addNewDriver", driverController.AddNewDriver)
