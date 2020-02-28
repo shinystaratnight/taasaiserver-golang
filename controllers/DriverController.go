@@ -39,6 +39,7 @@ type getDriverResponse struct {
 	VehicleName        string `json:"vehicle_name"`
 	VehicleNumber      string `json:"vehicle_number"`
 	VehicleImage       string `json:"vehicle_image"`
+	FleetManager       string `json:"fleet_manager"`
 }
 
 // type getDriverHistoryResponse struct {
@@ -68,10 +69,10 @@ func (a *DriverController) GetDrivers(c *gin.Context) {
 	var list []getDriverResponse
 	var userData = c.MustGet("jwt_data").(*config.JwtClaims)
 	if userData.UserType == "admin" {
-		database.Db.Raw("SELECT drivers.* ,operators.name as operator_name,operators.location_name FROM drivers INNER JOIN operators ON drivers.operator_id = operators.id ").Find(&list)
+		database.Db.Raw("SELECT D.* ,O.name AS operator_name, O.location_name, F.id fleet_manager FROM drivers D INNER JOIN operators O ON D.operator_id = O.id LEFT JOIN fleet_managers F ON F.id = D.fleet_id ").Find(&list)
 
 	} else {
-		database.Db.Raw("SELECT drivers.* ,operators.name as operator_name,operators.location_name FROM drivers INNER JOIN operators ON drivers.operator_id = operators.id AND operators.id = " + strconv.Itoa(int(userData.UserID))).Find(&list)
+		database.Db.Raw("SELECT D.* ,O.name AS operator_name, O.location_name, F.id fleet_manager FROM drivers D INNER JOIN operators O ON D.operator_id = O.id AND operators.id = " + strconv.Itoa(int(userData.UserID)) + " LEFT JOIN fleet_managers F ON F.id = D.fleet_id").Find(&list)
 
 	}
 	c.JSON(http.StatusOK, list)
