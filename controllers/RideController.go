@@ -17,9 +17,9 @@ import (
 type RideController struct {
 }
 type RideAcceptCustomerResponse struct {
-	DriverDetails  models.Driver
-	RideDetails    models.Ride
-	Payload        string
+	DriverDetails models.Driver
+	RideDetails   models.Ride
+	Payload       string
 }
 
 type RideAcceptDriverResponse struct {
@@ -27,7 +27,7 @@ type RideAcceptDriverResponse struct {
 	Message       string
 	PassengerName string
 	RideDetails   models.Ride
-	StopDetails []models.RideStop
+	StopDetails   []models.RideStop
 }
 type GetRidesRequest struct {
 	RideStatus int64
@@ -56,7 +56,7 @@ type RideListItem struct {
 }
 
 type RideDetail struct {
-	TimeLine []models.RideEventLog
+	TimeLine          []models.RideEventLog
 	PassengerName     string
 	PassengerMobile   string
 	PassengerDialCode int64
@@ -107,16 +107,16 @@ func (r *RideController) SendMessage(c *gin.Context) {
 	database.Db.Create(&message)
 	messageData, err := json.Marshal(&message)
 
-	if err==nil {
+	if err == nil {
 		mqttController.Publish(fmt.Sprintf("passenger/%d/new_message", ride.PassengerID), 2, string(messageData))
 		mqttController.Publish(fmt.Sprintf("driver/%d/new_message", ride.DriverID), 2, string(messageData))
 	}
 
-	c.JSON(http.StatusOK, GenericResponse{Status:true,Message:"Success!"})
+	c.JSON(http.StatusOK, GenericResponse{Status: true, Message: "Success!"})
 }
 func (r *RideController) GetMessages(c *gin.Context) {
 	var list []models.RideMessage
-	database.Db.Where("ride_id = ?",c.Param("id")).Find(&list)
+	database.Db.Where("ride_id = ?", c.Param("id")).Find(&list)
 	c.JSON(http.StatusOK, list)
 }
 
@@ -131,13 +131,21 @@ func (r *RideController) GetRides(c *gin.Context) {
 		} else {
 			database.Db.Raw("SELECT rides.*,operators.name as service_area,passengers.name as passenger_name FROM rides INNER JOIN operators ON rides.operator_id = operators.id INNER JOIN passengers ON passengers.id = rides.passenger_id WHERE rides.ride_status = " + strconv.Itoa(int(data.RideStatus)) + " ORDER BY rides.created_at DESC").Scan(&list)
 		}
-	}else{
+	} else {
 		if data.RideStatus == -1 {
-			database.Db.Raw("SELECT rides.*,operators.name as service_area,passengers.name as passenger_name FROM rides INNER JOIN operators ON rides.operator_id = operators.id AND operators.id = "+strconv.Itoa(int(userData.UserID))+ " INNER JOIN passengers ON passengers.id = rides.passenger_id ORDER BY rides.created_at DESC").Scan(&list)
+			database.Db.Raw("SELECT rides.*,operators.name as service_area,passengers.name as passenger_name FROM rides INNER JOIN operators ON rides.operator_id = operators.id AND operators.id = " + strconv.Itoa(int(userData.UserID)) + " INNER JOIN passengers ON passengers.id = rides.passenger_id ORDER BY rides.created_at DESC").Scan(&list)
 		} else {
-			database.Db.Raw("SELECT rides.*,operators.name as service_area,passengers.name as passenger_name FROM rides INNER JOIN operators ON rides.operator_id = operators.id AND  operators.id = "+strconv.Itoa(int(userData.UserID))+" INNER JOIN passengers ON passengers.id = rides.passenger_id WHERE rides.ride_status = " + strconv.Itoa(int(data.RideStatus)) + " ORDER BY rides.created_at DESC").Scan(&list)
+			database.Db.Raw("SELECT rides.*,operators.name as service_area,passengers.name as passenger_name FROM rides INNER JOIN operators ON rides.operator_id = operators.id AND  operators.id = " + strconv.Itoa(int(userData.UserID)) + " INNER JOIN passengers ON passengers.id = rides.passenger_id WHERE rides.ride_status = " + strconv.Itoa(int(data.RideStatus)) + " ORDER BY rides.created_at DESC").Scan(&list)
 		}
 	}
+
+	c.JSON(http.StatusOK, list)
+}
+
+func (r *RideController) GetRidesByDriver(c *gin.Context) {
+	driverId := c.Param("driverId")
+	var list []RideListItem
+	database.Db.Raw("SELECT R.*, D.name driver_name, P.name passenger_name FROM rides R INNER JOIN drivers D ON D.id = R.driver_id INNER JOIN passengers P ON P.id = R.passenger_id WHERE R.driver_id = " + driverId + " ORDER BY R.created_at DESC;").Scan(&list)
 
 	c.JSON(http.StatusOK, list)
 }
@@ -226,9 +234,9 @@ func (r *RideController) RideAccept(c *gin.Context) {
 		database.Db.Where("id=?", driverId).First(&driverDetails)
 
 		if driverDetails.IsRide {
-			database.Db.Model(&ride).UpdateColumns(&models.Ride{ DriverID: driverId, RideStatus: 7})
+			database.Db.Model(&ride).UpdateColumns(&models.Ride{DriverID: driverId, RideStatus: 7})
 		} else {
-			database.Db.Model(&ride).UpdateColumns(&models.Ride{ DriverID: driverId, RideStatus: 1})
+			database.Db.Model(&ride).UpdateColumns(&models.Ride{DriverID: driverId, RideStatus: 1})
 			database.Db.Model(&driverDetails).UpdateColumn("is_ride", true)
 		}
 
@@ -237,8 +245,8 @@ func (r *RideController) RideAccept(c *gin.Context) {
 		database.Db.Where("id=?", ride.PassengerID).First(&passengerDetails)
 
 		var passengerResponse = RideAcceptCustomerResponse{
-			DriverDetails:  driverDetails,
-			RideDetails:    ride,
+			DriverDetails: driverDetails,
+			RideDetails:   ride,
 		}
 
 		var eventLog = models.RideEventLog{
@@ -259,7 +267,7 @@ func (r *RideController) RideAccept(c *gin.Context) {
 		driverResponse.RideDetails = ride
 		if ride.IsMultiStop {
 			var stopsList []models.RideStop
-			database.Db.Where("ride_id = ?",ride.ID).Find(&stopsList)
+			database.Db.Where("ride_id = ?", ride.ID).Find(&stopsList)
 			driverResponse.StopDetails = stopsList
 		}
 		driverResponse.PassengerName = passengerDetails.Name
@@ -283,8 +291,8 @@ func (r *RideController) CheckOnRide(passengerId uint) {
 			database.Db.Where("id=?", ride.DriverID).First(&driverDetails)
 			database.Db.Where("id=?", ride.PassengerID).First(&passengerDetails)
 			var passengerResponse = RideAcceptCustomerResponse{
-				DriverDetails:  driverDetails,
-				RideDetails:    ride,
+				DriverDetails: driverDetails,
+				RideDetails:   ride,
 			}
 
 			passengerData, err := json.Marshal(&passengerResponse)
@@ -311,7 +319,7 @@ func (r *RideController) DriverArrived(c *gin.Context) {
 	if result.RowsAffected == 1 {
 		database.Db.Model(&ride).UpdateColumns(&models.Ride{
 			RideDriverArrivedTime: time.Now(),
-			RideStatus:2,
+			RideStatus:            2,
 		})
 		var eventLog = models.RideEventLog{
 			RideID:     ride.ID,
@@ -390,10 +398,10 @@ func (r *RideController) GetRideDetailsForMobile(c *gin.Context) {
 			var fare models.ZoneFare
 			database.Db.Where("id = ?", ride.ZoneFareID).First(&fare)
 			response.BaseFareDetails = models.Fare{
-				BaseFare: fare.BaseFare,
+				BaseFare:     fare.BaseFare,
 				DistanceFare: fare.DistanceFare,
 				DurationFare: fare.DurationFare,
-				MinimumFare: fare.MinimumFare,
+				MinimumFare:  fare.MinimumFare,
 			}
 			response.Status = true
 		}
@@ -411,7 +419,6 @@ func (r *RideController) GetRideTimeline(c *gin.Context) {
 }
 
 func (r *RideController) StopTrip(c *gin.Context) {
-
 
 	var response = responseFormat{Status: false}
 	var userData = c.MustGet("jwt_data").(*config.JwtClaims)
@@ -455,13 +462,13 @@ func (r *RideController) StopTrip(c *gin.Context) {
 				var watingFee = 0.0
 				if fare.WaitingTimeLimit < waitingTime {
 					watingFee = fare.WaitingFee * waitingTime
-					if watingFee<0 {
+					if watingFee < 0 {
 						watingFee *= (-1)
 					}
 					watingFee = math.Ceil(watingFee*100) / 100
 				}
 
-				totalFare = totalFare + distanceFare + durationFare +watingFee
+				totalFare = totalFare + distanceFare + durationFare + watingFee
 				var tax = (fare.Tax / 100) * totalFare
 				tax = math.Ceil(tax*100) / 100
 				totalFare += tax
@@ -472,11 +479,11 @@ func (r *RideController) StopTrip(c *gin.Context) {
 					DistanceFare:     distanceFare,
 					DurationFare:     durationFare,
 					Tax:              tax,
-					WaitingFare:watingFee,
+					WaitingFare:      watingFee,
 					TotalFare:        totalFare,
 					DurationReadable: diff.String(),
 				})
-				database.Db.Model(&models.Driver{}).Where("id = ? ", ride.DriverID).UpdateColumns(&models.Driver{IsRide:false,IsOnline:true})
+				database.Db.Model(&models.Driver{}).Where("id = ? ", ride.DriverID).UpdateColumns(&models.Driver{IsRide: false, IsOnline: true})
 				var location models.Operator
 				database.Db.Where("id = ?", ride.OperatorID).First(&location)
 				response.RideDetails = ride
@@ -499,17 +506,17 @@ func (r *RideController) StopTrip(c *gin.Context) {
 				totalFare := fare.BaseFare
 				var distanceFare, durationFare float64
 
-				distanceFare = (ride.Distance  * fare.DistanceFare)
+				distanceFare = (ride.Distance * fare.DistanceFare)
 				distanceFare = math.Ceil(distanceFare*100) / 100
 
-				durationFare = (duration  * fare.DurationFare)
+				durationFare = (duration * fare.DurationFare)
 				durationFare = math.Ceil(durationFare*100) / 100
 
 				var waitingTime = ride.RideStartTime.Sub(ride.RideDriverArrivedTime).Minutes()
 				var watingFee = 0.0
 				if fare.WaitingTimeLimit < waitingTime {
 					watingFee = fare.WaitingFee * waitingTime
-					if watingFee<0 {
+					if watingFee < 0 {
 						watingFee *= (-1)
 					}
 					watingFee = math.Ceil(watingFee*100) / 100
@@ -528,19 +535,19 @@ func (r *RideController) StopTrip(c *gin.Context) {
 					DurationFare:     durationFare,
 					Tax:              tax,
 					TotalFare:        totalFare,
-					WaitingFare: watingFee,
+					WaitingFare:      watingFee,
 					DurationReadable: diff.String(),
 				})
-				database.Db.Model(&models.Driver{}).Where("id = ? ", ride.DriverID).UpdateColumns(&models.Driver{IsRide:false,IsOnline:true})
+				database.Db.Model(&models.Driver{}).Where("id = ? ", ride.DriverID).UpdateColumns(&models.Driver{IsRide: false, IsOnline: true})
 				var location models.Operator
 				database.Db.Where("id = ?", ride.OperatorID).First(&location)
 				response.RideDetails = ride
 				response.Currency = location.Currency
 				response.BaseFareDetails = models.Fare{
-					BaseFare: fare.BaseFare,
+					BaseFare:     fare.BaseFare,
 					DistanceFare: fare.DistanceFare,
 					DurationFare: fare.DurationFare,
-					MinimumFare: fare.MinimumFare,
+					MinimumFare:  fare.MinimumFare,
 				}
 				response.Status = true
 

@@ -175,6 +175,7 @@ func setupRouter() http.Handler {
 		adminRoutePrivate.PUT("/enableZone/:locationId", operatorController.EnableZone)
 		adminRoutePrivate.PUT("/disableZone/:locationId", operatorController.DisableZone)
 		adminRoutePrivate.POST("/getRides", rideController.GetRides)
+		adminRoutePrivate.GET("/getRidesByDriver/:driverId", rideController.GetRidesByDriver)
 		adminRoutePrivate.GET("/getRideDetail/:rideId", rideController.GetRideDetail)
 		adminRoutePrivate.GET("/getRideLocations/:rideId", rideController.GetRideLocations)
 		adminRoutePrivate.PUT("/enableVehicleCategory/:categoryId", vehicleTypeController.EnableVehicleTypeCategory)

@@ -41,6 +41,24 @@ type getDriverResponse struct {
 	VehicleImage       string `json:"vehicle_image"`
 }
 
+// type getDriverHistoryResponse struct {
+// 	ID                 int64  `json:"ride_id"`
+// 	Name               string `json:"driver_name"`
+// 	OperatorID         int64  `json:"operator_id"`
+// 	DialCode           string `json:"dial_code"`
+// 	MobileNumber       string `json:"mobile_number"`
+// 	LicenseNumber      string `json:"license_number"`
+// 	DriverImage        string `json:"driver_image"`
+// 	FcmID              string `json:"fcm_id"`
+// 	IsActive           bool   `json:"is_active"`
+// 	IsProfileCompleted bool   `json:"is_profile_completed"`
+// 	LocationName       string `json:"location_name"`
+// 	OperatorName       string `json:"operator_name"`
+// 	VehicleName        string `json:"vehicle_name"`
+// 	VehicleNumber      string `json:"vehicle_number"`
+// 	VehicleImage       string `json:"vehicle_image"`
+// }
+
 type addVehicleAssignmentResponse struct {
 	Status  bool
 	Message string
