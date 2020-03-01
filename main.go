@@ -36,6 +36,7 @@ var (
 	companyController     = controllers.CompanyController{}
 	zoneFareController    = controllers.ZoneFareController{}
 	dashboardController   = controllers.DashboardController{}
+	fleetController       = controllers.FleetController{}
 )
 
 func respondWithError(code int, message string, c *gin.Context) {
@@ -189,6 +190,10 @@ func setupRouter() http.Handler {
 		adminRoutePrivate.GET("/getDataCount", dashboardController.GetDataCount)
 		adminRoutePrivate.GET("/getAllPassengers", passengerController.GetAllPassengers)
 		adminRoutePrivate.GET("/getRidesForPassenger/:passengerId", rideController.GetRidesForPassenger)
+
+		adminRoutePrivate.GET("/getFleets", fleetController.GetFleets)
+		adminRoutePrivate.GET("/getFleetById/:id", fleetController.GetFleetById)
+		adminRoutePrivate.POST("/addNewFleet", fleetController.AddNewFleet)
 	}
 	return router
 
